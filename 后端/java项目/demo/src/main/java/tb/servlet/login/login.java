@@ -1,13 +1,10 @@
 package tb.servlet.login;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import tb.service.loginService;
+import cn.hutool.crypto.digest.DigestUtil;
+import tb.service.LoginService;
 import tb.util.myJwt;
-import io.jsonwebtoken.*;
-import java.util.Date;
+
+import java.security.SecureRandom;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;//提供注解形式指定接口
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.Base64;
 @WebServlet("/login")
 public class login extends HttpServlet {
     @Override
@@ -39,9 +36,32 @@ public class login extends HttpServlet {
         String username = res.getHeader("username");
         String password = res.getHeader("password");
 
+        //加密
+        String decrypt = DigestUtil.sha256Hex(password);
+
+        //生成盐
+        SecureRandom random = new SecureRandom();
+        byte bytes[] = new byte[15];
+        random.nextBytes(bytes);
+        // 将字节数组转换为Base64编码的字符串，仅包含字母和数字
+        String saltString = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+        // 删除Base64中的非字母数字字符（如'+'和'/'）
+        saltString = saltString.replaceAll("\\+", "").replaceAll("/", "");
+        // 如果生成的字符串长度小于指定的盐长度，则填充'='以达到指定长度
+        while (saltString.length() < 15) {
+            saltString += '=';
+        }
+
+        String pwd = saltString+decrypt;//拼接
+
+        //将盐值和pwd存入后端
+
+
+
+
         String msg = "";
 
-        String role = new loginService().judgePassword(username,password,msg);
+        String role = new LoginService().judgePassword(username,password,msg);
 
         if(role.isEmpty()){
             //登录失败

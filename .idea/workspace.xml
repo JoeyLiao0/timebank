@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4b9ae10a-5719-489c-8a6c-9c89352bf39e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/前端/my-vue-demo/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/前端/my-vue-demo/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/前端/my-vue-demo/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/前端/my-vue-demo/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/前端/my-vue-demo/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/前端/my-vue-demo/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/前端/my-vue-demo/src/components/HelloWorld.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/前端/my-vue-demo/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/前端/my-vue-demo/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/前端/my-vue-demo/vue.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/前端/my-vue-demo/vue.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/imp/loginServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/imp/loginServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/servlet/login/login.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/servlet/login/login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/JDBC.properties" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/JDBC.properties" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2cgEa4ypVKOnVxAnDzlmczLezWJ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/liao/Desktop/git/TB/timebank/后端/java项目/demo",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4b9ae10a-5719-489c-8a6c-9c89352bf39e" name="Changes" comment="" />
+      <created>1708524882132</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1708524882132</updated>
+      <workItem from="1708524883227" duration="9000" />
+    </task>
+    <servers />
+  </component>
+</project>

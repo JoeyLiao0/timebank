@@ -1,8 +1,7 @@
 package tb.service;
-import io.jsonwebtoken.Claims;
-import tb.service.imp.loginServiceImpl;
+import tb.service.imp.LoginServiceImpl;
 
-public class loginService implements loginServiceImpl {
+public class LoginService implements LoginServiceImpl {
     @Override
     public String judgePassword(String username, String password,String msg) {
         return "AD";

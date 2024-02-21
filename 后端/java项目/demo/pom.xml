@@ -50,6 +50,13 @@
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+
+        <!--hutool-all依赖载入，主要为了后端rsa加密-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.26</version>
+        </dependency>
     </dependencies>
 
 </project>
