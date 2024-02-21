@@ -1,0 +1,23 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="demo:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/demo_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="demo" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.5.10" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.12.7" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.12.7" />
+          <element id="library" level="project" name="Maven: io.jsonwebtoken:jjwt-impl:0.12.0" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.12.7.1" />
+          <element id="library" level="project" name="Maven: io.jsonwebtoken:jjwt-api:0.12.0" />
+          <element id="library" level="project" name="Maven: io.jsonwebtoken:jjwt-jackson:0.12.0" />
+          <element id="library" level="project" name="Maven: io.jsonwebtoken:jjwt:0.12.0" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="demo/web/Web" />
+    </root>
+  </artifact>
+</component>

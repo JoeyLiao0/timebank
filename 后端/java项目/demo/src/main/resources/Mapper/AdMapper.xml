@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+resultType表示查询对象的返回类型为User类型
+#{}：从传递过来的参数中取出值
+namespace是名称空间，要和User.java所在的cn.mybatis.bean目录对应不能写错
+-->
+<!--命名空间写接口-->
+<mapper namespace="tb.dao.AdDao" >
+    <select id="SelectAdById"  parameterType="java.lang.Integer" resultType="tb.entity.Ad">
+        select * from AD
+                 where ad_id=#{id}
+    </select>
+
+    <select id="SelectAdByName"  parameterType="java.lang.String" resultType="tb.entity.Ad">
+        select * from AD
+                 where ad_name=#{name}
+    </select>
+
+    <select id="SelectAdByTel"  parameterType="java.lang.String" resultType="tb.entity.Ad">
+        select * from AD
+                where ad_tel=#{tel}
+    </select>
+
+    <select id="SelectAdByLogin" parameterType="java.sql.Date" resultType="tb.entity.Ad">
+        select * from AD
+                where ad_login between #{begintime} and #{endtime}
+    </select>
+
+    <select id="SelectAdByRegister"  parameterType="java.sql.Date" resultType="tb.entity.Ad">
+        select * from AD
+                where ad_register between #{begintime} and #{endtime}
+    </select>
+
+    <select id="SelectAdByNameFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Ad">
+        select * from AD
+                where ad_name like "%"#{name}"%"
+    </select>
+
+    <select id="SelectAdByTelFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Ad">
+        select * from AD
+                where ad_tel like "%"#{tel}"%"
+    </select>
+
+    <insert id="InsertAd"  parameterType="tb.entity.Ad" >
+        insert into AD(ad_id,ad_name,ad_pwd,ad_img,ad_login,ad_tel,ad_register)
+                values (null,#{ad.ad_name},#{ad.ad_pwd},#{ad.ad_img},#{ad.ad_login},#{ad.ad_tel},#{ad.ad_register})
+    </insert>
+
+    <delete id="DeleteAdById" parameterType="java.lang.Integer">
+        delete from AD
+               where ad_id = #{id}
+    </delete>
+
+    <delete id="DeleteAdByName" parameterType="java.lang.String">
+        delete from AD
+               where ad_name = #{name}
+    </delete>
+
+    <delete id="DeleteAdByTel" parameterType="java.lang.String">
+        delete from AD
+               where ad_tel = #{tel}
+    </delete>
+
+    <update id="UpdateAd" parameterType="tb.entity.Ad">
+        update AD
+                set ad_name = #{ad.ad_name},
+                    ad_pwd = #{ad.ad_pwd},
+                    ad_img = #{ad.ad_img},
+                    ad_login =#{ad.ad_login},
+                    ad_tel = #{ad.ad_tel},
+                    ad_register = #{ad.ad_register}
+                where ad_id = #{ad.ad_id}
+    </update>
+
+
+</mapper>
