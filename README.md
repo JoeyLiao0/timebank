@@ -18,3 +18,10 @@
     IDEA、maven(3.9.6)、tomcat（9.0.85）、jdk17  
 3、其他  
     PDManer(数据库建模工具)、MySQL(8.0.35)、MySQL Workbench、Git Bash  
+
+## 2024/2/21
+  优化servlet层设计，通过用户类别划分servlet，通用的放到common，单个展示模块对应单个servlet<br>
+## 2024/2/22      
+  优化service层设计，舍弃loginService ，因为如果把login和其他混在一起不伦不类，有点像微服务和常规模式混合<br>
+  优化后，单张表对应单个逻辑实体对应单个mapper对应单个service<br>
+

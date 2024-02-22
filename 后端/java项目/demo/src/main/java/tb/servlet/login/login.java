@@ -1,6 +1,5 @@
 package tb.servlet.login;
 import cn.hutool.crypto.digest.DigestUtil;
-import tb.service.LoginService;
 import tb.util.myJwt;
 
 import java.security.SecureRandom;
