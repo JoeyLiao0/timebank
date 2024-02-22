@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 import tb.dao.AdDao;
 import tb.entity.Ad;
+import tb.service.AdService;
 import tb.util.mySqlSession;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.List;
 public class test {
     @Test   //注意一定要写此注解表示是测试类
     public void init() throws IOException {
+
 
         SqlSession session = mySqlSession.getSqSession();
         Integer id = 1;// 在数据库中取哪个ID的数据

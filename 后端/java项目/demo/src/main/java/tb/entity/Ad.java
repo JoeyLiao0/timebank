@@ -33,6 +33,17 @@ public class Ad {
     //管理员手机号
     private String ad_tel;
 
+    //盐值
+    private String ad_salt;
+
+    public String getAd_salt() {
+        return ad_salt;
+    }
+
+    public void setAd_salt(String ad_salt) {
+        this.ad_salt = ad_salt;
+    }
+
     //管理员注册时间
     private Date ad_register;
 

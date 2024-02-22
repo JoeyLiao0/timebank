@@ -1,0 +1,20 @@
+//加密
+        String decrypt = DigestUtil.sha256Hex(password);
+
+        //生成盐
+        SecureRandom random = new SecureRandom();
+        byte bytes[] = new byte[15];
+        random.nextBytes(bytes);
+        // 将字节数组转换为Base64编码的字符串，仅包含字母和数字
+        String saltString = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+        // 删除Base64中的非字母数字字符（如'+'和'/'）
+        saltString = saltString.replaceAll("\\+", "").replaceAll("/", "");
+        // 如果生成的字符串长度小于指定的盐长度，则填充'='以达到指定长度
+        while (saltString.length() < 15) {
+            saltString += '=';
+        }
+
+        String pwd = saltString+decrypt;//拼接
+
+        //将盐值和pwd存入后端
+        return "yes";

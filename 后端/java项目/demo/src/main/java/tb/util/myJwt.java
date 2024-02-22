@@ -1,10 +1,16 @@
 package tb.util;
 import io.jsonwebtoken.*;
 
+import java.util.HashMap;
 import java.util.Map;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecureDigestAlgorithm;
+import tb.entity.Ad;
+import tb.service.AdService;
+import tb.service.AuService;
+import tb.service.CsService;
+import tb.service.CuService;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
@@ -96,8 +102,67 @@ public class myJwt {
         return parseClaim(token).getPayload();
     }
 
-    public static boolean judgeToken(String token){
-        return true;//TODO
+
+    //因为判断时要调用非static方法，这里的judgeToken不设置为static
+    public boolean judgeToken(String token){
+        try{
+            Claims claim = parsePayload(token);
+            String role = (String)claim.get("role");
+            String username = (String)claim.get("username");
+
+            Date date = claim.getExpiration();
+
+            if(date.before(new Date())){
+                //token未过期
+                switch (role){
+                    case "AD":
+                        if(new AdService().existUsername(username)){
+                            //存在，correct
+                            return true;
+                        }
+                        break;
+                    case "AU":
+                        if(new AuService().existUsername(username)){
+                            //存在，correct
+                            return true;
+                        }
+                        break;
+                    case "CS":
+                        if(new CsService().existUsername(username)){
+                            //存在，correct
+                            return true;
+                        }
+                        break;
+                    case "CU":
+                        if(new CuService().existUsername(username)){
+                            //存在，correct
+                            return true;
+                        }
+                        break;
+                }
+            }else{
+                //token已过期
+                return false;
+            }
+        }catch(RuntimeException e){
+            return false;
+        }
+        return false;
+
+    }
+
+    public String updateTokenTime(String token){
+        Claims claim = parsePayload(token);
+        String role = (String)claim.get("role");
+        String username = (String)claim.get("username");
+
+        Map<String ,String> m = new HashMap<>();
+        m.put("role",role);
+        m.put("username",username);
+
+        String newtoken = createToken(m);
+
+        return newtoken;
     }
 
 }

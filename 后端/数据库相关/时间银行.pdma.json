@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.9.1",
   "createdTime": "2024-2-21 11:41:26",
-  "updatedTime": "2024-2-21 11:41:26",
+  "updatedTime": "2024-2-22 23:20:29",
   "dbConns": [],
   "profile": {
     "default": {
@@ -840,6 +840,24 @@
           "id": "AE2D63A4-8FB9-4EE0-AB54-DE71E617AE4E"
         },
         {
+          "defKey": "ad_salt",
+          "defName": "盐值",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
+          "extProps": {},
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "id": "FD41EABC-F456-4E7E-B7CC-6A2CE28AC3BE"
+        },
+        {
           "defKey": "ad_img",
           "defName": "管理员头像",
           "comment": "",
@@ -1128,6 +1146,24 @@
           "extProps": {},
           "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
           "id": "6016F0BD-148F-4071-8BA6-7DF40169F9BD"
+        },
+        {
+          "defKey": "au_salt",
+          "defName": "盐值",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
+          "extProps": {},
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "id": "7328E6B1-5ADD-4390-8E84-634605450E95"
         },
         {
           "defKey": "au_img",
@@ -1465,6 +1501,24 @@
           "id": "85B2AF88-F4F7-4B99-BC37-E7067C84092A"
         },
         {
+          "defKey": "cu_salt",
+          "defName": "盐值",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
+          "extProps": {},
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "id": "D2DDD1FA-C6F8-412F-A0A9-6E49195E82E3"
+        },
+        {
           "defKey": "cu_login",
           "defName": "用户上次登录时间",
           "comment": "",
@@ -1744,6 +1798,24 @@
           "extProps": {},
           "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
           "id": "65F81184-85F9-4755-9DC9-A004ED133EB9"
+        },
+        {
+          "defKey": "cs_salt",
+          "defName": "盐值",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
+          "extProps": {},
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "id": "3101B5BF-3BA3-4283-B550-904A33C19AB5"
         },
         {
           "defKey": "cs_img",

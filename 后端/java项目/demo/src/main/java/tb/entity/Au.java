@@ -36,6 +36,17 @@ public class Au {
     //审核员账号注册时间
     private Date au_register;
 
+    //盐值
+    private String au_salt;
+
+    public String getAu_salt() {
+        return au_salt;
+    }
+
+    public void setAu_salt(String au_salt) {
+        this.au_salt = au_salt;
+    }
+
     public Integer getAu_id() {
         return au_id;
     }

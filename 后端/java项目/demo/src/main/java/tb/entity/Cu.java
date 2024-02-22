@@ -35,6 +35,17 @@ public class Cu {
     //用户头像
     private String cu_img;
 
+    public String getCu_salt() {
+        return cu_salt;
+    }
+
+    public void setCu_salt(String cu_salt) {
+        this.cu_salt = cu_salt;
+    }
+
+    //盐值
+    private String cu_salt;
+
     public Integer getCu_id() {
         return cu_id;
     }
