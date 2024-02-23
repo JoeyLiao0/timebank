@@ -78,8 +78,12 @@ CREATE TABLE TASK(
     `task_takerid` INT   COMMENT '任务接受者编号' ,
     `task_coin` INT NOT NULL  COMMENT '任务时间币' ,
     `task_score` INT   COMMENT '任务满意度评分（一星-五星）' ,
+    `task_audit` VARCHAR(255) NOT NULL  COMMENT '任务审核状态(未审核/审核未通过/审核通过)' ,
+    `task_advice` VARCHAR(255)   COMMENT '任务审核意见（审核未通过时非空）' ,
+    `task_auid` INT   COMMENT '任务审核员编号' ,
     PRIMARY KEY (task_id)
 )  COMMENT = '任务';
+
 
 
 DROP TABLE IF EXISTS TALK;
@@ -97,6 +101,7 @@ CREATE TABLE CHAT(
     `chat_senderid` INT NOT NULL  COMMENT '消息发送者编号' ,
     `chat_content` VARCHAR(255) NOT NULL  COMMENT '消息内容' ,
     `chat_timestamp` DATETIME NOT NULL  COMMENT '消息时间戳' ,
+    `chat_senderrole` VARCHAR(255) NOT NULL  COMMENT '消息发送者身份' ,
     PRIMARY KEY (chat_id)
 )  COMMENT = '内部交流通道';
 

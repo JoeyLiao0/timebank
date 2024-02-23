@@ -25,6 +25,8 @@ public class test {
         try {
             AdDao adDao = session.getMapper(AdDao.class);
             Ad admin = adDao.SelectAdById(2);
+            List<Ad> admins = adDao.SelectAllAd();
+
 //            adDao.InsertAd(admin);
 
 //            String da = "2023-1-1";

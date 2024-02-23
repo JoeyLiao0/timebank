@@ -18,6 +18,13 @@
     <!--将写好的userMapper.xml映射文件注册到全局配置文件mybatis-config.xml中-->
     <mappers>
         <mapper resource="Mapper/AdMapper.xml"/>
+        <mapper resource="Mapper/AuMapper.xml"/>
+        <mapper resource="Mapper/CsMapper.xml"/>
+        <mapper resource="Mapper/CuMapper.xml"/>
+        <mapper resource="Mapper/ChatMapper.xml"/>
+        <mapper resource="Mapper/NoticeMapper.xml"/>
+        <mapper resource="Mapper/TalkMapper.xml"/>
+        <mapper resource="Mapper/TaskMapper.xml"/>
     </mappers>
 
 </configuration>

@@ -37,6 +37,39 @@ public class Task {
     //任务完成评价
     private Integer task_score;
 
+    //任务审核状态
+    private String task_audit;
+
+    //任务审核意见
+    private String task_advice;
+
+    //任务审核员编号
+    private Integer task_auid;
+
+    public String getTask_audit() {
+        return task_audit;
+    }
+
+    public void setTask_audit(String task_audit) {
+        this.task_audit = task_audit;
+    }
+
+    public String getTask_advice() {
+        return task_advice;
+    }
+
+    public void setTask_advice(String task_advice) {
+        this.task_advice = task_advice;
+    }
+
+    public Integer getTask_auid() {
+        return task_auid;
+    }
+
+    public void setTask_auid(Integer task_auid) {
+        this.task_auid = task_auid;
+    }
+
     public Integer getTask_id() {
         return task_id;
     }

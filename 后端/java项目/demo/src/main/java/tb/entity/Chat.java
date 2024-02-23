@@ -19,6 +19,16 @@ public class Chat {
     private String chat_content;
     //消息时间戳
     private Date chat_timestamp;
+    //消息发送者身份
+    private String chat_senderrole;
+
+    public String getChat_senderrole() {
+        return chat_senderrole;
+    }
+
+    public void setChat_senderrole(String chat_senderrole) {
+        this.chat_senderrole = chat_senderrole;
+    }
 
     public Integer getChat_id() {
         return chat_id;

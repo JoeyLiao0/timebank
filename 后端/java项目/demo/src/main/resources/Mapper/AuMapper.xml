@@ -2,67 +2,80 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--
-resultType表示查询对象的返回类型为User类型
-#{}：从传递过来的参数中取出值
-namespace是名称空间，要和User.java所在的cn.mybatis.bean目录对应不能写错
--->
+
 <!--命名空间写接口-->
 <mapper namespace="tb.dao.AuDao" >
+
+    <select id="SelectAllAu" resultType="tb.entity.Au">
+        select * from AU;
+    </select>
+
+
     <select id="SelectAuById"  parameterType="java.lang.Integer" resultType="tb.entity.Au">
         select * from AU
         where au_id=#{id}
     </select>
+
 
     <select id="SelectAuByName"  parameterType="java.lang.String" resultType="tb.entity.Au">
         select * from AU
         where au_name=#{name}
     </select>
 
+
     <select id="SelectAuByTel"  parameterType="java.lang.String" resultType="tb.entity.Au">
         select * from AU
         where au_tel=#{tel}
     </select>
+
 
     <select id="SelectAuByLogin" parameterType="java.sql.Date" resultType="tb.entity.Au">
         select * from AU
         where au_login between #{begintime} and #{endtime}
     </select>
 
+
     <select id="SelectAuByRegister"  parameterType="java.sql.Date" resultType="tb.entity.Au">
         select * from AU
         where au_register between #{begintime} and #{endtime}
     </select>
+
 
     <select id="SelectAuByNameFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Au">
         select * from AU
         where au_name like "%"#{name}"%"
     </select>
 
+
     <select id="SelectAuByTelFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Au">
         select * from AU
         where au_tel like "%"#{tel}"%"
     </select>
+
 
     <insert id="InsertAu"  parameterType="tb.entity.Au" >
         insert into AU(au_id,au_name,au_pwd,au_img,au_login,au_tel,au_register,au_salt)
         values (null,#{au.au_name},#{au.au_pwd},#{au.au_img},#{au.au_login},#{au.au_tel},#{au.au_register},#{au.au_salt})
     </insert>
 
+
     <delete id="DeleteAuById" parameterType="java.lang.Integer">
         delete from AU
         where au_id = #{id}
     </delete>
+
 
     <delete id="DeleteAuByName" parameterType="java.lang.String">
         delete from AU
         where au_name = #{name}
     </delete>
 
+
     <delete id="DeleteAuByTel" parameterType="java.lang.String">
         delete from AU
         where au_tel = #{tel}
     </delete>
+
 
     <update id="UpdateAu" parameterType="tb.entity.Au">
         update AU
