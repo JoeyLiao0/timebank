@@ -1,11 +1,7 @@
 package tb.service;
 
-public class AuService {
-    public String judgePassword(String username,String password){
-        return "yes";
-    }
+public interface AuService {
+    public String judgePassword(String username,String password);
 
-    public boolean existUsername(String username){
-        return true;
-    }
+    public boolean existUsername(String username);
 }

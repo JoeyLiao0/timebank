@@ -1,8 +1,8 @@
 package tb.servlet.login;
-import tb.service.AdService;
-import tb.service.AuService;
-import tb.service.CsService;
-import tb.service.CuService;
+import tb.service.Impl.AdServiceImpl;
+import tb.service.Impl.AuServiceImpl;
+import tb.service.Impl.CsServiceImpl;
+import tb.service.Impl.CuServiceImpl;
 import tb.util.myDomainSetting;
 import tb.util.myJwt;
 
@@ -55,16 +55,16 @@ public class login extends HttpServlet {
                 if(role!=null){
                     switch (role){
                         case "AD":
-                            msg = new AdService().judgePassword(username,password);
+                            msg = new AdServiceImpl().judgePassword(username,password);
                             break;
                         case "AU":
-                            msg = new AuService().judgePassword(username,password);
+                            msg = new AuServiceImpl().judgePassword(username,password);
                             break;
                         case "CS":
-                            msg = new CsService().judgePassword(username,password);
+                            msg = new CsServiceImpl().judgePassword(username,password);
                             break;
                         case "CU":
-                            msg = new CuService().judgePassword(username,password);
+                            msg = new CuServiceImpl().judgePassword(username,password);
                             break;
                     }
                 }

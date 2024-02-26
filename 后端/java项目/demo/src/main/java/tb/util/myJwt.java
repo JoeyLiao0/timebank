@@ -6,11 +6,10 @@ import java.util.Map;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecureDigestAlgorithm;
-import tb.entity.Ad;
-import tb.service.AdService;
-import tb.service.AuService;
-import tb.service.CsService;
-import tb.service.CuService;
+import tb.service.Impl.AdServiceImpl;
+import tb.service.Impl.AuServiceImpl;
+import tb.service.Impl.CsServiceImpl;
+import tb.service.Impl.CuServiceImpl;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
@@ -116,25 +115,25 @@ public class myJwt {
                 //token未过期
                 switch (role){
                     case "AD":
-                        if(new AdService().existUsername(username)){
+                        if(new AdServiceImpl().existUsername(username)){
                             //存在，correct
                             return true;
                         }
                         break;
                     case "AU":
-                        if(new AuService().existUsername(username)){
+                        if(new AuServiceImpl().existUsername(username)){
                             //存在，correct
                             return true;
                         }
                         break;
                     case "CS":
-                        if(new CsService().existUsername(username)){
+                        if(new CsServiceImpl().existUsername(username)){
                             //存在，correct
                             return true;
                         }
                         break;
                     case "CU":
-                        if(new CuService().existUsername(username)){
+                        if(new CuServiceImpl().existUsername(username)){
                             //存在，correct
                             return true;
                         }

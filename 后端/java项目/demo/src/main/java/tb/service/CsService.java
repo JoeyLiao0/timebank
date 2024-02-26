@@ -1,10 +1,7 @@
 package tb.service;
 
-public class CsService {
-    public String judgePassword(String username,String password){
-        return "yes";
-    }
-    public boolean existUsername(String username){
-        return true;
-    }
+public interface CsService {
+    public String judgePassword(String username,String password);
+
+    public boolean existUsername(String username);
 }

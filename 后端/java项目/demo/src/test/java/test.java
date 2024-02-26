@@ -1,18 +1,11 @@
 
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 import tb.dao.AdDao;
 import tb.entity.Ad;
-import tb.service.AdService;
 import tb.util.mySqlSession;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class test {
