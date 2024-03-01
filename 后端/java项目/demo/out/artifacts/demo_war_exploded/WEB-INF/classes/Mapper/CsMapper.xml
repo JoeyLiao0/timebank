@@ -2,67 +2,80 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--
-resultType表示查询对象的返回类型为User类型
-#{}：从传递过来的参数中取出值
-namespace是名称空间，要和User.java所在的cn.mybatis.bean目录对应不能写错
--->
+
 <!--命名空间写接口-->
 <mapper namespace="tb.dao.CsDao" >
+
+    <select id="SelectAllCs" resultType="tb.entity.Cs">
+        select * from CS;
+    </select>
+
+
     <select id="SelectCsById"  parameterType="java.lang.Integer" resultType="tb.entity.Cs">
         select * from CS
         where cs_id=#{id}
     </select>
+
 
     <select id="SelectCsByName"  parameterType="java.lang.String" resultType="tb.entity.Cs">
         select * from CS
         where cs_name=#{name}
     </select>
 
+
     <select id="SelectCsByTel"  parameterType="java.lang.String" resultType="tb.entity.Cs">
         select * from CS
         where cs_tel=#{tel}
     </select>
+
 
     <select id="SelectCsByLogin" parameterType="java.sql.Date" resultType="tb.entity.Cs">
         select * from CS
         where cs_login between #{begintime} and #{endtime}
     </select>
 
+
     <select id="SelectCsByRegister"  parameterType="java.sql.Date" resultType="tb.entity.Cs">
         select * from CS
         where cs_register between #{begintime} and #{endtime}
     </select>
+
 
     <select id="SelectCsByNameFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Cs">
         select * from CS
         where cs_name like "%"#{name}"%"
     </select>
 
+
     <select id="SelectCsByTelFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Cs">
         select * from CS
         where cs_tel like "%"#{tel}"%"
     </select>
+
 
     <insert id="InsertCs"  parameterType="tb.entity.Cs" >
         insert into CS(cs_id,cs_name,cs_pwd,cs_img,cs_login,cs_tel,cs_register,cs_salt)
         values (null,#{cs.cs_name},#{cs.cs_pwd},#{cs.cs_img},#{cs.cs_login},#{cs.cs_tel},#{cs.cs_register},#{cs.cs_salt})
     </insert>
 
+
     <delete id="DeleteCsById" parameterType="java.lang.Integer">
         delete from CS
         where cs_id = #{id}
     </delete>
+
 
     <delete id="DeleteCsByName" parameterType="java.lang.String">
         delete from CS
         where cs_name = #{name}
     </delete>
 
+
     <delete id="DeleteCsByTel" parameterType="java.lang.String">
         delete from CS
         where cs_tel = #{tel}
     </delete>
+
 
     <update id="UpdateCs" parameterType="tb.entity.Cs">
         update CS

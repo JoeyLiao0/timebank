@@ -1,4 +1,4 @@
-package tb.servlet.home.common;
+package tb.servlet.home.commonModule;
 
 /**
  * 管理员、审核员、客服、普通用户

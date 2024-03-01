@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--命名空间写接口-->
+<mapper namespace="tb.dao.TalkDao" >
+
+    <select id="SelectTalkByTaskId"  parameterType="java.lang.Integer" resultType="tb.entity.Talk">
+        select * from TALK where talk_taskid = #{talk_taskid}
+    </select>
+
+
+    <!--此处主键不能自增长了，要和taskid对应了-->
+    <insert id="InsertNewTalk"  parameterType="tb.entity.Talk" >
+        insert into TALK(talk_taskid,talk_senderid,talk_content,talk_timestamp)
+        values (#{talk.taskid},#{talk.talk_senderid},#{talk.talk_content},#{talk.talk_timestamp})
+    </insert>
+
+
+
+</mapper>

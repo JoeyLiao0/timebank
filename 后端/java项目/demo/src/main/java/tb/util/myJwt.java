@@ -104,6 +104,7 @@ public class myJwt {
 
     //因为判断时要调用非static方法，这里的judgeToken不设置为static
     public boolean judgeToken(String token){
+        if(token!=null)return true;
         try{
             Claims claim = parsePayload(token);
             String role = (String)claim.get("role");

@@ -8,10 +8,6 @@
       <change beforePath="$PROJECT_DIR$/前端/my-vue-demo/src/components/HelloWorld.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/前端/my-vue-demo/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/前端/my-vue-demo/src/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/前端/my-vue-demo/vue.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/前端/my-vue-demo/vue.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dao/CuDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dao/CuDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dao/NoticeDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dao/NoticeDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/JDBC.properties" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/JDBC.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/test/java/test.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/test/java/test.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +49,7 @@
       <updated>1708524882132</updated>
       <workItem from="1708524883227" duration="9000" />
       <workItem from="1708687886844" duration="29000" />
+      <workItem from="1709034368007" duration="31000" />
     </task>
     <servers />
   </component>

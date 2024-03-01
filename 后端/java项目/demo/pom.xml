@@ -57,6 +57,16 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.26</version>
         </dependency>
+
+        <!--来自阿里巴巴，快速处理json格式数据-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
+        </dependency>
+
+
+
     </dependencies>
 
 </project>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--命名空间写接口-->
+<mapper namespace="tb.dao.NoticeDao" >
+
+    <select id="SelectAllNotice"  resultType="tb.entity.Notice">
+        select * from NOTICE
+    </select>
+
+
+    <insert id="InsertNewNotice"  parameterType="tb.entity.Notice" >
+        insert into NOTICE(notice_id,notice_begintime,notice_endtime,notice_text,notice_title)
+        values (null,#{notice.notice_begintime},#{notice.notice_endtime},#{notice.notice_text},#{notice.notice_title})
+    </insert>
+
+
+    <delete id="DeleteNotice" parameterType="tb.entity.Notice">
+        delete from NOTICE
+        where notice_id = #{notice.notice_id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--命名空间写接口-->
+<mapper namespace="tb.dao.ChatDao" >
+
+    <select id="SelectAllChat"  resultType="tb.entity.Chat">
+        select * from CHAT
+    </select>
+
+
+    <insert id="InsertChat"  parameterType="tb.entity.Chat" >
+        insert into CHAT(chat_id,chat_senderid,chat_content,chat_timestamp,chat_senderrole)
+        values (null,#{chat.chat_senderid},#{chat.chat_content},#{chat.chat_timestamp},#{chat.chat_senderrole})
+    </insert>
+
+
+</mapper>

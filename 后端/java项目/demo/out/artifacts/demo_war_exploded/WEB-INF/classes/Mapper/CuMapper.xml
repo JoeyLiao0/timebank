@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><!--
+
+<!-命名空间写接口-->
+<mapper namespace="tb.dao.CuDao" >
+
+    <select id="SelectAllCu" resultType="tb.entity.Cu">
+        select * from Cu;
+    </select>
+
+
+    <select id="SelectCuById"  parameterType="java.lang.Integer" resultType="tb.entity.Cu">
+        select * from CU
+        where cu_id=#{id}
+    </select>
+
+
+    <select id="SelectCuByName"  parameterType="java.lang.String" resultType="tb.entity.Cu">
+        select * from CU
+        where cu_name=#{name}
+    </select>
+
+
+    <select id="SelectCuByTel"  parameterType="java.lang.String" resultType="tb.entity.Cu">
+        select * from CU
+        where cu_tel=#{tel}
+    </select>
+
+
+    <select id="SelectCuByLogin" parameterType="java.sql.Date" resultType="tb.entity.Cu">
+        select * from CU
+        where cu_login between #{begintime} and #{endtime}
+    </select>
+
+
+    <select id="SelectCuByRegister"  parameterType="java.sql.Date" resultType="tb.entity.Cu">
+        select * from CU
+        where cu_register between #{begintime} and #{endtime}
+    </select>
+
+
+    <select id="SelectCuByNameFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Cu">
+        select * from CU
+        where cu_name like "%"#{name}"%"
+    </select>
+
+
+    <select id="SelectCuByTelFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Cu">
+        select * from CU
+        where cu_tel like "%"#{tel}"%"
+    </select>
+
+
+    <insert id="InsertCu"  parameterType="tb.entity.Cu" >
+        insert into CU(cu_id,cu_name,cu_pwd,cu_img,cu_login,cu_tel,cu_register,cu_salt,cu_icon,cu_release,cu_accept)
+        values (null,#{cu.cu_name},#{cu.cu_pwd},#{cu.cu_img},#{cu.cu_login},#{cu.cu_tel},#{cu.cu_register},#{cu.cu_salt},#{cu.cu_icon},#{cu.cu_release},#{cu.cu_accept})
+    </insert>
+
+
+    <delete id="DeleteCuById" parameterType="java.lang.Integer">
+        delete from CU
+        where cu_id = #{id}
+    </delete>
+
+
+    <delete id="DeleteCuByName" parameterType="java.lang.String">
+        delete from CU
+        where cu_name = #{name}
+    </delete>
+
+
+    <delete id="DeleteCuByTel" parameterType="java.lang.String">
+        delete from CU
+        where cu_tel = #{tel}
+    </delete>
+
+
+    <update id="UpdateCu" parameterType="tb.entity.Cu">
+        update CU
+        set cu_name = #{cu.cu_name},
+            cu_pwd = #{cu.cu_pwd},
+            cu_img = #{cu.cu_img},
+            cu_login =#{cu.cu_login},
+            cu_tel = #{cu.cu_tel},
+            cu_register = #{cu.cu_register},
+            cu_salt = #{cu.cu_salt},
+            cu_icon = #{cu.cu_icon},
+            cu_release = #{cu.cu_release},
+            cu_accept = #{cu.cu_accept}
+        where cu_id = #{cu.cu_id}
+    </update>
+
+
+</mapper>
