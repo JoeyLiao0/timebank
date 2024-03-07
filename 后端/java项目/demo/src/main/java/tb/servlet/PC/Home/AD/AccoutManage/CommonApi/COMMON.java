@@ -46,7 +46,11 @@ public class COMMON extends HttpServlet {
 
                 //此时判断token是否有效
 
-                if (new myJwt().judgeToken(token)) {
+                myJwt mJ = new myJwt();
+                mJ.setToken(token);
+
+
+                if (mJ.judgeToken()) {
                     //token有效，返回用户数组 TODO
                     ArrayList<Map<String,Object>> userArray = new ArrayList<>();
                     if (role != null) {
@@ -59,18 +63,18 @@ public class COMMON extends HttpServlet {
                             default -> new ArrayList<>();
                         };
                     }
-
-                    Map<String,Object> user1 = new HashMap<>();
-                    user1.put("test11","test");
-                    user1.put("test111","asaa");
-
-
-                    Map<String,Object> user2 = new HashMap<>();
-                    user2.put("test22","test");
-                    user2.put("test222","asaa");
-
-                    userArray.add(user1);
-                    userArray.add(user2);
+//测试
+//                    Map<String,Object> user1 = new HashMap<>();
+//                    user1.put("test11","test");
+//                    user1.put("test111","asaa");
+//
+//
+//                    Map<String,Object> user2 = new HashMap<>();
+//                    user2.put("test22","test");
+//                    user2.put("test222","asaa");
+//
+//                    userArray.add(user1);
+//                    userArray.add(user2);
 
                     JSONArray jsonArray = (JSONArray) JSON.toJSON(userArray);
 
@@ -107,7 +111,7 @@ public class COMMON extends HttpServlet {
                 Integer id = (Integer) dataMap.get("id");
                 //此时判断token是否有效
 
-                if (new myJwt().judgeToken(token)) {
+                if (new myJwt(token).judgeToken()) {
                     String msg = null;//带出错误原因
                     //TODO ：token有效，尝试将用户状态设置为指定状态
                     if (role != null) {
@@ -144,7 +148,7 @@ public class COMMON extends HttpServlet {
                 Integer id = (Integer) dataMap.get("id");
                 //此时判断token是否有效
 
-                if (new myJwt().judgeToken(token)) {
+                if (new myJwt(token).judgeToken()) {
                     //TODO ：token有效，尝试重置指定用户密码
                     String msg = null;
                     if (role != null) {
@@ -183,7 +187,7 @@ public class COMMON extends HttpServlet {
                 List<Integer> idArray = (List<Integer>) dataMap.get("idArray");
 
                 //此时判断token是否有效
-                if (new myJwt().judgeToken(token)) {
+                if (new myJwt(token).judgeToken()) {
                     //TODO ：token有效，尝试删除指定用户
                     String msg = null;
                     if (role != null) {

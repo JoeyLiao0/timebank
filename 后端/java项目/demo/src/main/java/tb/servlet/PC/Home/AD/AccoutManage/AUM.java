@@ -38,22 +38,21 @@ public class AUM extends HttpServlet {
                  */
 
                 String token = (String) dataMap.get("token");//json
-                Integer id = (Integer) dataMap.get("id");
+                Integer id = (Integer) dataMap.get("id");//token内部的id是自己，而这里的id指的是查询的目标
 
                 //此时判断token是否有效
 
-                if (new myJwt().judgeToken(token)) {
-                    //token有效，返回用户信息
-                    Map<String,Object> data = null ;
-                    data = (new AuServiceImpl()).selectById(id);//根据编号获取全部信息
+                if (new myJwt(token).judgeToken()) {
+                    //token有效
+                    Map<String, Object> data = (new AuServiceImpl()).selectById(id);//根据编号获取全部信息
 
                     JSONObject jsonObject = null;
-                    if(data!=null){
+                    if (data != null) {
                         jsonObject = new JSONObject(data);
-                        jsonObject.put("status",true);
-                    }else{
+                        jsonObject.put("status", true);
+                    } else {
                         jsonObject = new JSONObject();
-                        jsonObject.put("status",false);
+                        jsonObject.put("status", false);
                     }
 
                     res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
@@ -62,9 +61,6 @@ public class AUM extends HttpServlet {
                     //token失效,401
                     res.setStatus(401);
                 }
-
-            }else{
-                res.setStatus(404);
             }
         }
     }
@@ -83,9 +79,11 @@ public class AUM extends HttpServlet {
                  */
 
                 String token = (String) dataMap.get("token");
+                Integer id = (Integer) dataMap.get("id");
+
 
                 //此时判断token是否有效
-                if (new myJwt().judgeToken(token)) {
+                if (new myJwt(token).judgeToken()) {
                     //token有效
                     JSONObject jsonObject = new JSONObject();
 
@@ -114,8 +112,9 @@ public class AUM extends HttpServlet {
                  */
                 String token = (String) dataMap.get("token");
 
+
                 //此时判断token是否有效
-                if (new myJwt().judgeToken(token)) {
+                if (new myJwt(token).judgeToken()) {
                     //token有效
                     JSONObject jsonObject = new JSONObject();
 

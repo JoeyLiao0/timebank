@@ -44,6 +44,7 @@ public class myJwt {
      */
     private final static String SUBJECT = "Peripherals";
 
+    private String token;
     /*
     这些是一组预定义的声明，它们 不是强制性的，而是推荐的 ，以 提供一组有用的、可互操作的声明 。
     iss: jwt签发者
@@ -54,6 +55,14 @@ public class myJwt {
     iat: jwt的签发时间
     jti: jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击
      */
+
+
+    public myJwt(String token){
+        this.token = token;
+    }
+    public myJwt(){
+
+    }
     public static String createToken(Map<String, String> claims) {
 
         String username = (String)claims.get("username");
@@ -103,10 +112,10 @@ public class myJwt {
 
 
     //因为判断时要调用非static方法，这里的judgeToken不设置为static
-    public boolean judgeToken(String token){
-        if(token!=null)return true;
+    public boolean judgeToken(){
+        if(this.token!=null)return true;
         try{
-            Claims claim = parsePayload(token);
+            Claims claim = parsePayload(this.token);
             String role = (String)claim.get("role");
             String username = (String)claim.get("username");
 
@@ -151,8 +160,8 @@ public class myJwt {
 
     }
 
-    public String updateTokenTime(String token){
-        Claims claim = parsePayload(token);
+    public String updateTokenTime(){
+        Claims claim = parsePayload(this.token);
         String role = (String)claim.get("role");
         String username = (String)claim.get("username");
 
@@ -165,6 +174,15 @@ public class myJwt {
         return newtoken;
     }
 
+    public void setToken(String token){
+        this.token = token;
+    }
+
+    public Object getValue(String Key){
+        if(this.token!=null)return null;
+        Claims claim = parsePayload(this.token);
+        return claim.get(Key);
+    }
 }
 
 

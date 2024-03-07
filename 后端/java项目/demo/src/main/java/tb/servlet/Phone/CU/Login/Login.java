@@ -38,9 +38,9 @@ public class Login extends HttpServlet {
                 //此时判断token是否有效
 //                String token = req.getHeader("token");//获取token，TODO：这里不能这样获取，参数都是json格式一起传过来的
 
-                if (new myJwt().judgeToken(token)) {
+                if (new myJwt(token).judgeToken()) {
                     //token有效，200，并返回新的token
-                    String newToken = new myJwt().updateTokenTime(token);//根据已有的token，更新token时效
+                    String newToken = new myJwt(token).updateTokenTime();//根据已有的token，更新token时效
                     Map<String, Object> data = new HashMap<>();
                     data.put("token", newToken);
                     String responseJson = JSON.toJSONString(data,SerializerFeature.WriteMapNullValue);//map 转 json写入response

@@ -42,7 +42,7 @@ public class CSM extends HttpServlet {
 
                 //此时判断token是否有效
 
-                if (new myJwt().judgeToken(token)) {
+                if (new myJwt(token).judgeToken()) {
                     //token有效，返回用户信息
                     Map<String,Object> data = null ;
                     data = (new CsServiceImpl()).selectById(id);//根据编号获取全部信息
@@ -85,7 +85,7 @@ public class CSM extends HttpServlet {
                 String token = (String) dataMap.get("token");
 
                 //此时判断token是否有效
-                if (new myJwt().judgeToken(token)) {
+                if (new myJwt(token).judgeToken()) {
                     //token有效
                     JSONObject jsonObject = new JSONObject();
 
@@ -115,7 +115,7 @@ public class CSM extends HttpServlet {
                 String token = (String) dataMap.get("token");
 
                 //此时判断token是否有效
-                if (new myJwt().judgeToken(token)) {
+                if (new myJwt(token).judgeToken()) {
                     //token有效
                     JSONObject jsonObject = new JSONObject();
 
