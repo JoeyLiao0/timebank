@@ -39,6 +39,19 @@ public class Au {
     //盐值
     private String au_salt;
 
+    //状态
+    private Integer au_status;
+    public Integer getAu_status() {
+        return au_status;
+    }
+
+    public void setAu_status(Integer au_status) {
+        this.au_status = au_status;
+    }
+
+
+
+
     public String getAu_salt() {
         return au_salt;
     }

@@ -5,6 +5,7 @@ import tb.entity.Ad;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 //单个/多个查询
 //精准/模糊查询.默认是精准查询，如果是模糊查询就在方法名后加Fuzzy
@@ -14,59 +15,67 @@ public interface AdDao {
 
     /**
      *
-     * 查询全部Ad
+     * 查询Ad
      *
      */
-    public List<Ad> SelectAllAd();
+    public List<Ad> SelectAdByMap(Map<String,Object> map);
 
+
+//    /**
+//     *
+//     * 查询全部Ad
+//     *
+//     */
+//    public List<Ad> SelectAllAd();
+//
     /**
      *
      * 根据编号查询单个Ad
      *
      */
     public Ad SelectAdById(Integer id);
-
+//
     /**
      *
      * 根据账号查询单个Ad
      *
      */
     public Ad SelectAdByName(String name);
-
-    /**
-     *
-     * 根据手机号查询单个Ad
-     *
-     */
-    public Ad SelectAdByTel(String tel);
-
-    /**
-     *
-     * 根据上次登录时间区间查询多个Ad
-     *
-     */
-    public List<Ad> SelectAdByLogin(@Param("begintime") Date begintime , @Param("endtime") Date endtime);
-
-    /**
-     *
-     * 根据注册时间区间查询多个Ad
-     *
-     */
-    public List<Ad> SelectAdByRegister(@Param("begintime") Date begintime , @Param("endtime") Date endtime);
-
-    /**
-     *
-     * 根据账号查询多个Ad（模糊）
-     *
-     */
-    public List<Ad> SelectAdByNameFuzzy(String name);
-
-    /**
-     *
-     * 根据手机号查询多个Ad（模糊）
-     *
-     */
-    public List<Ad> SelectAdByTelFuzzy(String tel);
+//
+//    /**
+//     *
+//     * 根据手机号查询单个Ad
+//     *
+//     */
+//    public Ad SelectAdByTel(String tel);
+//
+//    /**
+//     *
+//     * 根据上次登录时间区间查询多个Ad
+//     *
+//     */
+//    public List<Ad> SelectAdByLogin(@Param("begintime") Date begintime , @Param("endtime") Date endtime);
+//
+//    /**
+//     *
+//     * 根据注册时间区间查询多个Ad
+//     *
+//     */
+//    public List<Ad> SelectAdByRegister(@Param("begintime") Date begintime , @Param("endtime") Date endtime);
+//
+//    /**
+//     *
+//     * 根据账号查询多个Ad（模糊）
+//     *
+//     */
+//    public List<Ad> SelectAdByNameFuzzy(String name);
+//
+//    /**
+//     *
+//     * 根据手机号查询多个Ad（模糊）
+//     *
+//     */
+//    public List<Ad> SelectAdByTelFuzzy(String tel);
 
     /**
      *

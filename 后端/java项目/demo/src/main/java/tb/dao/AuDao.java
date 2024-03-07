@@ -1,70 +1,76 @@
 package tb.dao;
 
 import org.apache.ibatis.annotations.Param;
+import tb.entity.Ad;
 import tb.entity.Au;
 import tb.entity.Au;
 
 import javax.swing.event.ListDataEvent;
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface AuDao {
 
-    /**
-     *
-     * 查询全部Au
-     *
-     */
-    public List<Au> SelectAllAu();
+    public List<Au> SelectAuByMap(Map<String,Object> map);
 
-    /**
-     *
-     * 根据编号查询单个Au
-     *
-     */
     public Au SelectAuById(Integer id);
 
+//    /**
+//     *
+//     * 查询全部Au
+//     *
+//     */
+//    public List<Au> SelectAllAu();
+//
+//    /**
+//     *
+//     * 根据编号查询单个Au
+//     *
+//     */
+//    public Au SelectAuById(Integer id);
+//
     /**
      *
      * 根据账号查询单个Au
      *
      */
     public Au SelectAuByName(String name);
-
-    /**
-     *
-     * 根据手机号查询单个Au
-     *
-     */
-    public Au SelectAuByTel(String tel);
-
-    /**
-     *
-     * 根据上次登录时间区间查询多个Au
-     *
-     */
-    public List<Au> SelectAuByLogin(@Param("begintime") Date begintime , @Param("endtime") Date endtime);
-
-    /**
-     *
-     * 根据注册时间区间查询多个Au
-     *
-     */
-    public List<Au> SelectAuByRegister(@Param("begintime") Date begintime , @Param("endtime") Date endtime);
-
-    /**
-     *
-     * 根据账号查询多个Au（模糊）
-     *
-     */
-    public List<Au> SelectAuByNameFuzzy(String name);
-
-    /**
-     *
-     * 根据手机号查询多个Au（模糊）
-     *
-     */
-    public List<Au> SelectAuByTelFuzzy(String tel);
+//
+//    /**
+//     *
+//     * 根据手机号查询单个Au
+//     *
+//     */
+//    public Au SelectAuByTel(String tel);
+//
+//    /**
+//     *
+//     * 根据上次登录时间区间查询多个Au
+//     *
+//     */
+//    public List<Au> SelectAuByLogin(@Param("begintime") Date begintime , @Param("endtime") Date endtime);
+//
+//    /**
+//     *
+//     * 根据注册时间区间查询多个Au
+//     *
+//     */
+//    public List<Au> SelectAuByRegister(@Param("begintime") Date begintime , @Param("endtime") Date endtime);
+//
+//    /**
+//     *
+//     * 根据账号查询多个Au（模糊）
+//     *
+//     */
+//    public List<Au> SelectAuByNameFuzzy(String name);
+//
+//    /**
+//     *
+//     * 根据手机号查询多个Au（模糊）
+//     *
+//     */
+//    public List<Au> SelectAuByTelFuzzy(String tel);
 
     /**
      *

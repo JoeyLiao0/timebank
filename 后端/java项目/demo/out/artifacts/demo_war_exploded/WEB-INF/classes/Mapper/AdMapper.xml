@@ -9,10 +9,37 @@ namespace是名称空间，要和User.java所在的cn.mybatis.bean目录对应�
 -->
 <!--命名空间写接口-->
 <mapper namespace="tb.dao.AdDao" >
-
-    <select id="SelectAllAd" resultType="tb.entity.Ad">
-        select * from AD;
+    <select id="SelectAdByMap" resultType="tb.entity.Ad">
+        select
+            *
+        from
+            AD
+        where 1=1
+            <if test="id != null">
+                and ad_id = #{id}
+            </if>
+            <if test="name != null and name !=''">
+                and ad_name like "%"#{name}"%"
+            </if>
+            <if test="tel != null and tel !=''">
+                and ad_tel like "%"#{tel}"%"
+            </if>
+            <if test="registerBegin != null and registerEnd != null">
+                and ad_register between #{registerBegin} and #{registerEnd}
+            </if>
+            <if test="loginBegin != null and loginEnd != null">
+                and ad_login between #{loginBegin} and #{loginEnd}
+            </if>
+            <if test="userStatus == 0 or userStatus ==1">
+                and ad_status = userStatus
+            </if>
     </select>
+
+
+
+<!--    <select id="SelectAllAd" resultType="tb.entity.Ad">-->
+<!--        select * from AD;-->
+<!--    </select>-->
 
 
     <select id="SelectAdById"  parameterType="java.lang.Integer" resultType="tb.entity.Ad">
@@ -27,34 +54,34 @@ namespace是名称空间，要和User.java所在的cn.mybatis.bean目录对应�
     </select>
 
 
-    <select id="SelectAdByTel"  parameterType="java.lang.String" resultType="tb.entity.Ad">
-        select * from AD
-                where ad_tel=#{tel}
-    </select>
+<!--    <select id="SelectAdByTel"  parameterType="java.lang.String" resultType="tb.entity.Ad">-->
+<!--        select * from AD-->
+<!--                where ad_tel=#{tel}-->
+<!--    </select>-->
 
 
-    <select id="SelectAdByLogin" parameterType="java.sql.Date" resultType="tb.entity.Ad">
-        select * from AD
-                where ad_login between #{begintime} and #{endtime}
-    </select>
+<!--    <select id="SelectAdByLogin" parameterType="java.sql.Date" resultType="tb.entity.Ad">-->
+<!--        select * from AD-->
+<!--                where ad_login between #{begintime} and #{endtime}-->
+<!--    </select>-->
 
 
-    <select id="SelectAdByRegister"  parameterType="java.sql.Date" resultType="tb.entity.Ad">
-        select * from AD
-                where ad_register between #{begintime} and #{endtime}
-    </select>
+<!--    <select id="SelectAdByRegister"  parameterType="java.sql.Date" resultType="tb.entity.Ad">-->
+<!--        select * from AD-->
+<!--                where ad_register between #{begintime} and #{endtime}-->
+<!--    </select>-->
 
 
-    <select id="SelectAdByNameFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Ad">
-        select * from AD
-                where ad_name like "%"#{name}"%"
-    </select>
+<!--    <select id="SelectAdByNameFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Ad">-->
+<!--        select * from AD-->
+<!--                where ad_name like "%"#{name}"%"-->
+<!--    </select>-->
 
 
-    <select id="SelectAdByTelFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Ad">
-        select * from AD
-                where ad_tel like "%"#{tel}"%"
-    </select>
+<!--    <select id="SelectAdByTelFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Ad">-->
+<!--        select * from AD-->
+<!--                where ad_tel like "%"#{tel}"%"-->
+<!--    </select>-->
 
 
     <insert id="InsertAd"  parameterType="tb.entity.Ad" >

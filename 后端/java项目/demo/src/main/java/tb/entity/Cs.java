@@ -38,6 +38,18 @@ public class Cs {
     //盐值
     private String cs_salt;
 
+
+    //状态
+    private Integer cs_status;
+
+    public Integer getCs_status() {
+        return cs_status;
+    }
+
+    public void setCs_status(Integer cs_status) {
+        this.cs_status = cs_status;
+    }
+
     public Integer getCs_id() {
         return cs_id;
     }

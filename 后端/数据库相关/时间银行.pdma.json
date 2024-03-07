@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.9.1",
   "createdTime": "2024-2-21 11:41:26",
-  "updatedTime": "2024-2-28 23:09:37",
+  "updatedTime": "2024-3-6 12:58:11",
   "dbConns": [],
   "profile": {
     "default": {
@@ -632,7 +632,7 @@
       "#DDE5FF"
     ],
     "DDLToggleCase": "L",
-    "menuWidth": "242px"
+    "menuWidth": "241px"
   },
   "entities": [
     {
@@ -928,6 +928,24 @@
           "extProps": {},
           "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "id": "AC76DA0C-B019-4BD2-9616-C4133411EE51"
+        },
+        {
+          "defKey": "ad_status",
+          "defName": "禁用与否",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
+          "extProps": {},
+          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
+          "id": "C546638A-1388-4CAE-AD01-16D7710CF4AB"
         }
       ],
       "correlations": [],
@@ -1236,6 +1254,24 @@
           "extProps": {},
           "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "id": "B084CB9C-F30D-4626-B6A4-E192DEE83ADD"
+        },
+        {
+          "defKey": "au_status",
+          "defName": "禁用与否",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
+          "extProps": {},
+          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
+          "id": "BAE6400F-2D06-41D7-8A40-84357CB917C4"
         }
       ],
       "correlations": [],
@@ -1589,6 +1625,24 @@
           "extProps": {},
           "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
           "id": "70C4E613-BF49-421C-950F-080FDA359E93"
+        },
+        {
+          "defKey": "cu_status",
+          "defName": "状态",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
+          "extProps": {},
+          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
+          "id": "63590A28-1431-4B01-AED3-5849F72CAABE"
         }
       ],
       "correlations": [],
@@ -1888,6 +1942,24 @@
           "extProps": {},
           "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "id": "0C0E39E1-B529-4532-B540-B441FB009089"
+        },
+        {
+          "defKey": "cs_status",
+          "defName": "状态",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
+          "extProps": {},
+          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
+          "id": "0C29D124-F2D6-45F6-906C-B469270B350A"
         }
       ],
       "correlations": [],

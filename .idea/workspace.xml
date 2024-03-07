@@ -8,6 +8,35 @@
       <change beforePath="$PROJECT_DIR$/前端/my-vue-demo/src/components/HelloWorld.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/前端/my-vue-demo/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/前端/my-vue-demo/src/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/前端/my-vue-demo/vue.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/前端/my-vue-demo/vue.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dao/AdDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dao/AdDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dao/AuDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dao/AuDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dao/CsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dao/CsDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dao/CuDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dao/CuDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dto/commonSelectRequestDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/dto/commonSelectResponseDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/entity/Ad.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/entity/Ad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/entity/Au.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/entity/Au.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/entity/Cs.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/entity/Cs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/entity/Cu.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/entity/Cu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/AdService.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/AdService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/AuService.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/AuService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/CsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/CsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/CuService.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/CuService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/Impl/AdServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/Impl/AdServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/Impl/AuServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/Impl/AuServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/Impl/CsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/Impl/CsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/Impl/CuServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/service/Impl/CuServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/servlet/home/AD/commonApi/common.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/servlet/home/AD/commonApi/common.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/util/myJson.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/util/myJson.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/util/mySqlSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/java/tb/util/mySqlSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/JDBC.properties" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/JDBC.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/Mapper/AdMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/Mapper/AdMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/Mapper/AuMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/Mapper/AuMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/Mapper/CsMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/Mapper/CsMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/Mapper/CuMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/main/resources/Mapper/CuMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/java项目/demo/src/test/java/test.java" beforeDir="false" afterPath="$PROJECT_DIR$/后端/java项目/demo/src/test/java/test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/数据库相关/timebanksql.sql" beforeDir="false" afterPath="$PROJECT_DIR$/后端/数据库相关/timebanksql.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端/数据库相关/时间银行.pdma.json" beforeDir="false" afterPath="$PROJECT_DIR$/后端/数据库相关/时间银行.pdma.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +79,7 @@
       <workItem from="1708524883227" duration="9000" />
       <workItem from="1708687886844" duration="29000" />
       <workItem from="1709034368007" duration="31000" />
+      <workItem from="1709605810023" duration="31000" />
     </task>
     <servers />
   </component>

@@ -5,8 +5,10 @@ import tb.dao.AdDao;
 import tb.entity.Ad;
 import tb.util.mySqlSession;
 
+import javax.management.ObjectName;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class test {
     @Test   //注意一定要写此注解表示是测试类
@@ -18,7 +20,9 @@ public class test {
         try {
             AdDao adDao = session.getMapper(AdDao.class);
             Ad admin = adDao.SelectAdById(2);
-            List<Ad> admins = adDao.SelectAllAd();
+
+            Map<String , Object> DataMap = null;
+            List<Ad> admins = adDao.SelectAdByMap(DataMap);
 
 //            adDao.InsertAd(admin);
 

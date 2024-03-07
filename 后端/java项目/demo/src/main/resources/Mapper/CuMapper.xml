@@ -6,9 +6,36 @@
 <!-命名空间写接口-->
 <mapper namespace="tb.dao.CuDao" >
 
-    <select id="SelectAllCu" resultType="tb.entity.Cu">
-        select * from Cu;
+    <select id="SelectCuByMap" resultType="tb.entity.Cu">
+        select
+            *
+        from
+            CU
+        where 1=1
+        <if test="id != null">
+            and ad_id = #{id}
+        </if>
+        <if test="name != null and name !=''">
+            and ad_name like "%"#{name}"%"
+        </if>
+        <if test="tel != null and tel !=''">
+            and ad_tel like "%"#{tel}"%"
+        </if>
+        <if test="registerBegin != null and registerEnd != null">
+            and ad_register between #{registerBegin} and #{registerEnd}
+        </if>
+        <if test="loginBegin != null and loginEnd != null">
+            and ad_login between #{loginBegin} and #{loginEnd}
+        </if>
+        <if test="userStatus == 0 or userStatus ==1">
+            and ad_status = userStatus
+        </if>
+
     </select>
+
+<!--    <select id="SelectAllCu" resultType="tb.entity.Cu">-->
+<!--        select * from Cu;-->
+<!--    </select>-->
 
 
     <select id="SelectCuById"  parameterType="java.lang.Integer" resultType="tb.entity.Cu">
@@ -23,34 +50,34 @@
     </select>
 
 
-    <select id="SelectCuByTel"  parameterType="java.lang.String" resultType="tb.entity.Cu">
-        select * from CU
-        where cu_tel=#{tel}
-    </select>
+<!--    <select id="SelectCuByTel"  parameterType="java.lang.String" resultType="tb.entity.Cu">-->
+<!--        select * from CU-->
+<!--        where cu_tel=#{tel}-->
+<!--    </select>-->
 
 
-    <select id="SelectCuByLogin" parameterType="java.sql.Date" resultType="tb.entity.Cu">
-        select * from CU
-        where cu_login between #{begintime} and #{endtime}
-    </select>
+<!--    <select id="SelectCuByLogin" parameterType="java.sql.Date" resultType="tb.entity.Cu">-->
+<!--        select * from CU-->
+<!--        where cu_login between #{begintime} and #{endtime}-->
+<!--    </select>-->
 
 
-    <select id="SelectCuByRegister"  parameterType="java.sql.Date" resultType="tb.entity.Cu">
-        select * from CU
-        where cu_register between #{begintime} and #{endtime}
-    </select>
+<!--    <select id="SelectCuByRegister"  parameterType="java.sql.Date" resultType="tb.entity.Cu">-->
+<!--        select * from CU-->
+<!--        where cu_register between #{begintime} and #{endtime}-->
+<!--    </select>-->
 
 
-    <select id="SelectCuByNameFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Cu">
-        select * from CU
-        where cu_name like "%"#{name}"%"
-    </select>
+<!--    <select id="SelectCuByNameFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Cu">-->
+<!--        select * from CU-->
+<!--        where cu_name like "%"#{name}"%"-->
+<!--    </select>-->
 
 
-    <select id="SelectCuByTelFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Cu">
-        select * from CU
-        where cu_tel like "%"#{tel}"%"
-    </select>
+<!--    <select id="SelectCuByTelFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Cu">-->
+<!--        select * from CU-->
+<!--        where cu_tel like "%"#{tel}"%"-->
+<!--    </select>-->
 
 
     <insert id="InsertCu"  parameterType="tb.entity.Cu" >

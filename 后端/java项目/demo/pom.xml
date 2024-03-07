@@ -65,6 +65,14 @@
             <version>1.2.47</version>
         </dependency>
 
+        <!--websocket,tomcat也内置，从tomcat文档看到版本为1.1-->
+        <dependency>
+            <groupId>javax.websocket</groupId>
+            <artifactId>javax.websocket-api</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+        </dependency>
+
 
 
     </dependencies>

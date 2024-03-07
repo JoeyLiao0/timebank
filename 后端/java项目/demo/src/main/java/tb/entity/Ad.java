@@ -36,6 +36,17 @@ public class Ad {
     //盐值
     private String ad_salt;
 
+    //状态值 0禁用 1正常
+    private Integer ad_status;
+
+    public Integer getAd_status() {
+        return ad_status;
+    }
+
+    public void setAd_status(Integer ad_status) {
+        this.ad_status = ad_status;
+    }
+
     public String getAd_salt() {
         return ad_salt;
     }

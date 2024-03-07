@@ -18,12 +18,28 @@
                 <a><button @click="login">登 录</button></a>
             </div>
         </div>
+        
+        <input v-model="tex">
+        <button @click="send">send</button>
     </div>
+
+    
+
 </template>
 
 <script>
     import axios from 'axios';
     export default {
+        data(){
+            return{
+              tex:""  ,
+              socket:null
+            }
+        }
+        ,
+        created(){
+            this.connect();
+        },
         methods: {
             login() {
                 //第一次登录时获取token，并存在浏览器中，在主页面每次发送请求时携带
@@ -47,6 +63,40 @@
                     // 假设登陆成功，则跳转到home组件
                     // this.$router.push('/home');
                 }
+            },
+            connect(){
+                this.socket = new WebSocket('ws://localhost:8081/demo/test');//这里踩坑：加上/demo/才行，demo是项目名
+               // 监听接收消息事件  
+                this.socket.onmessage = (event) => {  
+                    // const data = event.data; // 接收到的数据  
+                    console.log('接收到服务端的消息:', event);  
+                    // 在这里处理接收到的数据  
+                };  
+            
+                // 监听连接关闭事件  
+                this.socket.onclose = (event) => {  
+                    console.log('WebSocket 连接已关闭', event);  
+                };  
+            
+                // 监听连接错误事件  
+                this.socket.onerror = (error) => {  
+                    console.error('WebSocket 连接发生错误', error);  
+                };  
+               
+                // this.socket.onopen = function() {
+                //     // 连接建立时，发送用户身份验证令牌
+                //     const token = 'user-authentication-token';
+                //     this.socket.send(JSON.stringify({ type: 'authenticate', token }));
+                // },
+                // this.socket.onmessage = function(event) {
+                //     const message = JSON.parse(event.data);
+                //     // 处理接收到的WebSocket消息
+                //     console.log('Received message:', message);
+                // }
+            },
+            send(){
+                this.socket.send(this.$data.tex);
+                console.log(this.$data.tex);
             }
         }
     }

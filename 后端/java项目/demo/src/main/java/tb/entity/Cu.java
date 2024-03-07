@@ -46,6 +46,17 @@ public class Cu {
     //盐值
     private String cu_salt;
 
+    //状态
+    private Integer cu_status;
+
+    public Integer getCu_status() {
+        return cu_status;
+    }
+
+    public void setCu_status(Integer cu_status) {
+        this.cu_status = cu_status;
+    }
+
     public Integer getCu_id() {
         return cu_id;
     }

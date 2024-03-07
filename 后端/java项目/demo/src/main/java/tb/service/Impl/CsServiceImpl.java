@@ -12,7 +12,7 @@ public class CsServiceImpl {
         return true;
     }
 
-    public ArrayList<Map<String,Object>> select(Map<String,Object> dataMap){return null;}
+    public ArrayList<Map<String,Object>> selectByMap(Map<String,Object> dataMap){return null;}
 
     public String setStatus(int id ,boolean status){return null;}
 

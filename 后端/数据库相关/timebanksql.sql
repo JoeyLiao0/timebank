@@ -11,8 +11,10 @@ CREATE TABLE AD(
     `ad_login` DATETIME NOT NULL  COMMENT '管理员上次登录时间' ,
     `ad_tel` VARCHAR(255) NOT NULL  COMMENT '管理员手机号' ,
     `ad_register` DATETIME NOT NULL  COMMENT '管理员注册时间' ,
+    `ad_status` INT NOT NULL  COMMENT '禁用与否' ,
     PRIMARY KEY (ad_id)
 )  COMMENT = '管理员';
+
 
 DROP TABLE IF EXISTS AU;
 CREATE TABLE AU(
@@ -105,3 +107,9 @@ CREATE TABLE CHAT(
     PRIMARY KEY (chat_id)
 )  COMMENT = '内部交流通道';
 
+-- 插入示例数据  
+INSERT INTO AD (`ad_name`, `ad_pwd`, `ad_salt`, `ad_img`, `ad_login`, `ad_tel`, `ad_register`, `ad_status`)  
+VALUES   
+('admin1', 'encrypted_password1', 'salt1', 'path_to_image1.jpg', '2023-10-23 10:00:00', '12345678901', '2023-10-01 10:00:00', 1),  
+('admin2', 'encrypted_password2', 'salt2', 'path_to_image2.jpg', '2023-10-23 11:00:00', '23456789012', '2023-10-02 10:00:00', 0),  
+('admin3', 'encrypted_password3', 'salt3', 'path_to_image3.jpg', '2023-10-23 12:00:00', '34567890123', '2023-10-03 10:00:00', 1);

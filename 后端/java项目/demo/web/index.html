@@ -1,0 +1,29 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Title</title>-->
+
+<!--</head>-->
+<!--<body>-->
+<!--  <input id="input1" type="text">-->
+<!--  <button onclick="sendMessage()">send</button>-->
+<!--</body>-->
+<!--<script>-->
+<!--  const socket = new WebSocket('ws://localhost:8081/demo/test');//这里踩坑：加上/demo/才行，demo是项目名-->
+<!--  socket.onopen = function(event) {-->
+<!--    // 连接建立时，发送用户身份验证令牌-->
+<!--    const token = 'user-authentication-token';-->
+<!--    socket.send(JSON.stringify({ type: 'authenticate', token }));-->
+<!--  };-->
+<!--  socket.onmessage = function(event) {-->
+<!--    const message = JSON.parse(event.data);-->
+<!--    // 处理接收到的WebSocket消息-->
+<!--    console.log('Received message:', message);-->
+<!--  };-->
+<!--  function sendMessage(){-->
+<!--      var text = document.getElementById("input1");-->
+<!--      socket.send(text.value);-->
+<!--  }-->
+<!--</script>-->
+<!--</html>-->
