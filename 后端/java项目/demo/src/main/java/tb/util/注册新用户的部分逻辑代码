@@ -1,5 +1,5 @@
 //加密
-        String decrypt = DigestUtil.sha256Hex(password);
+
 
         //生成盐
         SecureRandom random = new SecureRandom();
@@ -13,8 +13,7 @@
         while (saltString.length() < 15) {
             saltString += '=';
         }
-
-        String pwd = saltString+decrypt;//拼接
+        String decrypt = DigestUtil.sha256Hex(password+saltString);
 
         //将盐值和pwd存入后端
         return "yes";

@@ -30,6 +30,10 @@ public class AUM extends HttpServlet {
         Map<String, Object> dataMap = new myJson().getMap(req);//封装，读取解析req中的json数据
 
         String pathInfo = req.getPathInfo();
+
+        String token = (String) dataMap.get("token");//json
+
+        myJwt mj = new myJwt(token);
         if (pathInfo != null) {
             // 根据pathInfo的值决定如何处理请求
             if (pathInfo.equals("/selectById")) {
@@ -37,16 +41,16 @@ public class AUM extends HttpServlet {
                  * 第二层查询审核员
                  */
 
-                String token = (String) dataMap.get("token");//json
                 Integer id = (Integer) dataMap.get("id");//token内部的id是自己，而这里的id指的是查询的目标
 
                 //此时判断token是否有效
 
-                if (new myJwt(token).judgeToken()) {
+                if (mj.judgeToken()) {
                     //token有效
                     Map<String, Object> data = (new AuServiceImpl()).selectById(id);//根据编号获取全部信息
 
                     JSONObject jsonObject = null;
+
                     if (data != null) {
                         jsonObject = new JSONObject(data);
                         jsonObject.put("status", true);
@@ -71,23 +75,25 @@ public class AUM extends HttpServlet {
         Map<String, Object> dataMap = new myJson().getMap(req);//封装，读取解析req中的json数据
 
         String pathInfo = req.getPathInfo();
+
+        String token = (String) dataMap.get("token");
+
+        myJwt mj = new myJwt(token);
+
         if (pathInfo != null) {
             // 根据pathInfo的值决定如何处理请求
             if (pathInfo.equals("/updateById")) {
                 /**
                  * 更新单个审核员信息
                  */
-
-                String token = (String) dataMap.get("token");
                 Integer id = (Integer) dataMap.get("id");
 
-
                 //此时判断token是否有效
-                if (new myJwt(token).judgeToken()) {
+                if (mj.judgeToken()) {
                     //token有效
                     JSONObject jsonObject = new JSONObject();
 
-                    String msg = new AuServiceImpl().updateById(dataMap);
+                    String msg = new AuServiceImpl().update(dataMap);
 
                     if(msg==null){//更新个人信息
                         //更新成功
@@ -110,11 +116,9 @@ public class AUM extends HttpServlet {
                 /**
                  * 增加单个审核员
                  */
-                String token = (String) dataMap.get("token");
-
 
                 //此时判断token是否有效
-                if (new myJwt(token).judgeToken()) {
+                if (mj.judgeToken()) {
                     //token有效
                     JSONObject jsonObject = new JSONObject();
 

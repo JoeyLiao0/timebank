@@ -15,41 +15,37 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * 管理员、审核员、客服、普通用户
  * 我的账号
  */
-@WebServlet("/CU/*")
+@WebServlet("/account/*")
 public class MyAccout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        myDomainSetting.set(req, res);
-
-        Map<String, Object> dataMap = new myJson().getMap(req);//封装，读取解析req中的json数据
-
         String pathInfo = req.getPathInfo();
         if (pathInfo != null) {
+            myDomainSetting.set(req, res);
+            Map<String, Object> dataMap = new myJson().getMap(req);//封装，读取解析req中的json数据
+            String token = (String) dataMap.get("token");//json
+            myJwt mj = new myJwt(token);
             // 根据pathInfo的值决定如何处理请求
-            if (pathInfo.equals("/accoutGet")) {
+            if (pathInfo.equals("/get")) {
                 /**
                  * 查询自己的账号信息
                  */
-
-                String token = (String) dataMap.get("token");//json
-
                 //此时判断token是否有效
 
-                if (new myJwt(token).judgeToken()) {
+                if (mj.judgeToken()) {
                     //token有效，返回用户信息
                     Map<String, Object> data = null;
 
-                    Integer id = (Integer) new myJwt(token).getValue("id");
-
+                    Integer id = (Integer) mj.getValue("id");
 
                     data = (new CsServiceImpl()).selectById(id);
-
 
                     JSONObject jsonObject = null;
                     if (data != null) {
@@ -70,31 +66,39 @@ public class MyAccout extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        myDomainSetting.set(req, res);
-
-        Map<String, Object> dataMap = new myJson().getMap(req);//封装，读取解析req中的json数据
 
         String pathInfo = req.getPathInfo();
         if (pathInfo != null) {
-            // 根据pathInfo的值决定如何处理请求
-            if (pathInfo.equals("/accoutSet")) {
-                /**
-                 * 查询自己的账号信息
-                 */
+            myDomainSetting.set(req, res);
+            Map<String, Object> dataMap = new myJson().getMap(req);//封装，读取解析req中的json数据
 
-                String token = (String) dataMap.get("token");//json
+            String token = (String) dataMap.get("token");//json
+            myJwt mj = new myJwt(token);
+
+            if (pathInfo.equals("/set")) {
+
+                /**
+                 * 设置自己的账号信息
+                 */
 
                 //此时判断token是否有效
 
-                if (new myJwt(token).judgeToken()) {
+                if (mj.judgeToken()) {
                     //token有效，返回用户信息
-
 
                     String msg = null;
 
-                    Integer id = (Integer) new myJwt(token).getValue("id");
+                    //保证可拓展性，易于检查字段存在与否
+                    Map<String,Object> datamap = new HashMap<>();
 
-                    msg = (new CsServiceImpl()).updateById(dataMap);
+                    datamap.put("id",(Integer)mj.getValue("id"));
+                    datamap.put("cu_name",(String)dataMap.get("cu_name"));
+                    datamap.put("cu_img",(String)dataMap.get("cu_img"));
+                    datamap.put("cu_tel",(String)dataMap.get("cu_tel"));
+                    datamap.put("cu_pwd",(String)dataMap.get("cu_pwd"));
+
+
+                    msg = (new CsServiceImpl()).update(datamap);
 
                     JSONObject jsonObject  = new JSONObject();
 

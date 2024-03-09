@@ -7,19 +7,19 @@ import java.util.Map;
 public interface CsService {
     public String judgePassword(String username,String password);
 
-    public boolean existUsername(String username);
+    public String existUsername(String username);
 
     public ArrayList<Map<String,Object>> selectByMap(Map<String,Object> dataMap);
 
     public String setStatus(int id,boolean status);
 
-    public String resetPassword(int id);
+    public String resetPassword(int id,String newPassword);
 
     public String delete(List<Integer> idArray);
 
     public Map<String,Object> selectById(int id);
 
-    public String updateById(Map<String,Object> dataMap);
+    public String update(Map<String,Object> dataMap);
 
     public String insert(Map<String,Object> dataMap);
 }

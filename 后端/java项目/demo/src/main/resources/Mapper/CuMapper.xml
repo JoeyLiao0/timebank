@@ -13,22 +13,22 @@
             CU
         where 1=1
         <if test="id != null">
-            and ad_id = #{id}
+            and cu_id = #{id}
         </if>
         <if test="name != null and name !=''">
-            and ad_name like "%"#{name}"%"
+            and cu_name like "%"#{name}"%"
         </if>
         <if test="tel != null and tel !=''">
-            and ad_tel like "%"#{tel}"%"
+            and cu_tel like "%"#{tel}"%"
         </if>
         <if test="registerBegin != null and registerEnd != null">
-            and ad_register between #{registerBegin} and #{registerEnd}
+            and cu_register between #{registerBegin} and #{registerEnd}
         </if>
         <if test="loginBegin != null and loginEnd != null">
-            and ad_login between #{loginBegin} and #{loginEnd}
+            and cu_login between #{loginBegin} and #{loginEnd}
         </if>
         <if test="userStatus == 0 or userStatus ==1">
-            and ad_status = userStatus
+            and cu_status = userStatus
         </if>
 
     </select>

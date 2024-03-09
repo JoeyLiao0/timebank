@@ -13,7 +13,7 @@ public class myDomainSetting {
         //设置响应头允许ajax跨域访问
         res.setHeader("Access-Control-Allow-Origin", "*"); //实际上线时，这里换成具体的前端网址，设置只有该网站才能访问响应资源
         //res.setHeader("Access-Control-Allow-Origin", "");
-        res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        res.setHeader("Access-Control-Allow-Methods", "POST, GET");
         res.setHeader("Access-Control-Max-Age", "3600");
         res.setHeader("Access-Control-Allow-Headers", "token,msg,Accept, Origin, X-Requested-With, Content-Type, Last-Modified");
         //不仅要包含，还要expose给前端，这样才能被vue项目获取

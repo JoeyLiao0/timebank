@@ -1,6 +1,6 @@
 package tb.entity;
 
-import java.sql.Date;
+import java.sql.Timestamp ;
 
 /**
  * 普通用户实体类
@@ -27,13 +27,15 @@ public class Cu {
     //用户时间币
     private Integer cu_icon;
     //用户上次登录时间
-    private Date cu_login;
+    private Timestamp cu_login;
     //用户发布任务数
     private Integer cu_release;
     //用户接受任务数
     private Integer cu_accept;
     //用户头像
     private String cu_img;
+
+    private Timestamp cu_register;
 
     public String getCu_salt() {
         return cu_salt;
@@ -48,6 +50,14 @@ public class Cu {
 
     //状态
     private Integer cu_status;
+
+    public Timestamp getCu_register() {
+        return cu_register;
+    }
+
+    public void setCu_register(Timestamp cu_register) {
+        this.cu_register = cu_register;
+    }
 
     public Integer getCu_status() {
         return cu_status;
@@ -97,11 +107,11 @@ public class Cu {
         this.cu_icon = cu_icon;
     }
 
-    public Date getCu_login() {
+    public Timestamp getCu_login() {
         return cu_login;
     }
 
-    public void setCu_login(Date cu_login) {
+    public void setCu_login(Timestamp cu_login) {
         this.cu_login = cu_login;
     }
 

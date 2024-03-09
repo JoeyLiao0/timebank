@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@WebServlet("/login/*")
+@WebServlet("/login2/*")
 public class Login extends HttpServlet {
     @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -29,6 +29,7 @@ public class Login extends HttpServlet {
         Map<String, Object> dataMap = new myJson().getMap(req);
 
         String pathInfo = req.getPathInfo();
+
         if (pathInfo != null) {
             // 根据pathInfo的值决定如何处理请求
             if (pathInfo.equals("/tokenJudge")) {

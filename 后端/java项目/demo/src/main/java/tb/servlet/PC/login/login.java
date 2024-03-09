@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@WebServlet("/login/*")
+@WebServlet("/login1/*")
 public class Login extends HttpServlet {
     @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {

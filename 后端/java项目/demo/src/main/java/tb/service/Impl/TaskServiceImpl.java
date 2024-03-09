@@ -4,18 +4,19 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class TaskServiceImpl {
-    public ArrayList<Map<String,Object>> selectAvailable(Integer id){
+    public ArrayList<Map<String,Object>> selectAvailableTask(Map<String , Object> datamap){
         return null;
-    }
-    public ArrayList<Map<String,Object>> selectMyPublish(Integer id){
+    }//剔除自己发布的任务
+
+    public ArrayList<Map<String,Object>> selectMyPublish(Map<String , Object> datamap){
         return null;
     }
 
-    public ArrayList<Map<String,Object>> selectMyTake(Integer id){
+    public ArrayList<Map<String,Object>> selectMyTake(Map<String , Object> datamap){
         return null;
     }
 
-    public String publish(Integer id,Map<String,Object> datamap){
+    public String publishNewTask(Map<String,Object> datamap){
         return null;
     }
 }

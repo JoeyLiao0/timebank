@@ -1,7 +1,7 @@
 package tb.entity;
 
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 //cs_id int AI PK
 //cs_name varchar(255)
@@ -27,13 +27,13 @@ public class Cs {
     private String cs_img;
 
     //客服上次登录时间
-    private Date cs_login;
+    private Timestamp cs_login;
 
     //客服手机号
     private String cs_tel;
 
     //客服注册时间
-    private Date cs_register;
+    private Timestamp cs_register;
 
     //盐值
     private String cs_salt;
@@ -82,11 +82,11 @@ public class Cs {
         this.cs_img = cs_img;
     }
 
-    public Date getCs_login() {
+    public Timestamp getCs_login() {
         return cs_login;
     }
 
-    public void setCs_login(Date cs_login) {
+    public void setCs_login(Timestamp cs_login) {
         this.cs_login = cs_login;
     }
 
@@ -98,11 +98,11 @@ public class Cs {
         this.cs_tel = cs_tel;
     }
 
-    public Date getCs_register() {
+    public Timestamp getCs_register() {
         return cs_register;
     }
 
-    public void setCs_register(Date cs_register) {
+    public void setCs_register(Timestamp cs_register) {
         this.cs_register = cs_register;
     }
 

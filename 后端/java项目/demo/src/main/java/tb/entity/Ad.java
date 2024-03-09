@@ -1,6 +1,7 @@
 package tb.entity;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.sql.Timestamp;
 
 //ad_id int AI PK
 //ad_name varchar(255)
@@ -28,7 +29,7 @@ public class Ad {
     private String ad_img;
 
     //管理员上次登录时间
-    private Date ad_login;
+    private Timestamp ad_login;
 
     //管理员手机号
     private String ad_tel;
@@ -56,7 +57,7 @@ public class Ad {
     }
 
     //管理员注册时间
-    private Date ad_register;
+    private Timestamp ad_register;
 
     public Integer getAd_id() {
         return ad_id;
@@ -88,11 +89,11 @@ public class Ad {
         this.ad_img = ad_img;
     }
 
-    public Date getAd_login() {
+    public Timestamp getAd_login() {
         return ad_login;
     }
 
-    public void setAd_login(Date ad_login) {
+    public void setAd_login(Timestamp ad_login) {
         this.ad_login = ad_login;
     }
 
@@ -104,11 +105,11 @@ public class Ad {
         this.ad_tel = ad_tel;
     }
 
-    public Date getAd_register() {
+    public Timestamp getAd_register() {
         return ad_register;
     }
 
-    public void setAd_register(Date ad_register) {
+    public void setAd_register(Timestamp ad_register) {
         this.ad_register = ad_register;
     }
 }

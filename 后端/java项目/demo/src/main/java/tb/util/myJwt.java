@@ -125,32 +125,32 @@ public class myJwt {
                 //token未过期
                 switch (role){
                     case "AD":
-                        if(new AdServiceImpl().existUsername(username)){
+                        if(new AdServiceImpl().existUsername(username).equals("yes")){
                             //存在，correct
                             return true;
                         }
                         break;
                     case "AU":
-                        if(new AuServiceImpl().existUsername(username)){
+                        if(new AuServiceImpl().existUsername(username).equals("yes")){
                             //存在，correct
                             return true;
                         }
                         break;
                     case "CS":
-                        if(new CsServiceImpl().existUsername(username)){
+                        if(new CsServiceImpl().existUsername(username).equals("yes")){
                             //存在，correct
                             return true;
                         }
                         break;
                     case "CU":
-                        if(new CuServiceImpl().existUsername(username)){
+                        if(new CuServiceImpl().existUsername(username).equals("yes")){
                             //存在，correct
                             return true;
                         }
                         break;
                 }
             }else{
-                //token已过期
+                //其他原因
                 return false;
             }
         }catch(RuntimeException e){

@@ -9,7 +9,7 @@ package tb.entity;
 //au_tel varchar(255)
 //au_register datetime
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * 审核员实体类
@@ -28,13 +28,13 @@ public class Au {
     private String au_img;
 
     //审核员上次登录时间
-    private Date au_login;
+    private Timestamp au_login;
 
     //审核员电话号码
     private String au_tel;
 
     //审核员账号注册时间
-    private Date au_register;
+    private Timestamp au_register;
 
     //盐值
     private String au_salt;
@@ -92,11 +92,11 @@ public class Au {
         this.au_img = au_img;
     }
 
-    public Date getAu_login() {
+    public Timestamp getAu_login() {
         return au_login;
     }
 
-    public void setAu_login(Date au_login) {
+    public void setAu_login(Timestamp au_login) {
         this.au_login = au_login;
     }
 
@@ -108,11 +108,11 @@ public class Au {
         this.au_tel = au_tel;
     }
 
-    public Date getAu_register() {
+    public Timestamp getAu_register() {
         return au_register;
     }
 
-    public void setAu_register(Date au_register) {
+    public void setAu_register(Timestamp au_register) {
         this.au_register = au_register;
     }
 }
