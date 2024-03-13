@@ -6,85 +6,26 @@
 <!--命名空间写接口-->
 <mapper namespace="tb.dao.TaskDao" >
 
-    <select id="SelectAllTask"  resultType="tb.entity.Task">
-        select * from TASK
+    <select id="selectTaskByStatus" parameterType="java.lang.Integer" resultType="tb.entity.Task">
+        select TASK where task_status = #{status};
+    </select>
+
+    <select id="selectTaskByPublisherId" parameterType="java.lang.Integer" resultType="tb.entity.Task">
+        select TASK where task_publisherid = #{task_publisherId};
+    </select>
+
+    <select id="selectTaskByTakerId" parameterType="java.lang.Integer" resultType="tb.entity.Task">
+        select TASK where task_takerid = #{task_takerId};
     </select>
 
 
-    <select id="SelectAllUnauditedTask" resultType="tb.entity.Task">
-        select * from TASK where task_audit = "todo"
-    </select>
 
-
-    <select id="SelectAllAuditedNotSucceedTask" resultType="tb.entity.Task">
-        select * from TASK where task_audit = "no"
-    </select>
-
-
-    <select id="SelectAllAuditedSucceedTask" resultType="tb.entity.Task">
-        select * from TASK where task_audit = "yes"
-    </select>
-
-
-    <select id="SelectAllUnclaimedTask"  resultType="tb.entity.Task">
-        select * from TASK where task_audit = "yes" and task_status = "no";
-    </select>
-
-
-    <select id="SelectAllClaimedNotFinishedTask"  resultType="tb.entity.Task">
-        select * from TASK where task_audit = "yes" and task_status = "yes" and task_result ="no"
-    </select>
-
-
-    <select id="SelectAllFinishedTask"  resultType="tb.entity.Task">
-        select * from TASK where task_audit = "yes" and task_status = "yes" and task_result ="yes"
-    </select>
-
-
-    <select id="SelectAllTaskByPublisherId"  parameterType="java.lang.Integer" resultType="tb.entity.Task">
-        select * from TASK where task_publisherid = #{publisherId}
-    </select>
-
-
-    <select id="SelectAllUnauditedTaskByPublisherId" parameterType="java.lang.Integer" resultType="tb.entity.Task">
-        select * from TASK where  task_publisherid = #{publisherId}  and task_audit = "todo"
-    </select>
-
-
-    <select id="SelectAllAuditedNotSucceedTaskByPublisherId"  parameterType="java.lang.Integer" resultType="tb.entity.Task">
-        select * from TASK where  task_publisherid = #{publisherId} and task_audit = "no"
-    </select>
-
-
-    <select id=" SelectAllAuditedSucceedTaskByPublisherId" parameterType="java.lang.Integer"  resultType="tb.entity.Task">
-        select * from TASK where task_publisherid = #{publisherId} and task_audit = "yes"
-    </select>
-
-
-    <select id="SelectAllUnclaimedTaskByPublisherId"  parameterType="java.lang.Integer"  resultType="tb.entity.Task">
-        select * from TASK where task_publisherid = #{publisherId} and task_audit = "yes" and task_status = "no"
-    </select>
-
-
-    <select id="SelectAllClaimedNotFinishedTaskByPublisherId" parameterType="java.lang.Integer" resultType="tb.entity.Task">
-        select * from TASK where task_publisherid = #{publisherId} and task_audit = "yes"  and task_status = "yes" and task_result = "no"
-    </select>
-
-
-    <select id="SelectAllFinishedTaskByPublisherId" parameterType="java.lang.Integer" resultType="tb.entity.Task">
-        select * from TASK where task_publisherid = #{publisherId} and task_audit = "yes"  and task_status = "yes" and task_result = "yes"
-    </select>
-
-
-    <select id="SelectAllClaimedNotFinishedTaskByTakerId" parameterType="java.lang.Integer" resultType="tb.entity.Task">
-        select * from TASK where task_takerid = #{takerId} and task_audit = "yes"  and task_status = "yes" and task_result ="no"
-    </select>
-
-
-    <select id="SelectAllFinishedTaskByTakerId" parameterType="java.lang.Integer" resultType="tb.entity.Task">
-        select * from TASK where task_takerid = #{takerId} and task_audit = "yes"  and task_status = "yes" and task_result ="yes"
-    </select>
-
+    <insert id="publishNewTask"  parameterType="tb.entity.Task" >
+        insert into TASK(task_id,task_status,task_result,task_begintime,task_endtime,task_finishtime,
+                         task_publisherid,task_takerid,task_coin,task_score,task_audit,task_advice,task_auid)
+        values (null,#{task.task_id},#{task.task_status},#{task.task_result},#{task.task_begintime},#{task.task_endtime},#{task.task_finishtime},
+                #{task.task_publisherid},#{task.task_takerid},#{task.task_coin},#{task.task_score},#{task.task_audit},#{task.task_advice},#{task.task_auid})
+    </insert>
 
     <insert id="InsertTask"  parameterType="tb.entity.Task" >
         insert into TASK(task_id,task_status,task_result,task_begintime,task_endtime,task_finishtime,

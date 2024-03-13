@@ -38,31 +38,27 @@
         }
         ,
         created(){
-            this.connect();
+            this.login();
         },
         methods: {
             login() {
                 //第一次登录时获取token，并存在浏览器中，在主页面每次发送请求时携带
-
-                var flag = true;
                 axios({
-                    method: 'post',
-                    url: 'http://localhost:8081/demo/login',
-                    data: {
-                        username:'xiaoming',
-                        password:'111',
-                        info: '12'
-                    }
-                }).then( function(response){
-                    console.log(response.headers['token']);
-                }).catch(function(err){
-                    console.log(err);
+                    method: 'get',
+                    url: 'http://localhost:8081/demo/login1/test',
+                }).then(response=>{
+                    console.log(response.status);
+                }).catch(function(error){
+                    if (axios.isAxiosError(error) && error.response) {  
+                        const { status } = error.response;  
+                    if (status === 304) {  
+                       console.log(status);
+                    } else {  
+                            // 处理其他错误状态码  
+                            console.log(error);  
+                    }  
+    }
                 })
-                
-                if(flag === true ){
-                    // 假设登陆成功，则跳转到home组件
-                    // this.$router.push('/home');
-                }
             },
             connect(){
                 this.socket = new WebSocket('ws://localhost:8081/demo/test');//这里踩坑：加上/demo/才行，demo是项目名
@@ -82,22 +78,12 @@
                 this.socket.onerror = (error) => {  
                     console.error('WebSocket 连接发生错误', error);  
                 };  
-               
-                // this.socket.onopen = function() {
-                //     // 连接建立时，发送用户身份验证令牌
-                //     const token = 'user-authentication-token';
-                //     this.socket.send(JSON.stringify({ type: 'authenticate', token }));
-                // },
-                // this.socket.onmessage = function(event) {
-                //     const message = JSON.parse(event.data);
-                //     // 处理接收到的WebSocket消息
-                //     console.log('Received message:', message);
-                // }
             },
             send(){
                 this.socket.send(this.$data.tex);
                 console.log(this.$data.tex);
-            }
+            },
+
         }
     }
 </script>

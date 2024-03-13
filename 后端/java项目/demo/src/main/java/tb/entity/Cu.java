@@ -25,7 +25,7 @@ public class Cu {
     //用户电话号码
     private String cu_tel;
     //用户时间币
-    private Integer cu_icon;
+    private Integer cu_coin;
     //用户上次登录时间
     private Timestamp cu_login;
     //用户发布任务数
@@ -99,12 +99,12 @@ public class Cu {
         this.cu_tel = cu_tel;
     }
 
-    public Integer getCu_icon() {
-        return cu_icon;
+    public Integer getCu_coin() {
+        return cu_coin;
     }
 
-    public void setCu_icon(Integer cu_icon) {
-        this.cu_icon = cu_icon;
+    public void setCu_coin(Integer cu_icon) {
+        this.cu_coin = cu_icon;
     }
 
     public Timestamp getCu_login() {

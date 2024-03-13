@@ -31,7 +31,7 @@ import java.util.Map;
 @WebServlet("/common/*")
 public class COMMON extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         myDomainSetting.set(req, res);//跨域设置，先这样，之后改成过滤器实现全局配置
 
         Map<String, Object> dataMap = new myJson().getMap(req);//封装，读取解析req中的json数据
@@ -85,7 +85,7 @@ public class COMMON extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
         myDomainSetting.set(req, res);//跨域设置，先这样，之后改成过滤器实现全局配置
 

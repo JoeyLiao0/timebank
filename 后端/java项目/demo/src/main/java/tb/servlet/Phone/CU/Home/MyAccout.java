@@ -25,7 +25,7 @@ import java.util.Map;
 @WebServlet("/account/*")
 public class MyAccout extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         String pathInfo = req.getPathInfo();
         if (pathInfo != null) {
             myDomainSetting.set(req, res);
@@ -65,7 +65,7 @@ public class MyAccout extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
         String pathInfo = req.getPathInfo();
         if (pathInfo != null) {

@@ -29,7 +29,7 @@ import java.util.Map;
 @WebServlet("/task/*")
 public class Task extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
         String pathInfo = req.getPathInfo();
         if (pathInfo != null) {
@@ -123,7 +123,7 @@ public class Task extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         String pathInfo = req.getPathInfo();
 
         if (pathInfo != null) {
@@ -143,7 +143,7 @@ public class Task extends HttpServlet {
 
                     Map<String,Object> datamap = new HashMap<>();
 
-                    datamap.put("id",id);
+                    datamap.put("task_publisherId",id);
                     datamap.put("task_begintime",(Date)dataMap.get("task_begintime"));
                     datamap.put("task_endtime",(Date)dataMap.get("task_endtime"));
                     datamap.put("task_coin",(Integer)dataMap.get("task_coin"));
