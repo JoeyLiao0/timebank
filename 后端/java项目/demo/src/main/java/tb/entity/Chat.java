@@ -1,11 +1,6 @@
 package tb.entity;
 
-import java.sql.Date;
-
-//chat_id int AI PK
-//chat_senderid int
-//chat_content varchar(255)
-//chat_timestamp datetime
+import java.sql.Timestamp;
 
 /**
  * 内部交流通道
@@ -18,7 +13,7 @@ public class Chat {
     //消息内容
     private String chat_content;
     //消息时间戳
-    private Date chat_timestamp;
+    private Timestamp chat_timestamp;
     //消息发送者身份
     private String chat_senderrole;
 
@@ -54,11 +49,11 @@ public class Chat {
         this.chat_content = chat_content;
     }
 
-    public Date getChat_timestamp() {
+    public Timestamp getChat_timestamp() {
         return chat_timestamp;
     }
 
-    public void setChat_timestamp(Date chat_timestamp) {
+    public void setChat_timestamp(Timestamp chat_timestamp) {
         this.chat_timestamp = chat_timestamp;
     }
 }

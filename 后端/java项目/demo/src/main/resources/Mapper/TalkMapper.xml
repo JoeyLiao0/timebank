@@ -13,8 +13,19 @@
 
     <!--此处主键不能自增长了，要和taskid对应了-->
     <insert id="InsertNewTalk"  parameterType="tb.entity.Talk" >
-        insert into TALK(talk_taskid,talk_senderid,talk_content,talk_timestamp)
-        values (#{talk.taskid},#{talk.talk_senderid},#{talk.talk_content},#{talk.talk_timestamp})
+        insert into
+            TALK(
+                talk_taskid,
+                talk_senderid,
+                talk_content,
+                talk_timestamp
+            )
+            values(
+                #{talk.taskid},
+                #{talk.talk_senderid},
+                #{talk.talk_content},
+                #{talk.talk_timestamp}
+            )
     </insert>
 
 

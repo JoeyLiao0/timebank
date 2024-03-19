@@ -3,13 +3,6 @@ package tb.entity;
 
 import java.sql.Timestamp;
 
-//cs_id int AI PK
-//cs_name varchar(255)
-//cs_pwd varchar(255)
-//cs_img varchar(255)
-//cs_login varchar(255)
-//cs_tel varchar(255)
-//cs_register datetime
 /**
  * 客服实体类
  */
@@ -23,6 +16,9 @@ public class Cs {
     //客服密码
     private String cs_pwd;
 
+    //盐值
+    private String cs_salt;
+
     //客服头像
     private String cs_img;
 
@@ -35,20 +31,11 @@ public class Cs {
     //客服注册时间
     private Timestamp cs_register;
 
-    //盐值
-    private String cs_salt;
-
-
     //状态
     private Integer cs_status;
 
-    public Integer getCs_status() {
-        return cs_status;
-    }
-
-    public void setCs_status(Integer cs_status) {
-        this.cs_status = cs_status;
-    }
+    //解禁时间
+    private Timestamp cs_unblocktime;
 
     public Integer getCs_id() {
         return cs_id;
@@ -72,6 +59,14 @@ public class Cs {
 
     public void setCs_pwd(String cs_pwd) {
         this.cs_pwd = cs_pwd;
+    }
+
+    public String getCs_salt() {
+        return cs_salt;
+    }
+
+    public void setCs_salt(String cs_salt) {
+        this.cs_salt = cs_salt;
     }
 
     public String getCs_img() {
@@ -106,12 +101,19 @@ public class Cs {
         this.cs_register = cs_register;
     }
 
-    public String getCs_salt() {
-        return cs_salt;
+    public Integer getCs_status() {
+        return cs_status;
     }
 
-    public void setCs_salt(String cs_salt) {
-        this.cs_salt = cs_salt;
+    public void setCs_status(Integer cs_status) {
+        this.cs_status = cs_status;
     }
 
+    public Timestamp getCs_unblocktime() {
+        return cs_unblocktime;
+    }
+
+    public void setCs_unblocktime(Timestamp cs_unblocktime) {
+        this.cs_unblocktime = cs_unblocktime;
+    }
 }

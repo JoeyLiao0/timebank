@@ -7,18 +7,8 @@ import java.util.List;
 
 public interface TalkDao {
 
-    /**
-     *
-     * 根据任务的编号获取该任务下双方的历史对话记录
-     *
-     */
-    public List<Talk> SelectTalkByTaskId(Integer talk_taskid);
+    List<Talk> SelectTalkByTaskId(Integer taskId);
 
-    /**
-     *
-     * 新增对话记录
-     *
-     */
-    public void InsertNewTalk(@Param("talk") Talk talk);
+    void InsertNewTalk(@Param("talk") Talk talk);
 
 }

@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.9.1",
   "createdTime": "2024-2-21 11:41:26",
-  "updatedTime": "2024-3-6 12:58:11",
+  "updatedTime": "2024-3-18 21:41:09",
   "dbConns": [],
   "profile": {
     "default": {
@@ -632,7 +632,7 @@
       "#DDE5FF"
     ],
     "DDLToggleCase": "L",
-    "menuWidth": "241px"
+    "menuWidth": ""
   },
   "entities": [
     {
@@ -860,7 +860,7 @@
         {
           "defKey": "ad_img",
           "defName": "管理员头像",
-          "comment": "",
+          "comment": "存储的图片的路径，如ad_img.png",
           "type": "",
           "len": "",
           "scale": "",
@@ -896,9 +896,9 @@
         {
           "defKey": "ad_tel",
           "defName": "管理员手机号",
-          "comment": "",
-          "type": "",
-          "len": "",
+          "comment": "11位手机号",
+          "type": "VARCHAR",
+          "len": 11,
           "scale": "",
           "primaryKey": false,
           "notNull": true,
@@ -908,7 +908,7 @@
           "refDict": "",
           "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
           "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "domain": "",
           "id": "589DE44E-0112-464D-8B08-FB0E05E8DB9A"
         },
         {
@@ -931,8 +931,8 @@
         },
         {
           "defKey": "ad_status",
-          "defName": "禁用与否",
-          "comment": "",
+          "defName": "用户状态",
+          "comment": "0：禁用 1：正常",
           "type": "",
           "len": "",
           "scale": "",
@@ -945,7 +945,8 @@
           "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
           "extProps": {},
           "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "C546638A-1388-4CAE-AD01-16D7710CF4AB"
+          "id": "C546638A-1388-4CAE-AD01-16D7710CF4AB",
+          "attr1": ""
         }
       ],
       "correlations": [],
@@ -1203,7 +1204,7 @@
         },
         {
           "defKey": "au_login",
-          "defName": "审核员上次登录时间",
+          "defName": "审核员上次登录时间（万一没登录怎么办设置成一个必错的时间）",
           "comment": "",
           "type": "",
           "len": "",
@@ -1223,8 +1224,8 @@
           "defKey": "au_tel",
           "defName": "审核员手机号",
           "comment": "",
-          "type": "",
-          "len": "",
+          "type": "VARCHAR",
+          "len": 11,
           "scale": "",
           "primaryKey": false,
           "notNull": true,
@@ -1234,7 +1235,7 @@
           "refDict": "",
           "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
           "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "domain": "",
           "id": "474D27BC-3446-4E7D-8F32-4F1A9F2A5542"
         },
         {
@@ -1257,8 +1258,8 @@
         },
         {
           "defKey": "au_status",
-          "defName": "禁用与否",
-          "comment": "",
+          "defName": "用户状态",
+          "comment": "0：禁用 1：正常",
           "type": "",
           "len": "",
           "scale": "",
@@ -1272,6 +1273,24 @@
           "extProps": {},
           "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
           "id": "BAE6400F-2D06-41D7-8A40-84357CB917C4"
+        },
+        {
+          "defKey": "au_unblocktime",
+          "defName": "用户解禁状态",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
+          "extProps": {},
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
+          "id": "5C0C8C0A-24AE-4C58-B1FA-29453D6A4532"
         }
       ],
       "correlations": [],
@@ -1483,8 +1502,8 @@
           "id": "14134E8B-D9AF-4541-BE40-4944887F0AF0"
         },
         {
-          "defKey": "cu_tel",
-          "defName": "用户手机号",
+          "defKey": "cu_salt",
+          "defName": "盐值",
           "comment": "",
           "type": "",
           "len": "",
@@ -1498,10 +1517,28 @@
           "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
           "extProps": {},
           "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "id": "D2DDD1FA-C6F8-412F-A0A9-6E49195E82E3"
+        },
+        {
+          "defKey": "cu_tel",
+          "defName": "用户手机号",
+          "comment": "",
+          "type": "VARCHAR",
+          "len": 11,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
+          "extProps": {},
+          "domain": "",
           "id": "814B38CB-E421-48F9-840B-B20451858B6F"
         },
         {
-          "defKey": "cu_icon",
+          "defKey": "cu_coin",
           "defName": "用户时间币数",
           "comment": "",
           "type": "",
@@ -1537,24 +1574,6 @@
           "id": "85B2AF88-F4F7-4B99-BC37-E7067C84092A"
         },
         {
-          "defKey": "cu_salt",
-          "defName": "盐值",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "D2DDD1FA-C6F8-412F-A0A9-6E49195E82E3"
-        },
-        {
           "defKey": "cu_login",
           "defName": "用户上次登录时间",
           "comment": "",
@@ -1562,7 +1581,7 @@
           "len": "",
           "scale": "",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoIncrement": false,
           "defaultValue": "",
           "hideInGraph": false,
@@ -1609,6 +1628,24 @@
           "id": "4BA9909A-4122-40DB-BBEF-9BAA87324296"
         },
         {
+          "defKey": "cu_finish",
+          "defName": "用户完成任务数",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
+          "extProps": {},
+          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
+          "id": "CACA2009-5CB2-4C25-8387-43A312C25012"
+        },
+        {
           "defKey": "cu_img",
           "defName": "用户头像",
           "comment": "",
@@ -1629,7 +1666,7 @@
         {
           "defKey": "cu_status",
           "defName": "状态",
-          "comment": "",
+          "comment": "0：禁用 1：正常",
           "type": "",
           "len": "",
           "scale": "",
@@ -1643,6 +1680,24 @@
           "extProps": {},
           "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
           "id": "63590A28-1431-4B01-AED3-5849F72CAABE"
+        },
+        {
+          "defKey": "cu_unblocktime",
+          "defName": "解禁时间",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
+          "extProps": {},
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
+          "id": "C1A412F7-2995-4B37-8270-96EA5947508C"
         }
       ],
       "correlations": [],
@@ -1960,6 +2015,24 @@
           "extProps": {},
           "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
           "id": "0C29D124-F2D6-45F6-906C-B469270B350A"
+        },
+        {
+          "defKey": "cs_unblocktime",
+          "defName": "解禁时间",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
+          "extProps": {},
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
+          "id": "A1E8E4A2-78C3-47B7-9B81-C663FF62A028"
         }
       ],
       "correlations": [],
@@ -2237,26 +2310,8 @@
           "id": "FD4A8539-4D4D-4A30-96C2-206B92843EA1"
         },
         {
-          "defKey": "notice_begintime",
-          "defName": "公告开始时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
-          "extProps": {},
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "id": "4E022CEF-5A35-4072-A540-EAFB3496D025"
-        },
-        {
-          "defKey": "notice_endtime",
-          "defName": "公告结束时间",
+          "defKey": "notice_time",
+          "defName": "公告发布时间",
           "comment": "",
           "type": "",
           "len": "",
@@ -2483,7 +2538,7 @@
         },
         {
           "defKey": "task_status",
-          "defName": "任务领取状态（领取/未领取）",
+          "defName": "任务状态",
           "comment": "",
           "type": "",
           "len": "",
@@ -2500,8 +2555,8 @@
           "id": "50E19935-2B69-4E3A-82AF-DDB7905EB443"
         },
         {
-          "defKey": "task_result",
-          "defName": "任务完成状态（完成/未完成）",
+          "defKey": "task_timeout",
+          "defName": "任务超时状态",
           "comment": "",
           "type": "",
           "len": "",
@@ -2515,11 +2570,11 @@
           "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
           "extProps": {},
           "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "AE1E3984-0C16-44B3-8386-03C0A51B46A5"
+          "id": "14C83A94-2E7F-4410-9CAC-2B69FF5EB676"
         },
         {
           "defKey": "task_begintime",
-          "defName": "任务开始展示时间",
+          "defName": "任务发布时间",
           "comment": "",
           "type": "",
           "len": "",
@@ -2537,7 +2592,7 @@
         },
         {
           "defKey": "task_endtime",
-          "defName": "任务结束展示时间",
+          "defName": "任务截止时间",
           "comment": "",
           "type": "",
           "len": "",
@@ -2552,6 +2607,24 @@
           "extProps": {},
           "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "id": "6F6F07CC-9AEA-43D3-8995-9D13F810364E"
+        },
+        {
+          "defKey": "task_taketime",
+          "defName": "任务领取时间",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
+          "extProps": {},
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
+          "id": "467F8BC7-365F-4B10-AEE3-478213F19F5A"
         },
         {
           "defKey": "task_finishtime",
@@ -2644,24 +2717,6 @@
           "id": "469F74CB-B509-4F56-95AE-14E6390C6D38"
         },
         {
-          "defKey": "task_audit",
-          "defName": "任务审核状态(未审核/审核未通过/审核通过)",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "3489525F-3AC1-4E8B-96C9-BEC2EDBBCDB8"
-        },
-        {
           "defKey": "task_advice",
           "defName": "任务审核意见（审核未通过时非空）",
           "comment": "",
@@ -2696,6 +2751,24 @@
           "extProps": {},
           "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
           "id": "72C2DB8B-EB6D-4E86-832D-04445DCA9AEE"
+        },
+        {
+          "defKey": "task_evidence",
+          "defName": "任务完成图片证据",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
+          "extProps": {},
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "id": "676256AE-B207-4DD5-B8B5-F5520D221814"
         }
       ],
       "correlations": [],
@@ -2919,9 +2992,9 @@
           "defaultValue": "",
           "hideInGraph": false,
           "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
+          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
           "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
           "id": "A868A9FC-AF23-494D-B44E-10D75B53D978"
         }
       ],
@@ -3426,1420 +3499,5 @@
   "diagrams": [],
   "standardFields": [],
   "dbConn": [],
-  "logicEntities": [
-    {
-      "defName": "管理员",
-      "comment": "",
-      "env": {
-        "base": {
-          "nameSpace": "",
-          "codeRoot": ""
-        }
-      },
-      "notes": {},
-      "properties": {
-        "partitioned by": "(date string)",
-        "row format delimited": "",
-        "fields terminated by ','": "",
-        "collection items terminated by '-'": "",
-        "map keys terminated by ':'": "",
-        "store as textfile;": ""
-      },
-      "defKey": "LE_AD",
-      "id": "58CAB3B3-1863-4E2A-9C67-71F2C0C9235F",
-      "type": "L",
-      "headers": [
-        {
-          "refKey": "defKey",
-          "newCode": "defKey",
-          "value": "属性代码",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "defName",
-          "newCode": "defName",
-          "value": "属性名称",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "primaryKey",
-          "newCode": "primaryKey",
-          "value": "主键",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "baseType",
-          "newCode": "baseType",
-          "value": "数据类型",
-          "hideInGraph": false
-        }
-      ],
-      "fields": [
-        {
-          "defKey": "ad_id",
-          "defName": "管理员编号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": true,
-          "notNull": true,
-          "autoIncrement": true,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "9AD6F4D7-AD7B-43A8-BD98-A7300F418791"
-        },
-        {
-          "defKey": "ad_name",
-          "defName": "管理员账号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "771D3DC8-446F-4315-AD08-0E63B3EBBC42"
-        },
-        {
-          "defKey": "ad_pwd",
-          "defName": "管理员密码",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "2EAEF098-C74E-4277-8F14-B46C51CCB974"
-        },
-        {
-          "defKey": "ad_img",
-          "defName": "管理员头像",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "7788C81A-9175-4DCA-A8AA-D9730AFFFE4E"
-        },
-        {
-          "defKey": "ad_login",
-          "defName": "管理员上次登录时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
-          "extProps": {},
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "id": "6FA92A0B-43AC-4F52-AA57-95C920B88FFD"
-        },
-        {
-          "defKey": "ad_tel",
-          "defName": "管理员手机号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "40F08573-49C1-43EC-B29A-26371E4E3AE9"
-        }
-      ],
-      "indexes": [],
-      "correlations": [],
-      "sysProps": {
-        "fieldInputSuggest": false,
-        "lePropOrient": "V",
-        "propShowFields": [
-          "N",
-          "K",
-          "T"
-        ],
-        "nameTemplate": "{defKey}[{defName}]"
-      }
-    },
-    {
-      "defName": "审核员",
-      "comment": "",
-      "env": {
-        "base": {
-          "nameSpace": "",
-          "codeRoot": ""
-        }
-      },
-      "notes": {},
-      "properties": {
-        "partitioned by": "(date string)",
-        "row format delimited": "",
-        "fields terminated by ','": "",
-        "collection items terminated by '-'": "",
-        "map keys terminated by ':'": "",
-        "store as textfile;": ""
-      },
-      "defKey": "LE_AU",
-      "id": "F40FB7B5-B967-4A3E-A765-68D628CE81A6",
-      "type": "L",
-      "headers": [
-        {
-          "refKey": "defKey",
-          "newCode": "defKey",
-          "value": "属性代码",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "defName",
-          "newCode": "defName",
-          "value": "属性名称",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "primaryKey",
-          "newCode": "primaryKey",
-          "value": "主键",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "baseType",
-          "newCode": "baseType",
-          "value": "数据类型",
-          "hideInGraph": false
-        }
-      ],
-      "fields": [
-        {
-          "defKey": "au_id",
-          "defName": "审核员编号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": true,
-          "notNull": true,
-          "autoIncrement": true,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "01BD7FDC-F3EF-48B3-B959-91DC9D8A345B"
-        },
-        {
-          "defKey": "au_name",
-          "defName": "审核员用户名",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "299FFC7A-78C2-4EFA-88A9-DB91D2681D20"
-        },
-        {
-          "defKey": "au_pwd",
-          "defName": "审核员密码",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "D751A292-8B54-4D89-938B-0F352C18031F"
-        },
-        {
-          "defKey": "au_img",
-          "defName": "审核员头像",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "B3EF7341-279B-4702-B101-07A4CEB478B8"
-        },
-        {
-          "defKey": "au_login",
-          "defName": "审核员上次登录时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "7D55CB03-25F4-4B3B-83E8-730EA3BD840E"
-        },
-        {
-          "defKey": "au_tel",
-          "defName": "审核员手机号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "C4E47E74-3EE0-4996-98B9-575ED2016A48"
-        }
-      ],
-      "indexes": [],
-      "correlations": [],
-      "sysProps": {
-        "fieldInputSuggest": false,
-        "lePropOrient": "V",
-        "propShowFields": [
-          "N",
-          "K",
-          "T"
-        ],
-        "nameTemplate": "{defKey}[{defName}]"
-      }
-    },
-    {
-      "defName": "普通用户",
-      "comment": "",
-      "env": {
-        "base": {
-          "nameSpace": "",
-          "codeRoot": ""
-        }
-      },
-      "notes": {},
-      "properties": {
-        "partitioned by": "(date string)",
-        "row format delimited": "",
-        "fields terminated by ','": "",
-        "collection items terminated by '-'": "",
-        "map keys terminated by ':'": "",
-        "store as textfile;": ""
-      },
-      "defKey": "LE_CU",
-      "id": "2A2C1EC0-DBC6-47B6-8FA5-AB9861BC977D",
-      "type": "L",
-      "headers": [
-        {
-          "refKey": "defKey",
-          "newCode": "defKey",
-          "value": "属性代码",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "defName",
-          "newCode": "defName",
-          "value": "属性名称",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "primaryKey",
-          "newCode": "primaryKey",
-          "value": "主键",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "baseType",
-          "newCode": "baseType",
-          "value": "数据类型",
-          "hideInGraph": false
-        }
-      ],
-      "fields": [
-        {
-          "defKey": "cu_id",
-          "defName": "用户编号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": true,
-          "notNull": true,
-          "autoIncrement": true,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "21CB2858-3342-462B-98E1-131C0980B934"
-        },
-        {
-          "defKey": "cu_name",
-          "defName": "用户名",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "E848F1B0-41C6-4467-909E-B5C2CC06386F"
-        },
-        {
-          "defKey": "cu_pwd",
-          "defName": "用户密码",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "E969704F-DE3F-4E7E-B8FF-3234AB2C1F96"
-        },
-        {
-          "defKey": "cu_tel",
-          "defName": "用户手机号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "B68D2B49-CA2A-4C34-ACA1-28A8B679FB7C"
-        },
-        {
-          "defKey": "cu_icon",
-          "defName": "用户时间币数",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "0",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "B33DF921-FE2E-4D53-9E22-B3378515D9DC"
-        },
-        {
-          "defKey": "cu_register",
-          "defName": "用户注册时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
-          "extProps": {},
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "id": "C8B7CA81-B082-4398-8C71-E1A91AF325A2"
-        },
-        {
-          "defKey": "cu_login",
-          "defName": "用户上次登录时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
-          "extProps": {},
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "id": "0D1F77F1-D67F-40BC-B638-DCC145203AE9"
-        },
-        {
-          "defKey": "cu_release",
-          "defName": "用户发布任务数",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "0",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "F518272E-6A0E-4A77-9208-96B108DCC675"
-        },
-        {
-          "defKey": "cu_accept",
-          "defName": "用户接受任务数",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "0",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "35542C8B-C2E1-446C-8E01-9222C156F932"
-        },
-        {
-          "defKey": "cu_img",
-          "defName": "用户头像",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "ABA0B386-7DCF-4318-8BBC-B072934698C6"
-        }
-      ],
-      "indexes": [],
-      "correlations": [],
-      "sysProps": {
-        "fieldInputSuggest": false,
-        "lePropOrient": "V",
-        "propShowFields": [
-          "N",
-          "K",
-          "T"
-        ],
-        "nameTemplate": "{defKey}[{defName}]"
-      }
-    },
-    {
-      "defName": "客服",
-      "comment": "",
-      "env": {
-        "base": {
-          "nameSpace": "",
-          "codeRoot": ""
-        }
-      },
-      "notes": {},
-      "properties": {
-        "partitioned by": "(date string)",
-        "row format delimited": "",
-        "fields terminated by ','": "",
-        "collection items terminated by '-'": "",
-        "map keys terminated by ':'": "",
-        "store as textfile;": ""
-      },
-      "defKey": "LE_CS",
-      "id": "F1E1E2C2-0E92-444B-B951-3B87965DFAAE",
-      "type": "L",
-      "headers": [
-        {
-          "refKey": "defKey",
-          "newCode": "defKey",
-          "value": "属性代码",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "defName",
-          "newCode": "defName",
-          "value": "属性名称",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "primaryKey",
-          "newCode": "primaryKey",
-          "value": "主键",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "baseType",
-          "newCode": "baseType",
-          "value": "数据类型",
-          "hideInGraph": false
-        }
-      ],
-      "fields": [
-        {
-          "defKey": "cs_id",
-          "defName": "客服编号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": true,
-          "notNull": true,
-          "autoIncrement": true,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "5BABA79C-F854-440A-8205-CE8F7082973A"
-        },
-        {
-          "defKey": "cs_name",
-          "defName": "客服用户名",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "3674B0A6-7A57-4580-8B84-46FDFB157463"
-        },
-        {
-          "defKey": "cs_pwd",
-          "defName": "客服密码",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "5E9DC88A-E279-4E8F-90D1-8D7DB4F657B6"
-        },
-        {
-          "defKey": "cs_img",
-          "defName": "客服头像",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "9A1BFEC3-8C5B-41E3-9D0B-8E245B3AEBFC"
-        },
-        {
-          "defKey": "cs_login",
-          "defName": "客服上次登录时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "EED7F0FE-BF97-4956-86A7-E253EC5FBD1D"
-        },
-        {
-          "defKey": "cs_tel",
-          "defName": "客服手机号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "1FA5A6B0-F04E-456B-A951-417239C97344"
-        }
-      ],
-      "indexes": [],
-      "correlations": [],
-      "sysProps": {
-        "fieldInputSuggest": false,
-        "lePropOrient": "V",
-        "propShowFields": [
-          "N",
-          "K",
-          "T"
-        ],
-        "nameTemplate": "{defKey}[{defName}]"
-      }
-    },
-    {
-      "defName": "公告",
-      "comment": "",
-      "env": {
-        "base": {
-          "nameSpace": "",
-          "codeRoot": ""
-        }
-      },
-      "notes": {},
-      "properties": {
-        "partitioned by": "(date string)",
-        "row format delimited": "",
-        "fields terminated by ','": "",
-        "collection items terminated by '-'": "",
-        "map keys terminated by ':'": "",
-        "store as textfile;": ""
-      },
-      "defKey": "LE_NOTICE",
-      "id": "5458AD46-3A37-4035-B9CC-8234A52E047A",
-      "type": "L",
-      "headers": [
-        {
-          "refKey": "defKey",
-          "newCode": "defKey",
-          "value": "属性代码",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "defName",
-          "newCode": "defName",
-          "value": "属性名称",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "primaryKey",
-          "newCode": "primaryKey",
-          "value": "主键",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "baseType",
-          "newCode": "baseType",
-          "value": "数据类型",
-          "hideInGraph": false
-        }
-      ],
-      "fields": [
-        {
-          "defKey": "notice_id",
-          "defName": "公告编号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": true,
-          "notNull": true,
-          "autoIncrement": true,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "8D8DE65A-708F-4E8A-9027-052CA1BD6023"
-        },
-        {
-          "defKey": "notice_begintime",
-          "defName": "公告开始时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
-          "extProps": {},
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "id": "B5D33E69-D7AB-4460-8459-4457C3ADE84B"
-        },
-        {
-          "defKey": "notice_endtime",
-          "defName": "公告结束时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
-          "extProps": {},
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "id": "70FA2D5D-2F5E-45FC-BF32-FBA71644E557"
-        },
-        {
-          "defKey": "notice_text",
-          "defName": "公告正文",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "9D0DFB0E-7D48-449A-A6D4-1B521774BF79"
-        },
-        {
-          "defKey": "notice_title",
-          "defName": "公告标题",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "2FC33078-3624-4503-AA4F-2040F922BDE4"
-        }
-      ],
-      "indexes": [],
-      "correlations": [],
-      "sysProps": {
-        "fieldInputSuggest": false,
-        "lePropOrient": "V",
-        "propShowFields": [
-          "N",
-          "K",
-          "T"
-        ],
-        "nameTemplate": "{defKey}[{defName}]"
-      }
-    },
-    {
-      "defName": "任务",
-      "comment": "",
-      "env": {
-        "base": {
-          "nameSpace": "",
-          "codeRoot": ""
-        }
-      },
-      "notes": {},
-      "properties": {
-        "partitioned by": "(date string)",
-        "row format delimited": "",
-        "fields terminated by ','": "",
-        "collection items terminated by '-'": "",
-        "map keys terminated by ':'": "",
-        "store as textfile;": ""
-      },
-      "defKey": "LE_TASK",
-      "id": "1D12E52C-D2B2-428D-9320-5CBCB67A3DCD",
-      "type": "L",
-      "headers": [
-        {
-          "refKey": "defKey",
-          "newCode": "defKey",
-          "value": "属性代码",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "defName",
-          "newCode": "defName",
-          "value": "属性名称",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "primaryKey",
-          "newCode": "primaryKey",
-          "value": "主键",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "baseType",
-          "newCode": "baseType",
-          "value": "数据类型",
-          "hideInGraph": false
-        }
-      ],
-      "fields": [
-        {
-          "defKey": "task_id",
-          "defName": "任务编号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": true,
-          "notNull": true,
-          "autoIncrement": true,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "D7756DF0-D04C-4D35-BB15-FFC7E2A3AD08"
-        },
-        {
-          "defKey": "task_status",
-          "defName": "任务领取状态（领取/未领取）",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "DE4A07D3-83CB-49BD-955C-86B7A3CF8DB0"
-        },
-        {
-          "defKey": "task_result",
-          "defName": "任务完成状态（完成/未完成）",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "A6F400EA-039E-43CF-8F69-80C008B28967"
-        },
-        {
-          "defKey": "task_begintime",
-          "defName": "任务开始展示时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
-          "extProps": {},
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "id": "9F1B4FB8-A6C6-463F-914F-14712CA97165"
-        },
-        {
-          "defKey": "task_endtime",
-          "defName": "任务结束展示时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
-          "extProps": {},
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "id": "D74F34D0-36BF-4F2C-A7E9-16CCF9775CC5"
-        },
-        {
-          "defKey": "task_finishtime",
-          "defName": "任务完成时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
-          "extProps": {},
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "id": "FB9C92E1-08DD-4DC3-9892-D6095EF777B0"
-        },
-        {
-          "defKey": "task_publisher",
-          "defName": "任务发起者",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "132A7C12-B110-4509-AE68-91946BD53B28"
-        },
-        {
-          "defKey": "task_taker",
-          "defName": "任务接受者",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "1D255D4C-8955-4FB8-9BC5-E4586D609C73"
-        },
-        {
-          "defKey": "task_coin",
-          "defName": "任务时间币",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "3FBC325D-7CE8-478F-9BDE-3C55A671767D"
-        },
-        {
-          "defKey": "task_score",
-          "defName": "任务满意度评分（一星-五星）",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "4F3C6A82-9203-4948-838F-041E7F2FB153"
-        }
-      ],
-      "indexes": [],
-      "correlations": [],
-      "sysProps": {
-        "fieldInputSuggest": false,
-        "lePropOrient": "V",
-        "propShowFields": [
-          "N",
-          "K",
-          "T"
-        ],
-        "nameTemplate": "{defKey}[{defName}]"
-      }
-    },
-    {
-      "defName": "任务双方对话",
-      "comment": "",
-      "env": {
-        "base": {
-          "nameSpace": "",
-          "codeRoot": ""
-        }
-      },
-      "notes": {},
-      "properties": {
-        "partitioned by": "(date string)",
-        "row format delimited": "",
-        "fields terminated by ','": "",
-        "collection items terminated by '-'": "",
-        "map keys terminated by ':'": "",
-        "store as textfile;": ""
-      },
-      "defKey": "LE_TALK",
-      "id": "20609AED-BF27-480B-868F-B1F85E658034",
-      "type": "L",
-      "headers": [
-        {
-          "refKey": "defKey",
-          "newCode": "defKey",
-          "value": "属性代码",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "defName",
-          "newCode": "defName",
-          "value": "属性名称",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "primaryKey",
-          "newCode": "primaryKey",
-          "value": "主键",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "baseType",
-          "newCode": "baseType",
-          "value": "数据类型",
-          "hideInGraph": false
-        }
-      ],
-      "fields": [
-        {
-          "defKey": "talk_taskid",
-          "defName": "对话任务编号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": true,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "4B9D24EE-7DBD-477C-A6BE-9F8DAED4B310"
-        },
-        {
-          "defKey": "talk_senderid",
-          "defName": "发言者编号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "2C850463-8D51-48EB-B69E-D06AE50F1A99"
-        },
-        {
-          "defKey": "talk_content",
-          "defName": "信息内容",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "5F1977A0-E89C-46F5-A2F8-E4F2A3CB293C"
-        },
-        {
-          "defKey": "talk_timestamp",
-          "defName": "信息时间戳",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "A85C5F56-E47A-4983-A88B-8E4FC29F4C9C"
-        }
-      ],
-      "indexes": [],
-      "correlations": [],
-      "sysProps": {
-        "fieldInputSuggest": false,
-        "lePropOrient": "V",
-        "propShowFields": [
-          "N",
-          "K",
-          "T"
-        ],
-        "nameTemplate": "{defKey}[{defName}]"
-      }
-    },
-    {
-      "defName": "内部交流通道",
-      "comment": "",
-      "env": {
-        "base": {
-          "nameSpace": "",
-          "codeRoot": ""
-        }
-      },
-      "notes": {},
-      "properties": {
-        "partitioned by": "(date string)",
-        "row format delimited": "",
-        "fields terminated by ','": "",
-        "collection items terminated by '-'": "",
-        "map keys terminated by ':'": "",
-        "store as textfile;": ""
-      },
-      "defKey": "LE_CHAT",
-      "id": "580A96A9-FFBD-41BF-AE58-3332B591CE5F",
-      "type": "L",
-      "headers": [
-        {
-          "refKey": "defKey",
-          "newCode": "defKey",
-          "value": "属性代码",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "defName",
-          "newCode": "defName",
-          "value": "属性名称",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "primaryKey",
-          "newCode": "primaryKey",
-          "value": "主键",
-          "hideInGraph": false
-        },
-        {
-          "refKey": "baseType",
-          "newCode": "baseType",
-          "value": "数据类型",
-          "hideInGraph": false
-        }
-      ],
-      "fields": [
-        {
-          "defKey": "chat_id",
-          "defName": "消息编号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": true,
-          "notNull": true,
-          "autoIncrement": true,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "AC0E61C1-C99B-4F3A-9645-5A6E1C350543"
-        },
-        {
-          "defKey": "chat_senderid",
-          "defName": "消息发送者编号",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
-          "extProps": {},
-          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
-          "id": "7F569706-C949-4B3A-91CE-AABA030408F2"
-        },
-        {
-          "defKey": "chat_content",
-          "defName": "消息内容",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
-          "extProps": {},
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "F426670C-35CB-4758-9B2B-595A58A53E1A"
-        },
-        {
-          "defKey": "chat_timestamp",
-          "defName": "消息时间戳",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "refDict": "",
-          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
-          "extProps": {},
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "id": "B6C2E555-DC48-4255-B526-F2F8C8724C0F"
-        }
-      ],
-      "indexes": [],
-      "correlations": [],
-      "sysProps": {
-        "fieldInputSuggest": false,
-        "lePropOrient": "V",
-        "propShowFields": [
-          "N",
-          "K",
-          "T"
-        ],
-        "nameTemplate": "{defKey}[{defName}]"
-      }
-    }
-  ]
+  "logicEntities": []
 }

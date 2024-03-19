@@ -24,6 +24,9 @@ public class Au {
     //审核员密码
     private String au_pwd;
 
+    //盐值
+    private String au_salt;
+
     //审核员头像
     private String au_img;
 
@@ -36,29 +39,10 @@ public class Au {
     //审核员账号注册时间
     private Timestamp au_register;
 
-    //盐值
-    private String au_salt;
-
     //状态
     private Integer au_status;
-    public Integer getAu_status() {
-        return au_status;
-    }
 
-    public void setAu_status(Integer au_status) {
-        this.au_status = au_status;
-    }
-
-
-
-
-    public String getAu_salt() {
-        return au_salt;
-    }
-
-    public void setAu_salt(String au_salt) {
-        this.au_salt = au_salt;
-    }
+    private Timestamp au_unblocktime;
 
     public Integer getAu_id() {
         return au_id;
@@ -82,6 +66,14 @@ public class Au {
 
     public void setAu_pwd(String au_pwd) {
         this.au_pwd = au_pwd;
+    }
+
+    public String getAu_salt() {
+        return au_salt;
+    }
+
+    public void setAu_salt(String au_salt) {
+        this.au_salt = au_salt;
     }
 
     public String getAu_img() {
@@ -114,5 +106,21 @@ public class Au {
 
     public void setAu_register(Timestamp au_register) {
         this.au_register = au_register;
+    }
+
+    public Integer getAu_status() {
+        return au_status;
+    }
+
+    public void setAu_status(Integer au_status) {
+        this.au_status = au_status;
+    }
+
+    public Timestamp getAu_unblocktime() {
+        return au_unblocktime;
+    }
+
+    public void setAu_unblocktime(Timestamp au_unblocktime) {
+        this.au_unblocktime = au_unblocktime;
     }
 }

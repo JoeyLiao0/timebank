@@ -12,10 +12,20 @@
 
 
     <insert id="InsertChat"  parameterType="tb.entity.Chat" >
-        insert into CHAT(chat_id,chat_senderid,chat_content,chat_timestamp,chat_senderrole)
-        values (null,#{chat.chat_senderid},#{chat.chat_content},#{chat.chat_timestamp},#{chat.chat_senderrole})
+        insert into CHAT(
+                chat_id,
+                chat_senderid,
+                chat_content,
+                chat_timestamp,
+                chat_senderrole
+        )
+        values(
+                null,
+                #{chat.chat_senderid},
+                #{chat.chat_content},
+                #{chat.chat_timestamp},
+                #{chat.chat_senderrole}
+        )
     </insert>
-
-
 
 </mapper>

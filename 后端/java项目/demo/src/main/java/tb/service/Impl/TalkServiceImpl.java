@@ -1,4 +1,7 @@
 package tb.service.Impl;
 
-public class TalkServiceImpl {
+import tb.service.TalkService;
+import tb.service.TaskService;
+
+public class TalkServiceImpl implements TalkService{
 }

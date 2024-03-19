@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,9 +52,9 @@ public class Task extends HttpServlet {
 
                     //这里从dataMap和token中提取需要的字段，而不把无关字段传进service，保证一定的安全性
                     //同时保证可拓展性
-                    datamap.put("id",(Integer)mj.getValue("id"));
 
-                    ArrayList<Map<String,Object>> taskArray = (new TaskServiceImpl()).selectAvailableTask(datamap);
+
+                    ArrayList<Map<String,Object>> taskArray = (new TaskServiceImpl()).selectAvailableTask();
 
                     //此处不用判断，因为taskArray为0即没有任务
                     JSONArray jsonArray = (JSONArray) JSON.toJSON(taskArray);
@@ -75,11 +76,14 @@ public class Task extends HttpServlet {
                     //token有效
 
                     //这里从dataMap和token中提取需要的字段
-                    Map<String,Object> datamap = new HashMap<>();
-                    datamap.put("id",(Integer) mj.getValue("id"));
-                    datamap.put("task_status",(Integer) dataMap.get("task_status"));
+//                    Map<String,Object> datamap = new HashMap<>();
+//
+//                    datamap.put("id",(Integer) mj.getValue("id"));
+//                    datamap.put("task_status",(Integer) dataMap.get("task_status"));
 
-                    ArrayList<Map<String,Object>> taskArray = (new TaskServiceImpl()).selectMyPublish(datamap);
+                    Integer id = (Integer) mj.getValue("id");
+
+                    ArrayList<Map<String,Object>> taskArray = (new TaskServiceImpl()).selectMyPublish(id);
 
                     //此处不用判断，因为taskArray为0即没有任务
                     JSONArray jsonArray = (JSONArray) JSON.toJSON(taskArray);
@@ -100,12 +104,13 @@ public class Task extends HttpServlet {
 
                 if (mj.judgeToken()) {
                     //token有效
-                    Map<String,Object> datamap = new HashMap<>();
+//                    Map<String,Object> datamap = new HashMap<>();
 
-                    datamap.put("id",(Integer) mj.getValue("id"));
-                    datamap.put("task_status",(Integer)dataMap.get("task_status"));
+//                    datamap.put("id",(Integer) mj.getValue("id"));
+//                    datamap.put("task_status",(Integer)dataMap.get("task_status"));
 
-                    ArrayList<Map<String,Object>> taskArray = (new TaskServiceImpl()).selectMyTake(dataMap);
+                    Integer id = (Integer) mj.getValue("id");
+                    ArrayList<Map<String,Object>> taskArray = (new TaskServiceImpl()).selectMyTake(id);
 
                     JSONArray jsonArray = (JSONArray) JSON.toJSON(taskArray);
                     JSONObject  jsonObject = new JSONObject();
@@ -139,18 +144,18 @@ public class Task extends HttpServlet {
                 if (mj.judgeToken()) {
                     //token有效
 
-                    Integer id = (Integer)mj.getValue("id");
+                    Integer publisherId = (Integer)mj.getValue("id");
 
-                    Map<String,Object> datamap = new HashMap<>();
+                    Map<String,Object> Datamap = new HashMap<>();
 
-                    datamap.put("task_publisherId",id);
-                    datamap.put("task_begintime",(Date)dataMap.get("task_begintime"));
-                    datamap.put("task_endtime",(Date)dataMap.get("task_endtime"));
-                    datamap.put("task_coin",(Integer)dataMap.get("task_coin"));
-                    datamap.put("task_title",(Date)dataMap.get("task_title"));
-                    datamap.put("task_text",(Date)dataMap.get("task_text"));
+                    Datamap.put("task_begintime",new Timestamp((long)dataMap.get("task_begintime")*1000));
+                    Datamap.put("task_endtime",new Timestamp((long)dataMap.get("task_endtime")*1000));
+                    Datamap.put("task_coin",dataMap.get("task_coin"));
+                    Datamap.put("task_title",dataMap.get("task_title"));
+                    Datamap.put("task_text",dataMap.get("task_text"));
+                    Datamap.put("task_location",dataMap.get("task_location"));
 
-                    String msg = (new TaskServiceImpl()).publishNewTask(dataMap);
+                    String msg = (new TaskServiceImpl()).publishNewTask(publisherId,dataMap);
 
                     JSONObject jsonObject =new JSONObject();
 
@@ -168,7 +173,181 @@ public class Task extends HttpServlet {
                     //token失效,401
                     res.setStatus(401);
                 }
+            }else if(pathInfo.equals("/take")){
+                if (mj.judgeToken()) {
+                    //token有效
+
+                    //TODO 加锁
+                    Integer id = (Integer) mj.getValue("id");
+
+                    Integer task_id = (Integer) dataMap.get("task_id");
+
+                    String msg = null;
+
+                    msg = new TaskServiceImpl().take(id,task_id);
+                    JSONObject jsonObject =new JSONObject();
+
+                    if(msg != null){
+                        jsonObject.put("status",true);
+                    }else{
+                        jsonObject.put("status",false);
+                    }
+
+                    jsonObject.put("msg",msg);
+
+                    res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+                    res.setStatus(200);
+                } else {
+                    //token失效,401
+                    res.setStatus(401);
+                }
+
+            }else if(pathInfo.equals("/publishCancel")){
+                if (mj.judgeToken()) {
+                    //token有效
+
+                    Integer id = (Integer) mj.getValue("id");
+
+                    Integer task_id = (Integer) dataMap.get("task_id");
+
+                    String msg = null ;
+                    msg = new TaskServiceImpl().publishCancel(id,task_id);
+
+                    JSONObject jsonObject =new JSONObject();
+
+                    if(msg != null){
+                        jsonObject.put("status",true);
+                    }else{
+                        jsonObject.put("status",false);
+                    }
+
+                    jsonObject.put("msg",msg);
+
+                    res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+                    res.setStatus(200);
+                } else {
+                    //token失效,401
+                    res.setStatus(401);
+                }
+
+            }else if(pathInfo.equals("/takeCancel")){
+                if (mj.judgeToken()) {
+
+                    Integer id = (Integer) mj.getValue("id");
+
+                    Integer task_id = (Integer) dataMap.get("task_id");
+
+                    String msg = null;
+                    msg = new TaskServiceImpl().takeCancel(id,task_id);
+
+                    JSONObject jsonObject =new JSONObject();
+
+                    if(msg != null){
+                        jsonObject.put("status",true);
+                    }else{
+                        jsonObject.put("status",false);
+                    }
+
+                    jsonObject.put("msg",msg);
+
+                    res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+                    res.setStatus(200);
+                } else {
+                    //token失效,401
+                    res.setStatus(401);
+                }
+
+            }else if(pathInfo.equals("/takerFinish")){
+                if (mj.judgeToken()) {
+                    //token有效
+
+                    Integer id = (Integer) mj.getValue("id");
+
+                    Integer task_id = (Integer) dataMap.get("task_id");
+
+                    //TODO 这个图片怎么读取？
+
+                    String msg = null;
+                    msg = new TaskServiceImpl().takerFinish(id,task_id);
+
+                    JSONObject jsonObject =new JSONObject();
+
+                    if(msg != null){
+                        jsonObject.put("status",true);
+                    }else{
+                        jsonObject.put("status",false);
+                    }
+
+                    jsonObject.put("msg",msg);
+
+                    res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+                    res.setStatus(200);
+                } else {
+                    //token失效,401
+                    res.setStatus(401);
+                }
+
+            }else if(pathInfo.equals("/publisherFinish")){
+                if (mj.judgeToken()) {
+                    //token有效
+
+                    Integer id = (Integer) mj.getValue("id");
+
+                    Integer task_id = (Integer) dataMap.get("task_id");
+
+                    String msg = null;
+                    msg = new TaskServiceImpl().publisherFinish(id,task_id);
+
+                    JSONObject jsonObject =new JSONObject();
+
+                    if(msg != null){
+                        jsonObject.put("status",true);
+                    }else{
+                        jsonObject.put("status",false);
+                    }
+
+                    jsonObject.put("msg",msg);
+
+                    res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+                    res.setStatus(200);
+                } else {
+                    //token失效,401
+                    res.setStatus(401);
+                }
+
+            }else if(pathInfo.equals("/comment")){
+                if (mj.judgeToken()) {
+                    //token有效
+
+                    //TODO 加锁
+                    Integer id = (Integer) mj.getValue("id");
+
+                    Integer task_id = (Integer) dataMap.get("task_id");
+
+                    Integer task_score = (Integer) dataMap.get("task_score");
+
+                    String msg = null;
+                    msg = new TaskServiceImpl().comment(id,task_id,task_score);
+
+                    JSONObject jsonObject =new JSONObject();
+
+                    if(msg != null){
+                        jsonObject.put("status",true);
+                    }else{
+                        jsonObject.put("status",false);
+                    }
+
+                    jsonObject.put("msg",msg);
+
+                    res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+                    res.setStatus(200);
+                } else {
+                    //token失效,401
+                    res.setStatus(401);
+                }
+
             }
         }
     }
 }
+

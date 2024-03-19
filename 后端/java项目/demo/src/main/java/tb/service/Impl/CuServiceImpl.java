@@ -3,13 +3,17 @@ package tb.service.Impl;
 import cn.hutool.crypto.digest.DigestUtil;
 import org.apache.ibatis.session.SqlSession;
 import tb.dao.CuDao;
+import tb.dao.CuDao;
 import tb.entity.Cu;
+import tb.entity.Cu;
+import tb.service.CuService;
 import tb.util.mySqlSession;
 
 import java.security.SecureRandom;
+import java.sql.Timestamp;
 import java.util.*;
 
-public class CuServiceImpl {
+public class CuServiceImpl implements CuService {
     public String judgePassword(String username, String password) {
 
         try(SqlSession session = mySqlSession.getSqSession()){
@@ -95,6 +99,7 @@ public class CuServiceImpl {
     }
 
     public Map<String, Object> selectById(int id) {
+        //这里是第二层了，要涉及更深的东西了
         try(SqlSession session = mySqlSession.getSqSession()){
 
             CuDao cuDao = session.getMapper(CuDao.class);
@@ -102,123 +107,192 @@ public class CuServiceImpl {
 
             Map<String ,Object> cuInfo =  new HashMap<>();
 
-            cuInfo.put("cu_id",cu.getCu_id());
-            cuInfo.put("cu_login",cu.getCu_login());
-            cuInfo.put("cu_tel",cu.getCu_tel());
-            cuInfo.put("cu_name",cu.getCu_name());
-            cuInfo.put("cu_status",cu.getCu_status());
-            cuInfo.put("cu_register",cu.getCu_register());
-            cuInfo.put("cu_img",cu.getCu_img());
+            cuInfo.put("publishTaskNum",cu.getCu_release());
+            cuInfo.put("acceptTaskNum",cu.getCu_accept());
+            cuInfo.put("finishTaskNum",cu.getCu_finish());
+            cuInfo.put("userScore",5); //暂时不涉及 TODO
+            cuInfo.put("userCoin",cu.getCu_coin());
+            cuInfo.put("userImg",cu.getCu_img());
 
             return cuInfo;
         }catch (Exception e){
             return null;
         }
     }
-    public String setStatus(int id, boolean status) {
+    public String setStatus(int id, boolean status, Timestamp unblocktime) {
 
         try(SqlSession session = mySqlSession.getSqSession()){
+            try{
+                CuDao cuDao = session.getMapper(CuDao.class);
 
-            CuDao cuDao = session.getMapper(CuDao.class);
+                Cu cu = cuDao.SelectCuById(id);
 
-            Cu cu = cuDao.SelectCuById(id);
-
-
-
-            cu.setCu_status(status ?1:0);
-            cuDao.UpdateCu(cu);
-            session.commit();
-            return null;
-
-        }catch (Exception e){
-            return "设置状态失败 "+e.getMessage();
+                cu.setCu_status(status ?1:0);
+                cu.setCu_unblocktime(unblocktime);
+                cuDao.UpdateCu(cu);
+                session.commit();
+                return null;
+            }catch (Exception e){
+                if(session!=null)session.rollback();
+                return "设置状态失败 "+e.getMessage();
+            }
         }
     }
 
     public String resetPassword(int id, String newPassword) {
         try (SqlSession session = mySqlSession.getSqSession()) {
-            CuDao cuDao = session.getMapper(CuDao.class);
-            Cu cu = cuDao.SelectCuById(id);
+            try{
+                CuDao cuDao = session.getMapper(CuDao.class);
+                Cu cu = cuDao.SelectCuById(id);
 
-            if (cu == null) {
-                return "此id不存在，ID：" + id;
+                if (cu == null) {
+                    return "此id不存在，ID：" + id;
+                }
+
+                // 生成盐值
+                byte[] salt = new byte[16]; // 长度可以根据需要调整
+                SecureRandom random = new SecureRandom();
+                random.nextBytes(salt);
+                String saltString = Base64.getEncoder().encodeToString(salt);
+
+                // 拼接密码和盐值，并使用SHA-256哈希
+                String hashedPassword = DigestUtil.sha256Hex(newPassword + saltString);
+
+                cu.setCu_pwd(hashedPassword);
+                cu.setCu_salt(saltString);
+
+                cuDao.UpdateCu(cu);
+                session.commit();
+                return null;
+            }catch (Exception e) {
+                if(session!=null)session.rollback();
+                return "重置密码失败 "+e.getMessage();
             }
-
-            // 生成盐值
-            byte[] salt = new byte[16]; // 长度可以根据需要调整
-            SecureRandom random = new SecureRandom();
-            random.nextBytes(salt);
-            String saltString = Base64.getEncoder().encodeToString(salt);
-
-            // 拼接密码和盐值，并使用SHA-256哈希
-            String hashedPassword = DigestUtil.sha256Hex(newPassword + saltString);
-
-            cu.setCu_pwd(hashedPassword);
-            cu.setCu_salt(saltString);
-
-            cuDao.UpdateCu(cu);
-            session.commit();
-
-        } catch (Exception e) {
-            // 记录异常信息，并可能抛出运行时异常或记录到日志中
-//            throw new RuntimeException("重置密码失败", e);
-            return "重置密码失败 "+e.getMessage();
         }
-        return null;
     }
 
     public String delete(List<Integer> idArray) {
         try (SqlSession session = mySqlSession.getSqSession()) {
-
-            CuDao cuDao = session.getMapper(CuDao.class);
-            for(Integer id :idArray){
-                cuDao.DeleteCuById(id);
+            try{
+                CuDao cuDao = session.getMapper(CuDao.class);
+                for(Integer id :idArray){
+                    cuDao.DeleteCuById(id);
+                }
+                session.commit();
+                return null;
+            }catch (Exception e) {
+                if(session!=null) session.rollback();
+                return "删除账号失败 "+e.getMessage();
             }
-            session.commit();
-
-        } catch (Exception e) {
-            return "删除账号失败 "+e.getMessage();
         }
-        return null;
     }
 
 
 
     public String update(Map<String, Object> dataMap) {
         try (SqlSession session = mySqlSession.getSqSession()) {
+            try{
+                CuDao cuDao = session.getMapper(CuDao.class);
 
-            CuDao cuDao = session.getMapper(CuDao.class);
+                Cu cu =   cuDao.SelectCuById((Integer) dataMap.get("cu_id"));
 
-            Cu cu =   cuDao.SelectCuById((Integer) dataMap.get("id"));
+                if(cu == null){
+                    throw new Exception("用户不存在！");
+                }
 
-            //TODO:dataMap 应该有什么？
+                if(dataMap.get("cu_pwd")!=null){
+                    // 生成盐值
+                    byte[] salt = new byte[16]; // 长度可以根据需要调整
+                    SecureRandom random = new SecureRandom();
+                    random.nextBytes(salt);
+                    String saltString = Base64.getEncoder().encodeToString(salt);
 
-            cuDao.UpdateCu(cu);
+                    // 拼接密码和盐值，并使用SHA-256哈希
+                    String hashedPassword = DigestUtil.sha256Hex((String) dataMap.get("cu_pwd")+ saltString);
 
-            session.commit();
+                    cu.setCu_pwd(hashedPassword);
+                    cu.setCu_salt(saltString);
+                }
 
-        } catch (Exception e) {
-            return "更新信息失败 "+e.getMessage();
+                cu.setCu_name((String) dataMap.get("cu_name"));
+                cu.setCu_tel((String) dataMap.get("cu_tel"));
+                cu.setCu_register((Timestamp) dataMap.get("cu_register"));
+                cu.setCu_status((Integer) dataMap.get("cu_status"));
+                cu.setCu_login((Timestamp) dataMap.get("cu_login"));
+                cu.setCu_img((String) dataMap.get("cu_img"));
+                cu.setCu_coin((Integer) dataMap.get("cu_coin"));
+                //cu.setCu_score(5); TODO
+
+                cuDao.UpdateCu(cu);
+
+                session.commit();
+
+                return null;
+
+            }catch (Exception e) {
+
+                if(session!=null)session.rollback();
+                return "更新信息失败 "+e.getMessage();
+            }
         }
-        return null;
     }
 
     public String insert(Map<String, Object> dataMap) {
         try (SqlSession session = mySqlSession.getSqSession()) {
+            try{
+                CuDao cuDao = session.getMapper(CuDao.class);
 
-            CuDao cuDao = session.getMapper(CuDao.class);
+                Cu cu = new Cu();
+                cu.setCu_name((String)dataMap.get("cu_name"));
 
-            Cu cu =   cuDao.SelectCuById((Integer) dataMap.get("id"));
+                if(existUsername((String)dataMap.get("cu_name")).equals("yes")){
+                    throw new Exception("账号已存在！");
+                }
 
-            //TODO:dataMap 应该有什么？
+                String pwd = (String)dataMap.get("cu_pwd");
+                //生成盐
+                SecureRandom random = new SecureRandom();
+                byte bytes[] = new byte[15];
+                random.nextBytes(bytes);
+                // 将字节数组转换为Base64编码的字符串，仅包含字母和数字
+                String saltString = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+                // 删除Base64中的非字母数字字符（如'+'和'/'）
+                saltString = saltString.replaceAll("\\+", "").replaceAll("/", "");
+                // 如果生成的字符串长度小于指定的盐长度，则填充'='以达到指定长度
+                while (saltString.length() < 15) {
+                    saltString += '=';
+                }
+                String decrypt = DigestUtil.sha256Hex(pwd+saltString);
 
-            cuDao.InsertCu(cu);
 
-            session.commit();
+                cu.setCu_pwd(decrypt);
+                cu.setCu_salt(saltString);
 
-        } catch (Exception e) {
-            return "新增账号失败 "+e.getMessage();
+                cu.setCu_tel((String)dataMap.get("cu_tel"));
+                cu.setCu_register((Timestamp) dataMap.get("cu_register"));
+                cu.setCu_status(1);
+                cu.setCu_login((Timestamp) dataMap.get("cu_login"));
+                cu.setCu_img((String)dataMap.get("cu_img"));
+
+                cu.setCu_coin(10);//这个初始值写成可调的值
+
+                cu.setCu_release(0);
+                cu.setCu_accept(0);
+                cu.setCu_finish(0);
+
+
+                cuDao.InsertCu(cu);
+
+                session.commit();
+                return null;
+            }catch (Exception e) {
+
+                if(session!=null)session.rollback();
+
+                return "新增账号失败 "+e.getMessage();
+            }
+
         }
-        return null;
+
     }
 }

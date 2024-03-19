@@ -1,4 +1,6 @@
 package tb.service.Impl;
 
-public class ChatServiceImpl {
+import tb.service.ChatService;
+
+public class ChatServiceImpl implements ChatService {
 }

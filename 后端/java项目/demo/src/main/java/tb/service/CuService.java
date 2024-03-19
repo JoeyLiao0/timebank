@@ -1,25 +1,27 @@
 package tb.service;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public interface CuService {
-    public String judgePassword(String username,String password);
+    String judgePassword(String username,String password);
 
-    public String existUsername(String username);
+    String existUsername(String username);
 
-    public ArrayList<Map<String,Object>> selectByMap(Map<String,Object> dataMap);
+    ArrayList<Map<String,Object>> selectByMap(Map<String,Object> dataMap);
 
-    public String setStatus(int id,boolean status);
+    String setStatus(int id, boolean status, Timestamp unblocktime);
 
-    public String resetPassword(int id,String newPassword);
+    String resetPassword(int id,String newPassword);
 
-    public String delete(List<Integer> idArray);
+    String delete(List<Integer> idArray);
 
-    public Map<String,Object> selectById(int id);
+    Map<String,Object> selectById(int id);
 
-    public String updateById(Map<String,Object> dataMap);
+    String update(Map<String,Object> dataMap);
 
-    public String insert(Map<String,Object> dataMap);
+    String insert(Map<String,Object> dataMap);
 }

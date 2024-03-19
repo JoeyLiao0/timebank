@@ -7,14 +7,24 @@ import java.util.Map;
 
 public interface TaskService {
 
-    public void finishTask(Integer id);
+    ArrayList<Map<String,Object>> selectAvailableTask();
 
-    public ArrayList<Map<String,Object>> selectAvailableTask(Map<String , Object> datamap);//剔除自己发布的任务
+    ArrayList<Map<String,Object>> selectMyPublish(Integer id);
 
-    public ArrayList<Map<String,Object>> selectMyPublish(Map<String , Object> datamap);
+    ArrayList<Map<String,Object>> selectMyTake(Integer id);
 
-    public ArrayList<Map<String,Object>> selectMyTake(Map<String , Object> datamap);
+    String publishNewTask(Integer id,Map<String,Object> datamap);
 
-    public String publishNewTask(Map<String,Object> datamap);
+    String take(Integer id,Integer task_id);
+
+    String publishCancel(Integer id,Integer task_id);
+
+    String takeCancel(Integer id,Integer task_id);
+
+    String takerFinish(Integer id,Integer task_id);
+
+    String publisherFinish(Integer id,Integer task_id);
+
+    String comment(Integer id,Integer task_id,Integer task_score);
 
 }

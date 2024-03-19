@@ -12,21 +12,18 @@ import java.util.List;
  */
 public interface TaskDao {
 
-    public List<Task> selectTaskByStatus(Integer status);
+    List<Task> SelectTaskByStatusAndTimeout(@Param("status") String status,@Param("timeout") String timeout);
 
-    public List<Task> selectTaskByPublisherId(Integer publisherId);
+    List<Task> SelectTaskByPublisherId(Integer publisherId);
 
-    public List<Task> selectTaskByTakerId(Integer taskerId);
+    List<Task> SelectTaskByTakerId(Integer taskerId);
 
-    public void publishNewTask(@Param("task") Task task);
+    Task SelectTaskById(Integer taskId);
 
-    public void InsertTask(@Param("task") Task task);
+    void PublishNewTask(@Param("task") Task task);
 
-    public void UpdateTask(@Param("task") Task task);
+    void UpdateTask(@Param("task") Task task);
 
-    public void DeleteTaskById(Integer id);
-
-    public void DeleteTask(@Param("task") Task task);
-
+    void DeleteTaskById(Integer taskId);
 
 }

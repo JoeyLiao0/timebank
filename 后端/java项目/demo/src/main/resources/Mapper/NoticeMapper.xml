@@ -12,14 +12,26 @@
 
 
     <insert id="InsertNewNotice"  parameterType="tb.entity.Notice" >
-        insert into NOTICE(notice_id,notice_begintime,notice_endtime,notice_text,notice_title)
-        values (null,#{notice.notice_begintime},#{notice.notice_endtime},#{notice.notice_text},#{notice.notice_title})
+        insert into
+            NOTICE(
+                notice_id,
+                notice_begintime,
+                notice_endtime,
+                notice_text,
+                notice_title
+            )
+            values(null,
+                #{notice.notice_begintime},
+                #{notice.notice_endtime},
+                #{notice.notice_text},
+                #{notice.notice_title}
+            )
     </insert>
 
 
     <delete id="DeleteNotice" parameterType="tb.entity.Notice">
         delete from NOTICE
-        where notice_id = #{notice.notice_id}
+            where notice_id = #{notice.notice_id}
     </delete>
 
 </mapper>

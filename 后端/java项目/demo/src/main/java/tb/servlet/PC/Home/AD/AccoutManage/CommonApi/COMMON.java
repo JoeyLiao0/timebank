@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,6 +108,7 @@ public class COMMON extends HttpServlet {
                 String role = (String) dataMap.get("role");
                 Boolean status = (Boolean) dataMap.get("status");
                 Integer id = (Integer) dataMap.get("id");
+                Timestamp unblocktime = (Timestamp) dataMap.get("unblocktime");
 
                 if (mj.judgeToken()) {
 
@@ -116,9 +118,9 @@ public class COMMON extends HttpServlet {
                         msg = switch (role) {
                             //所需的参数dataMap是一样的，返回的userArray字段不同
                             case "AD" -> new AdServiceImpl().setStatus(id,status);
-                            case "AU" -> new AuServiceImpl().setStatus(id,status);
-                            case "CS" -> new CsServiceImpl().setStatus(id,status);
-                            case "CU" -> new CuServiceImpl().setStatus(id,status);
+                            case "AU" -> new AuServiceImpl().setStatus(id,status,unblocktime);
+                            case "CS" -> new CsServiceImpl().setStatus(id,status,unblocktime);
+                            case "CU" -> new CuServiceImpl().setStatus(id,status,unblocktime);
                             default -> null;
                         };
                     }

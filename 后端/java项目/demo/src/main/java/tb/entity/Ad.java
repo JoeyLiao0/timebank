@@ -16,6 +16,19 @@ import java.sql.Timestamp;
  *
  */
 public class Ad {
+
+    public Ad(){
+        ad_id = null;
+        ad_name = null;
+        ad_pwd = null;
+        ad_salt = null;
+        ad_img = null;
+        ad_login = null;
+        ad_tel = null;
+        ad_register = null;
+        ad_status = null;
+    }
+
     //管理员编号
     private Integer ad_id;
 
@@ -24,6 +37,9 @@ public class Ad {
 
     //管理员密码
     private String ad_pwd;
+
+    //盐值
+    private String ad_salt;
 
     //管理员头像
     private String ad_img;
@@ -34,30 +50,11 @@ public class Ad {
     //管理员手机号
     private String ad_tel;
 
-    //盐值
-    private String ad_salt;
+    //管理员注册时间
+    private Timestamp ad_register;
 
     //状态值 0禁用 1正常
     private Integer ad_status;
-
-    public Integer getAd_status() {
-        return ad_status;
-    }
-
-    public void setAd_status(Integer ad_status) {
-        this.ad_status = ad_status;
-    }
-
-    public String getAd_salt() {
-        return ad_salt;
-    }
-
-    public void setAd_salt(String ad_salt) {
-        this.ad_salt = ad_salt;
-    }
-
-    //管理员注册时间
-    private Timestamp ad_register;
 
     public Integer getAd_id() {
         return ad_id;
@@ -67,7 +64,9 @@ public class Ad {
         this.ad_id = ad_id;
     }
 
-    public String getAd_name() {return ad_name;}
+    public String getAd_name() {
+        return ad_name;
+    }
 
     public void setAd_name(String ad_name) {
         this.ad_name = ad_name;
@@ -79,6 +78,14 @@ public class Ad {
 
     public void setAd_pwd(String ad_pwd) {
         this.ad_pwd = ad_pwd;
+    }
+
+    public String getAd_salt() {
+        return ad_salt;
+    }
+
+    public void setAd_salt(String ad_salt) {
+        this.ad_salt = ad_salt;
     }
 
     public String getAd_img() {
@@ -112,4 +119,14 @@ public class Ad {
     public void setAd_register(Timestamp ad_register) {
         this.ad_register = ad_register;
     }
+
+    public Integer getAd_status() {
+        return ad_status;
+    }
+
+    public void setAd_status(Integer ad_status) {
+        this.ad_status = ad_status;
+    }
+
+
 }

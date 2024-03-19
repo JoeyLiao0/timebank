@@ -1,4 +1,6 @@
 package tb.service.Impl;
 
-public class NoticeServiceImpl {
+import tb.service.NoticeService;
+
+public class NoticeServiceImpl implements NoticeService {
 }

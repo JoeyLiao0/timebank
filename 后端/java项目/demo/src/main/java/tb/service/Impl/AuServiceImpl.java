@@ -4,12 +4,16 @@ import cn.hutool.crypto.digest.DigestUtil;
 import org.apache.ibatis.session.SqlSession;
 import tb.dao.AuDao;
 import tb.entity.Au;
+import tb.entity.Au;
+import tb.service.AuService;
 import tb.util.mySqlSession;
 
 import java.security.SecureRandom;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.*;
 
-public class AuServiceImpl {
+public class AuServiceImpl implements AuService {
     public String judgePassword(String username, String password) {
 
         try(SqlSession session = mySqlSession.getSqSession()){
@@ -102,123 +106,185 @@ public class AuServiceImpl {
 
             Map<String ,Object> auInfo =  new HashMap<>();
 
-            auInfo.put("au_id",au.getAu_id());
-            auInfo.put("au_login",au.getAu_login());
-            auInfo.put("au_tel",au.getAu_tel());
-            auInfo.put("au_name",au.getAu_name());
-            auInfo.put("au_status",au.getAu_status());
-            auInfo.put("au_register",au.getAu_register());
-            auInfo.put("au_img",au.getAu_img());
+            auInfo.put("id",au.getAu_id());
+            auInfo.put("login",au.getAu_login());
+            auInfo.put("phone",au.getAu_tel());
+            auInfo.put("name",au.getAu_name());
+            auInfo.put("userStatus",au.getAu_status() == 1);
+            auInfo.put("register",au.getAu_register());
+            auInfo.put("img",au.getAu_img());
 
             return auInfo;
         }catch (Exception e){
             return null;
         }
     }
-    public String setStatus(int id, boolean status) {
+
+
+    public String setStatus(int id, boolean status, Timestamp unblocktime) {
 
         try(SqlSession session = mySqlSession.getSqSession()){
+            try{
+                AuDao auDao = session.getMapper(AuDao.class);
 
-            AuDao auDao = session.getMapper(AuDao.class);
+                Au au = auDao.SelectAuById(id);
 
-            Au au = auDao.SelectAuById(id);
+                au.setAu_status(status ?1:0);
+                au.setAu_unblocktime(unblocktime);
 
+                auDao.UpdateAu(au);
 
+                session.commit();
+                return null;
+            }catch (Exception e){
+                if(session!=null)session.rollback();
+                return "设置状态失败 "+e.getMessage();
+            }
 
-            au.setAu_status(status ?1:0);
-            auDao.UpdateAu(au);
-            session.commit();
-            return null;
-
-        }catch (Exception e){
-            return "设置状态失败 "+e.getMessage();
         }
     }
 
     public String resetPassword(int id, String newPassword) {
         try (SqlSession session = mySqlSession.getSqSession()) {
-            AuDao auDao = session.getMapper(AuDao.class);
-            Au au = auDao.SelectAuById(id);
+            try{
+                AuDao auDao = session.getMapper(AuDao.class);
+                Au au = auDao.SelectAuById(id);
 
-            if (au == null) {
-                return "此id不存在，ID：" + id;
+                if (au == null) {
+                    return "此id不存在，ID：" + id;
+                }
+
+                // 生成盐值
+                byte[] salt = new byte[16]; // 长度可以根据需要调整
+                SecureRandom random = new SecureRandom();
+                random.nextBytes(salt);
+                String saltString = Base64.getEncoder().encodeToString(salt);
+
+                // 拼接密码和盐值，并使用SHA-256哈希
+                String hashedPassword = DigestUtil.sha256Hex(newPassword + saltString);
+
+                au.setAu_pwd(hashedPassword);
+                au.setAu_salt(saltString);
+
+                auDao.UpdateAu(au);
+                session.commit();
+            } catch (Exception e) {
+                if(session!=null)session.rollback();
+                return "重置密码失败 "+e.getMessage();
             }
 
-            // 生成盐值
-            byte[] salt = new byte[16]; // 长度可以根据需要调整
-            SecureRandom random = new SecureRandom();
-            random.nextBytes(salt);
-            String saltString = Base64.getEncoder().encodeToString(salt);
 
-            // 拼接密码和盐值，并使用SHA-256哈希
-            String hashedPassword = DigestUtil.sha256Hex(newPassword + saltString);
-
-            au.setAu_pwd(hashedPassword);
-            au.setAu_salt(saltString);
-
-            auDao.UpdateAu(au);
-            session.commit();
-
-        } catch (Exception e) {
-            // 记录异常信息，并可能抛出运行时异常或记录到日志中
-//            throw new RuntimeException("重置密码失败", e);
-            return "重置密码失败 "+e.getMessage();
         }
         return null;
     }
 
     public String delete(List<Integer> idArray) {
         try (SqlSession session = mySqlSession.getSqSession()) {
-
-            AuDao auDao = session.getMapper(AuDao.class);
-            for(Integer id :idArray){
-                auDao.DeleteAuById(id);
+            try{
+                AuDao auDao = session.getMapper(AuDao.class);
+                for(Integer id :idArray){
+                    auDao.DeleteAuById(id);
+                }
+                session.commit();
+                return null;
+            }catch (Exception e) {
+                if(session!=null)session.rollback();
+                return "删除账号失败 "+e.getMessage();
             }
-            session.commit();
-
-        } catch (Exception e) {
-            return "删除账号失败 "+e.getMessage();
         }
-        return null;
     }
 
 
 
     public String update(Map<String, Object> dataMap) {
         try (SqlSession session = mySqlSession.getSqSession()) {
+            try{
+                AuDao auDao = session.getMapper(AuDao.class);
 
-            AuDao auDao = session.getMapper(AuDao.class);
+                Au au =   auDao.SelectAuById((Integer) dataMap.get("au_id"));
+                if(au == null){
+                    throw new Exception("用户不存在！");
+                }
 
-            Au au =   auDao.SelectAuById((Integer) dataMap.get("id"));
+                if(dataMap.get("au_pwd")!=null){
+                    // 生成盐值
+                    byte[] salt = new byte[16]; // 长度可以根据需要调整
+                    SecureRandom random = new SecureRandom();
+                    random.nextBytes(salt);
+                    String saltString = Base64.getEncoder().encodeToString(salt);
 
-            //TODO:dataMap 应该有什么？
+                    // 拼接密码和盐值，并使用SHA-256哈希
+                    String hashedPassword = DigestUtil.sha256Hex((String) dataMap.get("au_pwd")+ saltString);
 
-            auDao.UpdateAu(au);
+                    au.setAu_pwd(hashedPassword);
+                    au.setAu_salt(saltString);
+                }
 
-            session.commit();
+                au.setAu_name((String) dataMap.get("au_name"));
 
-        } catch (Exception e) {
-            return "更新信息失败 "+e.getMessage();
+                au.setAu_tel((String) dataMap.get("au_tel"));
+                au.setAu_register((Timestamp) dataMap.get("au_register"));
+                au.setAu_status((Integer) dataMap.get("au_status"));
+                au.setAu_login((Timestamp) dataMap.get("au_login"));
+                au.setAu_img((String) dataMap.get("au_img"));
+
+                auDao.UpdateAu(au);
+
+                session.commit();
+                return null;
+            } catch (Exception e) {
+                if(session!=null)session.rollback();
+                return "更新信息失败 "+e.getMessage();
+            }
         }
-        return null;
+
     }
 
     public String insert(Map<String, Object> dataMap) {
         try (SqlSession session = mySqlSession.getSqSession()) {
+            try{
+                AuDao auDao = session.getMapper(AuDao.class);
 
-            AuDao auDao = session.getMapper(AuDao.class);
+                Au au = new Au();
+                au.setAu_name((String)dataMap.get("au_name"));
 
-            Au au =   auDao.SelectAuById((Integer) dataMap.get("id"));
+                if(existUsername((String)dataMap.get("au_name")).equals("yes")){
+                    throw new Exception("账号已存在！");
+                }
 
-            //TODO:dataMap 应该有什么？
+                String pwd = (String)dataMap.get("au_pwd");
+                //生成盐
+                SecureRandom random = new SecureRandom();
+                byte bytes[] = new byte[15];
+                random.nextBytes(bytes);
+                // 将字节数组转换为Base64编码的字符串，仅包含字母和数字
+                String saltString = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+                // 删除Base64中的非字母数字字符（如'+'和'/'）
+                saltString = saltString.replaceAll("\\+", "").replaceAll("/", "");
+                // 如果生成的字符串长度小于指定的盐长度，则填充'='以达到指定长度
+                while (saltString.length() < 15) {
+                    saltString += '=';
+                }
+                String decrypt = DigestUtil.sha256Hex(pwd+saltString);
 
-            auDao.InsertAu(au);
 
-            session.commit();
+                au.setAu_pwd(decrypt);
+                au.setAu_salt(saltString);
+                au.setAu_tel((String)dataMap.get("au_tel"));
+                au.setAu_register((Timestamp) dataMap.get("au_register"));
+                au.setAu_status(1);
+                au.setAu_login((Timestamp) dataMap.get("au_login"));
+                au.setAu_img((String)dataMap.get("au_img"));
 
-        } catch (Exception e) {
-            return "新增账号失败 "+e.getMessage();
+                auDao.InsertAu(au);
+
+                session.commit();
+                return null;
+            }catch (Exception e) {
+                if(session!=null) session.rollback();
+                return "新增账号失败 "+e.getMessage();
+            }
         }
-        return null;
+
     }
 }
