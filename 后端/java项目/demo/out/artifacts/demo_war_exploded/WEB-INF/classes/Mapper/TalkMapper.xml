@@ -6,17 +6,25 @@
 <!--命名空间写接口-->
 <mapper namespace="tb.dao.TalkDao" >
 
-    <select id="SelectTalkByTaskId"  parameterType="java.lang.Integer" resultType="tb.entity.Talk">
-        select * from TALK where talk_taskid = #{talk_taskid}
-    </select>
+        <select id="selectByTalkId" resultType="tb.entity.Talk">
+            SELECT * FROM TALK WHERE talk_id = #{talk_id}
+        </select>
 
+        <select id="selectByTaskId" resultType="tb.entity.Talk">
+            SELECT * FROM TALK WHERE talk_taskid = #{talk_taskid} order by talk_timestamp
+        </select>
 
-    <!--此处主键不能自增长了，要和taskid对应了-->
-    <insert id="InsertNewTalk"  parameterType="tb.entity.Talk" >
-        insert into TALK(talk_taskid,talk_senderid,talk_content,talk_timestamp)
-        values (#{talk.taskid},#{talk.talk_senderid},#{talk.talk_content},#{talk.talk_timestamp})
-    </insert>
+        <insert id="insertTalk" parameterType="tb.entity.Talk" useGeneratedKeys="true" keyProperty="talk.talk_id">
+            INSERT INTO TALK (talk_id,talk_taskid, talk_timestamp, talk_senderid, talk_receiverid, talk_content, talk_contenttype, talk_isread)
+            VALUES (null,#{talk.talk_taskid}, #{talk.talk_timestamp}, #{talk.talk_senderid}, #{talk.talk_receiverid}, #{talk.talk_content}, #{talk.talk_contenttype}, #{talk.talk_isread})
+        </insert>
 
+        <delete id="deleteTalkById" parameterType="java.lang.Integer">
+            delete from Talk
+                where talk_id = #{talk_id}
+        </delete>
 
-
+        <update id="updateTalkIsRead">
+            update TALK set talk_isread = #{talk_isread} where talk_id = #{talk_id}
+        </update>
 </mapper>

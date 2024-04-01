@@ -201,31 +201,12 @@ public class AuServiceImpl implements AuService {
             try{
                 AuDao auDao = session.getMapper(AuDao.class);
 
-                Au au =   auDao.SelectAuById((Integer) dataMap.get("au_id"));
+                Au au =  auDao.SelectAuById((Integer) dataMap.get("au_id"));
                 if(au == null){
                     throw new Exception("用户不存在！");
                 }
-
-                if(dataMap.get("au_pwd")!=null){
-                    // 生成盐值
-                    byte[] salt = new byte[16]; // 长度可以根据需要调整
-                    SecureRandom random = new SecureRandom();
-                    random.nextBytes(salt);
-                    String saltString = Base64.getEncoder().encodeToString(salt);
-
-                    // 拼接密码和盐值，并使用SHA-256哈希
-                    String hashedPassword = DigestUtil.sha256Hex((String) dataMap.get("au_pwd")+ saltString);
-
-                    au.setAu_pwd(hashedPassword);
-                    au.setAu_salt(saltString);
-                }
-
                 au.setAu_name((String) dataMap.get("au_name"));
-
                 au.setAu_tel((String) dataMap.get("au_tel"));
-                au.setAu_register((Timestamp) dataMap.get("au_register"));
-                au.setAu_status((Integer) dataMap.get("au_status"));
-                au.setAu_login((Timestamp) dataMap.get("au_login"));
                 au.setAu_img((String) dataMap.get("au_img"));
 
                 auDao.UpdateAu(au);
@@ -273,8 +254,8 @@ public class AuServiceImpl implements AuService {
                 au.setAu_tel((String)dataMap.get("au_tel"));
                 au.setAu_register((Timestamp) dataMap.get("au_register"));
                 au.setAu_status(1);
-                au.setAu_login((Timestamp) dataMap.get("au_login"));
                 au.setAu_img((String)dataMap.get("au_img"));
+                //TODO 这里加一些审核字段
 
                 auDao.InsertAu(au);
 

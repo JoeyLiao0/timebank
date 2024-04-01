@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--命名空间写接口-->
+<mapper namespace="tb.dao.FeedbackDao" >
+
+    <select id="selectFeedbackById" resultType="tb.entity.Feedback">
+        SELECT * FROM FEEDBACK WHERE feedback_id = #{feedback_id}
+    </select>
+
+    <select id="selectByIdAndRole" resultType="tb.entity.Feedback">
+        SELECT * FROM FEEDBACK WHERE feedback_senderid = #{sender_id} and feedback_senderrole = #{sender_role} and feedback_receiverid = #{receiver_id} and feedback_receiverrole = #{receiver_role} order by feedback_timestamp
+    </select>
+
+    <insert id="insertFeedback" parameterType="tb.entity.Feedback" useGeneratedKeys="true" keyProperty="feedback.feedback_id">
+        INSERT INTO FEEDBACK (
+                              feedback_id ,
+                              feedback_timestamp,
+                              feedback_senderid,
+                              feedback_receiverid,
+                              feedback_senderrole ,
+                              feedback_receiverrole,
+                              feedback_content,
+                              feedback_contenttype,
+                              feedback_isread)
+        VALUES (
+                null,
+                #{feedback.feedback_timestamp},
+                #{feedback.feedback_senderid},
+                #{feedback.feedback_receiverid},
+                #{feedback.feedback_senderrole},
+                #{feedback.feedback_receiverrole},
+                #{feedback.feedback_content},
+                #{feedback.feedback_contenttype},
+                #{feedback.feedback_isread})
+    </insert>
+
+    <delete id="deleteFeedbackById" parameterType="tb.entity.Feedback">
+        delete from FEEDBACK
+            where feedback_id = #{id}
+    </delete>
+
+
+    <update id="updateFeedbackIsRead">
+        update FEEDBACK set feedback_isread = #{feedback_isread} where feedback_id = #{feedback_id}
+    </update>
+</mapper>

@@ -8,6 +8,9 @@ import tb.dao.TaskDao;
 import tb.entity.Cu;
 import tb.entity.Task;
 import tb.service.TaskService;
+import tb.servlet.Listener.DelayQueueInitializer;
+import tb.util.myDelayQueueManager;
+import tb.util.myDelayedTask;
 import tb.util.mySqlSession;
 
 import java.sql.Timestamp;
@@ -187,13 +190,22 @@ public class TaskServiceImpl implements TaskService {
 
                     session.commit();
 
+                    //这里把任务加入延时队列
+                    myDelayQueueManager delayQueueManager = DelayQueueInitializer.getDelayQueueManager();
+                    Integer taskId = task.getTask_id();
+                    long delay = (long)datamap.get("task_endtime")*1000-System.currentTimeMillis();
+                    myDelayedTask task1 = new myDelayedTask(delay,taskId,1);//截止日期
+                    myDelayedTask task2 = new myDelayedTask(delay+1800*1000,taskId,2);//可以补完成的范围，现在写死为半小时
+                    delayQueueManager.addTask(task1);
+                    delayQueueManager.addTask(task2);
+
                     return "yes";
                 }
+
             }catch (Exception e) {
                 if(session!=null)session.rollback();
                 return e.getMessage();
             }
-
 
         }
     }
@@ -252,6 +264,7 @@ public class TaskServiceImpl implements TaskService {
                     return "此任务不是待审核/待领取状态，无法取消！";
                 }else{
                     task.setTask_status("9999");//被发布者取消就设置为9999
+                    task.setTask_timeout("00");
                     taskDao.UpdateTask(task);
 
                     session.commit();
@@ -357,8 +370,18 @@ public class TaskServiceImpl implements TaskService {
                     cuDao.UpdateCu(taker);
 
                     session.commit();
+
+                    //这里把任务加入延时队列
+                    myDelayQueueManager delayQueueManager = DelayQueueInitializer.getDelayQueueManager();
+                    Integer taskId = task.getTask_id();
+
+                    long delay = 60*60*24*3*1000;
+                    myDelayedTask delayedTask = new myDelayedTask(delay,taskId,3);//截止日期
+                    delayQueueManager.addTask(delayedTask);
+
                     return "yes";
                 }
+
             }catch (Exception e) {
                 if(session!=null)session.rollback();
                 return e.getMessage();
@@ -396,5 +419,65 @@ public class TaskServiceImpl implements TaskService {
                 return e.getMessage();
             }
         }
+    }
+
+    public String timeout(Integer delayType , Integer task_id){
+        try(SqlSession session = mySqlSession.getSqSession()) {
+            try{
+                TaskDao taskDao = session.getMapper(TaskDao.class);
+                Task task = taskDao.SelectTaskById(task_id);
+
+                String task_timeout = task.getTask_timeout();
+                String task_status = task.getTask_status();
+
+                CuDao cuDao = session.getMapper(CuDao.class);
+                Cu cu = cuDao.SelectCuById(task.getTask_publisherid());
+
+                if(delayType==1&&task_status.charAt(2)=='0'&&task_timeout.equals("00")){
+                        //到了第一个截止日期
+                        //如果未完成，应该把时间状态码设为10
+                        task_timeout = "10";
+                        task.setTask_timeout(task_timeout);
+
+                        //返还一定比例时间币
+                        Integer task_coin = task.getTask_coin()/2;
+                        Integer back_coin = task.getTask_coin() - task_coin;
+                        task.setTask_coin(task_coin);
+
+                        cu.setCu_coin(cu.getCu_coin()+back_coin);
+                        //TODO 这里可能要记录
+                        cuDao.UpdateCu(cu);
+
+                }else if(delayType==2&&task_status.charAt(2)=='0'&&task_timeout.equals("10")){
+                        //到了第二个截止日期
+                        task_timeout = "20";
+                        //返还全部时间币
+                        task.setTask_timeout(task_timeout);
+
+                        Integer task_coin = task.getTask_coin();
+
+                        task.setTask_coin(0);
+
+                        cu.setCu_coin(cu.getCu_coin()+task_coin);
+                        cuDao.UpdateCu(cu);
+                }else if(delayType==3&&task_status.charAt(3)=='0'){
+                        //到了第三个截止日期
+                        task_timeout = task_timeout.charAt(0) + "1";
+                        task.setTask_timeout(task_timeout);
+                        task.setTask_score(5);
+                }
+
+                taskDao.UpdateTask(task);
+
+                session.commit();
+
+                return "yes";
+
+            }catch (Exception e) {
+                if(session!=null)session.rollback();
+                return e.getMessage();
+            }
+        }
+
     }
 }

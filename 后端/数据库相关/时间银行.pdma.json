@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.9.1",
   "createdTime": "2024-2-21 11:41:26",
-  "updatedTime": "2024-3-18 21:41:09",
+  "updatedTime": "2024-3-25 23:24:39",
   "dbConns": [],
   "profile": {
     "default": {
@@ -2328,7 +2328,7 @@
           "id": "5DBC6928-FD79-4013-80C0-44B36248DA90"
         },
         {
-          "defKey": "notice_text",
+          "defKey": "notice_content",
           "defName": "公告正文",
           "comment": "",
           "type": "",
@@ -2926,13 +2926,31 @@
       ],
       "fields": [
         {
+          "defKey": "talk_id",
+          "defName": "对话编号",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": true,
+          "notNull": true,
+          "autoIncrement": true,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
+          "extProps": {},
+          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
+          "id": "88570348-0EA4-4F67-B03F-583359B2D872"
+        },
+        {
           "defKey": "talk_taskid",
           "defName": "对话任务编号",
           "comment": "",
           "type": "",
           "len": "",
           "scale": "",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true,
           "autoIncrement": false,
           "defaultValue": "",
@@ -2942,6 +2960,24 @@
           "extProps": {},
           "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
           "id": "0EF6AC01-6ECE-4005-AE3D-EC999F805CE2"
+        },
+        {
+          "defKey": "talk_timestamp",
+          "defName": "信息时间戳",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
+          "extProps": {},
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
+          "id": "A868A9FC-AF23-494D-B44E-10D75B53D978"
         },
         {
           "defKey": "talk_senderid",
@@ -2962,6 +2998,24 @@
           "id": "7757010C-B459-46F3-8FD8-79BC40F11B0F"
         },
         {
+          "defKey": "talk_receiverid",
+          "defName": "接收者编号",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
+          "extProps": {},
+          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
+          "id": "AAE50FE2-29DF-44BB-A958-C129E0113A1A"
+        },
+        {
           "defKey": "talk_content",
           "defName": "信息内容",
           "comment": "",
@@ -2980,8 +3034,8 @@
           "id": "B1E29472-F015-4561-BBF1-7F26A6404A9D"
         },
         {
-          "defKey": "talk_timestamp",
-          "defName": "信息时间戳",
+          "defKey": "talk_contenttype",
+          "defName": "信息类型",
           "comment": "",
           "type": "",
           "len": "",
@@ -2989,13 +3043,31 @@
           "primaryKey": false,
           "notNull": true,
           "autoIncrement": false,
+          "defaultValue": "text",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
+          "extProps": {},
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "id": "CA37965A-2200-4707-8485-A83E69E61CCA"
+        },
+        {
+          "defKey": "talk_isread",
+          "defName": "已读名单json",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
           "defaultValue": "",
           "hideInGraph": false,
           "refDict": "",
-          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
+          "baseType": "",
           "extProps": {},
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "id": "A868A9FC-AF23-494D-B44E-10D75B53D978"
+          "domain": "",
+          "id": "1A64310E-C7DE-4A33-9AEA-A11AD5B0ED89"
         }
       ],
       "correlations": [],
@@ -3171,6 +3243,24 @@
           "id": "737B4A82-EF55-4542-B927-70F4850EA44B"
         },
         {
+          "defKey": "chat_timestamp",
+          "defName": "消息时间戳",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
+          "extProps": {},
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
+          "id": "91D26CDC-11AE-4745-AB80-CA7C8661CF24"
+        },
+        {
           "defKey": "chat_senderid",
           "defName": "消息发送者编号",
           "comment": "",
@@ -3187,6 +3277,24 @@
           "extProps": {},
           "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
           "id": "C5D024DA-F925-41FF-993A-B35D85A19D31"
+        },
+        {
+          "defKey": "chat_senderrole",
+          "defName": "消息发送者身份",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
+          "extProps": {},
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "id": "FC93BCF8-6E5B-4B8D-B5AC-32AB1518131A"
         },
         {
           "defKey": "chat_content",
@@ -3207,8 +3315,217 @@
           "id": "E1D92659-4D96-4D7F-9B7B-5EF0FAF61CB4"
         },
         {
-          "defKey": "chat_timestamp",
-          "defName": "消息时间戳",
+          "defKey": "chat_contenttype",
+          "defName": "消息类型",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "text",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
+          "extProps": {},
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "id": "337D8AEB-5325-4008-A3F3-BFCD8A9E79B3"
+        },
+        {
+          "defKey": "chat_isread",
+          "defName": "已读名单json",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "",
+          "extProps": {},
+          "domain": "",
+          "id": "6BAA9677-1F05-411E-83A4-D504DC48F417"
+        }
+      ],
+      "correlations": [],
+      "indexes": [],
+      "type": "P"
+    },
+    {
+      "id": "53E338EF-666B-44B0-9E14-748FC1E08FAB",
+      "env": {
+        "base": {
+          "nameSpace": "",
+          "codeRoot": ""
+        }
+      },
+      "defKey": "FEEDBACK",
+      "defName": "用户和客服的反馈",
+      "comment": "",
+      "properties": {
+        "partitioned by": "(date string)",
+        "row format delimited": "",
+        "fields terminated by ','": "",
+        "collection items terminated by '-'": "",
+        "map keys terminated by ':'": "",
+        "store as textfile;": ""
+      },
+      "sysProps": {
+        "nameTemplate": "{defKey}[{defName}]"
+      },
+      "notes": {},
+      "headers": [
+        {
+          "refKey": "hideInGraph",
+          "hideInGraph": true
+        },
+        {
+          "refKey": "defKey",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "defName",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "primaryKey",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "notNull",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "autoIncrement",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "domain",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "type",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "len",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "scale",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "comment",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "refDict",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "defaultValue",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "isStandard",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "uiHint",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "extProps",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr1",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr2",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr3",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr4",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr5",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr6",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr7",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr8",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr9",
+          "freeze": false,
+          "hideInGraph": true
+        }
+      ],
+      "fields": [
+        {
+          "defKey": "feedback_id",
+          "defName": "反馈信息编号",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": true,
+          "notNull": true,
+          "autoIncrement": true,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
+          "extProps": {},
+          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
+          "id": "C4156CD6-D5B6-4BF0-82E7-070A4D472B0B"
+        },
+        {
+          "defKey": "feedback_senderid",
+          "defName": "发布者编号",
           "comment": "",
           "type": "",
           "len": "",
@@ -3219,14 +3536,14 @@
           "defaultValue": "",
           "hideInGraph": false,
           "refDict": "",
-          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
+          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
           "extProps": {},
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "id": "91D26CDC-11AE-4745-AB80-CA7C8661CF24"
+          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
+          "id": "1BE67655-19F6-4408-A6AB-2CDC1169A723"
         },
         {
-          "defKey": "chat_senderrole",
-          "defName": "消息发送者身份",
+          "defKey": "feedback_senderrole",
+          "defName": "发布者角色",
           "comment": "",
           "type": "",
           "len": "",
@@ -3240,7 +3557,115 @@
           "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
           "extProps": {},
           "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "id": "FC93BCF8-6E5B-4B8D-B5AC-32AB1518131A"
+          "id": "132D7D81-F850-4759-9CA2-75F210E32FAA"
+        },
+        {
+          "defKey": "feedback_receiverid",
+          "defName": "接收者编号",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "1D764C4A-6F9F-421E-B11A-6F3E23B51811",
+          "extProps": {},
+          "domain": "6BC8F04B-6CFA-4995-98D3-318F5CDD774E",
+          "id": "13E48198-1E84-41AF-8BA7-10F41DE06EF5"
+        },
+        {
+          "defKey": "feedback_receiverrole",
+          "defName": "接收者角色",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
+          "extProps": {},
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "id": "4C708B09-A54B-4599-BA67-D2F9065480BB"
+        },
+        {
+          "defKey": "feedback_content",
+          "defName": "反馈内容",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
+          "extProps": {},
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "id": "CB86722F-DD98-43F8-989E-78DE37D8D791"
+        },
+        {
+          "defKey": "feedback_contenttype",
+          "defName": "反馈内容类型",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "text",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "FC9790A7-36B8-4A48-8F9A-BC1042BCFE64",
+          "extProps": {},
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "id": "5C4A0716-45CC-4694-A4D3-1F419D436457"
+        },
+        {
+          "defKey": "feedback_timestamp",
+          "defName": "反馈时间戳",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "89D69E81-EA34-42EE-9FA2-93B8BD27E098",
+          "extProps": {},
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
+          "id": "F9E5052C-6EA2-4DBE-9485-4CFBFB328E49"
+        },
+        {
+          "defKey": "feedback_isread",
+          "defName": "已读记录json",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "baseType": "",
+          "extProps": {},
+          "domain": "",
+          "id": "E8D26A43-B995-426B-82C6-32564974B399"
         }
       ],
       "correlations": [],

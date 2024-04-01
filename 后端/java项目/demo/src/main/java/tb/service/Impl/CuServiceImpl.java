@@ -194,34 +194,17 @@ public class CuServiceImpl implements CuService {
             try{
                 CuDao cuDao = session.getMapper(CuDao.class);
 
-                Cu cu =   cuDao.SelectCuById((Integer) dataMap.get("cu_id"));
+                Cu cu = cuDao.SelectCuById((Integer) dataMap.get("cu_id"));
 
                 if(cu == null){
                     throw new Exception("用户不存在！");
                 }
 
-                if(dataMap.get("cu_pwd")!=null){
-                    // 生成盐值
-                    byte[] salt = new byte[16]; // 长度可以根据需要调整
-                    SecureRandom random = new SecureRandom();
-                    random.nextBytes(salt);
-                    String saltString = Base64.getEncoder().encodeToString(salt);
-
-                    // 拼接密码和盐值，并使用SHA-256哈希
-                    String hashedPassword = DigestUtil.sha256Hex((String) dataMap.get("cu_pwd")+ saltString);
-
-                    cu.setCu_pwd(hashedPassword);
-                    cu.setCu_salt(saltString);
-                }
-
                 cu.setCu_name((String) dataMap.get("cu_name"));
                 cu.setCu_tel((String) dataMap.get("cu_tel"));
-                cu.setCu_register((Timestamp) dataMap.get("cu_register"));
-                cu.setCu_status((Integer) dataMap.get("cu_status"));
-                cu.setCu_login((Timestamp) dataMap.get("cu_login"));
                 cu.setCu_img((String) dataMap.get("cu_img"));
                 cu.setCu_coin((Integer) dataMap.get("cu_coin"));
-                //cu.setCu_score(5); TODO
+                //TODO 这里cu的score可以设置吗
 
                 cuDao.UpdateCu(cu);
 

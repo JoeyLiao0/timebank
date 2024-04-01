@@ -25,6 +25,7 @@
         <mapper resource="Mapper/NoticeMapper.xml"/>
         <mapper resource="Mapper/TalkMapper.xml"/>
         <mapper resource="Mapper/TaskMapper.xml"/>
+        <mapper resource="Mapper/FeedbackMapper.xml"/>
     </mappers>
 
 </configuration>

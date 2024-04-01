@@ -8,14 +8,41 @@ import java.sql.Timestamp;
 public class Chat {
     //消息编号
     private Integer chat_id;
+
     //消息发送者编号
     private Integer chat_senderid;
+
+    //消息发送者角色
+    private String chat_senderrole;
+
     //消息内容
     private String chat_content;
+
+    //消息类型
+    private String chat_contenttype;
+
     //消息时间戳
     private Timestamp chat_timestamp;
-    //消息发送者身份
-    private String chat_senderrole;
+
+    //已读名单
+    private String chat_isread;
+
+    public String getChat_contenttype() {
+        return chat_contenttype;
+    }
+
+    public void setChat_contenttype(String chat_contenttype) {
+        this.chat_contenttype = chat_contenttype;
+    }
+
+    public String getChat_isread() {
+        return chat_isread;
+    }
+
+    public void setChat_isread(String chat_isread) {
+        this.chat_isread = chat_isread;
+    }
+
 
     public String getChat_senderrole() {
         return chat_senderrole;

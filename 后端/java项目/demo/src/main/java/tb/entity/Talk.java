@@ -12,13 +12,60 @@ import java.sql.Timestamp;
  */
 public class Talk {
     //对话编号
+    private Integer talk_id;
+
+    //任务编号
     private Integer talk_taskid;
-    //对话消息发出者
+
+    //对话消息发出者编号
     private Integer talk_senderid;
+
+    //消息接收者编号
+    private Integer talk_receiverid;
+
     //对话消息
     private String talk_content;
+
+    //消息类型
+    private String talk_contenttype;
+
     //对话时间戳
     private Timestamp talk_timestamp;
+
+    //已读名单
+    private String talk_isread;
+
+    public Integer getTalk_id() {
+        return talk_id;
+    }
+
+    public void setTalk_id(Integer talk_id) {
+        this.talk_id = talk_id;
+    }
+
+    public Integer getTalk_receiverid() {
+        return talk_receiverid;
+    }
+
+    public void setTalk_receiverid(Integer talk_receiverid) {
+        this.talk_receiverid = talk_receiverid;
+    }
+
+    public String getTalk_contenttype() {
+        return talk_contenttype;
+    }
+
+    public void setTalk_contenttype(String talk_contenttype) {
+        this.talk_contenttype = talk_contenttype;
+    }
+
+    public String getTalk_isread() {
+        return talk_isread;
+    }
+
+    public void setTalk_isread(String talk_isread) {
+        this.talk_isread = talk_isread;
+    }
 
     public Integer getTalk_taskid() {
         return talk_taskid;

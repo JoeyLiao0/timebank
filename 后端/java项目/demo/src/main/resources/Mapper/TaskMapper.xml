@@ -28,7 +28,7 @@
             where task_takerid = #{task_takerId}
     </select>
 
-    <insert id="PublishNewTask" parameterType="tb.entity.Task">
+    <insert id="PublishNewTask" parameterType="tb.entity.Task" useGeneratedKeys="true" keyProperty="task.task_id">
         insert into TASK
         <trim prefix="(" suffix=")" suffixOverrides=",">
             task_id,

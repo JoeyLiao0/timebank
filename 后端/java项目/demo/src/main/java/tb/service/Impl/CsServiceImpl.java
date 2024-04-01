@@ -210,26 +210,9 @@ public class CsServiceImpl implements CsService {
                     throw new Exception("用户不存在！");
                 }
 
-                if(dataMap.get("cs_pwd")!=null){
-                    // 生成盐值
-                    byte[] salt = new byte[16]; // 长度可以根据需要调整
-                    SecureRandom random = new SecureRandom();
-                    random.nextBytes(salt);
-                    String saltString = Base64.getEncoder().encodeToString(salt);
-
-                    // 拼接密码和盐值，并使用SHA-256哈希
-                    String hashedPassword = DigestUtil.sha256Hex((String) dataMap.get("cs_pwd")+ saltString);
-
-                    cs.setCs_pwd(hashedPassword);
-                    cs.setCs_salt(saltString);
-                }
 
                 cs.setCs_name((String) dataMap.get("cs_name"));
-
                 cs.setCs_tel((String) dataMap.get("cs_tel"));
-                cs.setCs_register((Timestamp) dataMap.get("cs_register"));
-                cs.setCs_status((Integer) dataMap.get("cs_status"));
-                cs.setCs_login((Timestamp) dataMap.get("cs_login"));
                 cs.setCs_img((String) dataMap.get("cs_img"));
 
                 csDao.UpdateCs(cs);

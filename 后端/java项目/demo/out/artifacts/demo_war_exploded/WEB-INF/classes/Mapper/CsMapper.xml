@@ -11,9 +11,6 @@
         from
             CS
         where 1=1
-        <if test="id != null">
-            and cs_id = #{id}
-        </if>
         <if test="name != null and name !=''">
             and cs_name like "%"#{name}"%"
         </if>
@@ -26,92 +23,74 @@
         <if test="loginBegin != null and loginEnd != null">
             and cs_login between #{loginBegin} and #{loginEnd}
         </if>
-        <if test="userStatus == 0 or userStatus ==1">
-            and cs_status = userStatus
+        <if test="userStatus == 0 or userStatus == 1">
+            and cs_status = #{userStatus}
         </if>
 
     </select>
 
-<!--    <select id="SelectAllCs" resultType="tb.entity.Cs">-->
-<!--        select * from CS;-->
-<!--    </select>-->
-
-
     <select id="SelectCsById"  parameterType="java.lang.Integer" resultType="tb.entity.Cs">
         select * from CS
-        where cs_id=#{id}
+            where cs_id=#{id}
     </select>
 
 
     <select id="SelectCsByName"  parameterType="java.lang.String" resultType="tb.entity.Cs">
         select * from CS
-        where cs_name=#{name}
+            where cs_name=#{name}
     </select>
 
-
-<!--    <select id="SelectCsByTel"  parameterType="java.lang.String" resultType="tb.entity.Cs">-->
-<!--        select * from CS-->
-<!--        where cs_tel=#{tel}-->
-<!--    </select>-->
-
-
-<!--    <select id="SelectCsByLogin" parameterType="java.sql.Date" resultType="tb.entity.Cs">-->
-<!--        select * from CS-->
-<!--        where cs_login between #{begintime} and #{endtime}-->
-<!--    </select>-->
-
-
-<!--    <select id="SelectCsByRegister"  parameterType="java.sql.Date" resultType="tb.entity.Cs">-->
-<!--        select * from CS-->
-<!--        where cs_register between #{begintime} and #{endtime}-->
-<!--    </select>-->
-
-
-<!--    <select id="SelectCsByNameFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Cs">-->
-<!--        select * from CS-->
-<!--        where cs_name like "%"#{name}"%"-->
-<!--    </select>-->
-
-
-<!--    <select id="SelectCsByTelFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Cs">-->
-<!--        select * from CS-->
-<!--        where cs_tel like "%"#{tel}"%"-->
-<!--    </select>-->
-
-
-    <insert id="InsertCs"  parameterType="tb.entity.Cs" >
-        insert into CS(cs_id,cs_name,cs_pwd,cs_img,cs_login,cs_tel,cs_register,cs_salt)
-        values (null,#{cs.cs_name},#{cs.cs_pwd},#{cs.cs_img},#{cs.cs_login},#{cs.cs_tel},#{cs.cs_register},#{cs.cs_salt})
+    <insert id="InsertCs" parameterType="tb.entity.Cs">
+        insert into CS
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                cs_id,
+                cs_name,
+                cs_pwd,
+                <if test="cs.cs_img != null">cs_img,</if>
+                <if test="cs.cs_login !=null">cs_login,</if>
+                cs_tel,
+                cs_register,
+                cs_salt,
+                cs_status,
+                <if test="cs.cs_unblocktime != null">cs_unblocktime</if>
+            </trim>
+        values
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                null,
+                #{cs.cs_name},
+                #{cs.cs_pwd},
+                <if test="cs.cs_img != null">#{cs.cs_img},</if>
+                <if test="cs.cs_login !=null">#{cs.cs_login},</if>
+                #{cs.cs_tel},
+                #{cs.cs_register},
+                #{cs.cs_salt},
+                #{cs.cs_status},
+                <if test="cs.cs_unblocktime != null">#{cs.cs_unblocktime}</if>
+            </trim>
     </insert>
 
 
     <delete id="DeleteCsById" parameterType="java.lang.Integer">
         delete from CS
-        where cs_id = #{id}
-    </delete>
-
-
-    <delete id="DeleteCsByName" parameterType="java.lang.String">
-        delete from CS
-        where cs_name = #{name}
-    </delete>
-
-
-    <delete id="DeleteCsByTel" parameterType="java.lang.String">
-        delete from CS
-        where cs_tel = #{tel}
+            where cs_id = #{id}
     </delete>
 
 
     <update id="UpdateCs" parameterType="tb.entity.Cs">
         update CS
-        set cs_name = #{cs.cs_name},
-            cs_pwd = #{cs.cs_pwd},
-            cs_img = #{cs.cs_img},
-            cs_login =#{cs.cs_login},
-            cs_tel = #{cs.cs_tel},
-            cs_register = #{cs.cs_register},
-            cs_salt = #{cs.cs_salt}
+        <set>
+            <trim suffixOverrides=",">
+                <if test="cs.cs_name != null">cs_name = #{cs.cs_name},</if>
+                <if test="cs.cs_pwd != null">cs_pwd = #{cs.cs_pwd},</if>
+                <if test="cs.cs_img != null">cs_img = #{cs.cs_img},</if>
+                <if test="cs.cs_login != null">cs_login = #{cs.cs_login},</if>
+                <if test="cs.cs_tel != null">cs_tel = #{cs.cs_tel},</if>
+                <if test="cs.cs_register != null">cs_register = #{cs.cs_register},</if>
+                <if test="cs.cs_salt != null">cs_salt = #{cs.cs_salt},</if>
+                <if test="cs.cs_status != null">cs_status = #{cs.cs_status},</if>
+                <if test="cs.cs_unblocktime != null">cs_unblocktime = #{cs.cs_unblocktime}</if>
+            </trim>
+        </set>
         where cs_id = #{cs.cs_id}
     </update>
 

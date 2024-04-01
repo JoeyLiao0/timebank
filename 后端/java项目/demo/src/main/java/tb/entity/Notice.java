@@ -18,7 +18,7 @@ public class Notice {
     private Timestamp notice_time;
 
     //公告正文
-    private String notice_text;
+    private String notice_content;
     //公告标题
     private String notice_title;
 
@@ -38,12 +38,12 @@ public class Notice {
         this.notice_time = notice_time;
     }
 
-    public String getNotice_text() {
-        return notice_text;
+    public String getNotice_content() {
+        return notice_content;
     }
 
-    public void setNotice_text(String notice_text) {
-        this.notice_text = notice_text;
+    public void setNotice_content(String notice_content) {
+        this.notice_content = notice_content;
     }
 
     public String getNotice_title() {

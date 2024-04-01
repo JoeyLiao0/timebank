@@ -27,4 +27,6 @@ public interface TaskService {
 
     String comment(Integer id,Integer task_id,Integer task_score);
 
+    String timeout(Integer delayType , Integer task_id);
+
 }

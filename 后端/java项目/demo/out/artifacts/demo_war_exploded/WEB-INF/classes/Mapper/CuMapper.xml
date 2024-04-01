@@ -12,9 +12,6 @@
         from
             CU
         where 1=1
-        <if test="id != null">
-            and cu_id = #{id}
-        </if>
         <if test="name != null and name !=''">
             and cu_name like "%"#{name}"%"
         </if>
@@ -28,95 +25,87 @@
             and cu_login between #{loginBegin} and #{loginEnd}
         </if>
         <if test="userStatus == 0 or userStatus ==1">
-            and cu_status = userStatus
+            and cu_status = #{userStatus}
         </if>
 
     </select>
 
-<!--    <select id="SelectAllCu" resultType="tb.entity.Cu">-->
-<!--        select * from Cu;-->
-<!--    </select>-->
-
-
     <select id="SelectCuById"  parameterType="java.lang.Integer" resultType="tb.entity.Cu">
         select * from CU
-        where cu_id=#{id}
+            where cu_id=#{id}
     </select>
 
 
     <select id="SelectCuByName"  parameterType="java.lang.String" resultType="tb.entity.Cu">
         select * from CU
-        where cu_name=#{name}
+            where cu_name=#{name}
     </select>
 
+    <insert id="InsertCu" parameterType="tb.entity.Cu">
+        insert into CU
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            cu_id,
+            cu_name,
+            cu_pwd,
+            cu_salt,
+            cu_tel,
+            cu_coin,
+            cu_register,
+            cu_login,
+            cu_release,
+            cu_accept,
+            cu_finish,
+            <if test="cu.cu_img != null">cu_img,</if>
+            cu_status,
+            <if test="cu.cu_unblocktime != null">cu_unblocktime</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            null,
+            #{cu.cu_name},
+            #{cu.cu_pwd},
+            #{cu.cu_salt},
+            #{cu.cu_tel},
+            #{cu.cu_coin},
+            #{cu.cu_register},
+            #{cu.cu_login},
+            #{cu.cu_release},
+            #{cu.cu_accept},
+            #{cu.cu_finish},
+            <if test="cu.cu_img != null">#{cu.cu_img},</if>
+            #{cu.cu_status},
+            <if test="cu.cu_unblocktime != null">#{cu.cu_unblocktime}</if>
+        </trim>
 
-<!--    <select id="SelectCuByTel"  parameterType="java.lang.String" resultType="tb.entity.Cu">-->
-<!--        select * from CU-->
-<!--        where cu_tel=#{tel}-->
-<!--    </select>-->
-
-
-<!--    <select id="SelectCuByLogin" parameterType="java.sql.Date" resultType="tb.entity.Cu">-->
-<!--        select * from CU-->
-<!--        where cu_login between #{begintime} and #{endtime}-->
-<!--    </select>-->
-
-
-<!--    <select id="SelectCuByRegister"  parameterType="java.sql.Date" resultType="tb.entity.Cu">-->
-<!--        select * from CU-->
-<!--        where cu_register between #{begintime} and #{endtime}-->
-<!--    </select>-->
-
-
-<!--    <select id="SelectCuByNameFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Cu">-->
-<!--        select * from CU-->
-<!--        where cu_name like "%"#{name}"%"-->
-<!--    </select>-->
-
-
-<!--    <select id="SelectCuByTelFuzzy"  parameterType="java.lang.String" resultType="tb.entity.Cu">-->
-<!--        select * from CU-->
-<!--        where cu_tel like "%"#{tel}"%"-->
-<!--    </select>-->
-
-
-    <insert id="InsertCu"  parameterType="tb.entity.Cu" >
-        insert into CU(cu_id,cu_name,cu_pwd,cu_img,cu_login,cu_tel,cu_register,cu_salt,cu_icon,cu_release,cu_accept)
-        values (null,#{cu.cu_name},#{cu.cu_pwd},#{cu.cu_img},#{cu.cu_login},#{cu.cu_tel},#{cu.cu_register},#{cu.cu_salt},#{cu.cu_icon},#{cu.cu_release},#{cu.cu_accept})
     </insert>
 
 
     <delete id="DeleteCuById" parameterType="java.lang.Integer">
         delete from CU
-        where cu_id = #{id}
-    </delete>
-
-
-    <delete id="DeleteCuByName" parameterType="java.lang.String">
-        delete from CU
-        where cu_name = #{name}
-    </delete>
-
-
-    <delete id="DeleteCuByTel" parameterType="java.lang.String">
-        delete from CU
-        where cu_tel = #{tel}
+            where cu_id = #{id}
     </delete>
 
 
     <update id="UpdateCu" parameterType="tb.entity.Cu">
         update CU
-        set cu_name = #{cu.cu_name},
-            cu_pwd = #{cu.cu_pwd},
-            cu_img = #{cu.cu_img},
-            cu_login =#{cu.cu_login},
-            cu_tel = #{cu.cu_tel},
-            cu_register = #{cu.cu_register},
-            cu_salt = #{cu.cu_salt},
-            cu_icon = #{cu.cu_icon},
-            cu_release = #{cu.cu_release},
-            cu_accept = #{cu.cu_accept}
-        where cu_id = #{cu.cu_id}
+        <set>
+            <trim suffixOverrides=",">
+                <if test="cu.cu_name != null">cu_name = #{cu.cu_name},</if>
+                <if test="cu.cu_pwd != null">cu_pwd = #{cu.cu_pwd},</if>
+                <if test="cu.cu_salt != null">cu_salt = #{cu.cu_salt},</if>
+                <if test="cu.cu_tel != null">cu_tel = #{cu.cu_tel},</if>
+                <if test="cu.cu_coin != null">cu_coin = #{cu.cu_coin},</if>
+                <if test="cu.cu_register != null">cu_register = #{cu.cu_register},</if>
+                <if test="cu.cu_login != null">cu_login = #{cu.cu_login},</if>
+                <if test="cu.cu_release != null">cu_release = #{cu.cu_release},</if>
+                <if test="cu.cu_accept != null">cu_accept = #{cu.cu_accept},</if>
+                <if test="cu.cu_finish != null">cu_finish = #{cu.cu_finish},</if>
+                <if test="cu.cu_img != null">cu_img = #{cu.cu_img},</if>
+                <if test="cu.cu_status != null">cu_status = #{cu.cu_status},</if>
+                <if test="cu.cu_unblocktime != null">cu_unblocktime = #{cu.cu_unblocktime}</if>
+            </trim>
+        </set>
+            where cu_id = #{cu.cu_id}
     </update>
 
 

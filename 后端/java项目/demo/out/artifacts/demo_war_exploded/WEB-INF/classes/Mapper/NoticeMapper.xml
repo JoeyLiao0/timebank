@@ -7,19 +7,30 @@
 <mapper namespace="tb.dao.NoticeDao" >
 
     <select id="SelectAllNotice"  resultType="tb.entity.Notice">
-        select * from NOTICE
+        select * from NOTICE order by notice_time
     </select>
 
 
-    <insert id="InsertNewNotice"  parameterType="tb.entity.Notice" >
-        insert into NOTICE(notice_id,notice_begintime,notice_endtime,notice_text,notice_title)
-        values (null,#{notice.notice_begintime},#{notice.notice_endtime},#{notice.notice_text},#{notice.notice_title})
+    <insert id="InsertNewNotice"  parameterType="tb.entity.Notice" useGeneratedKeys="true" keyProperty="notice.notice_id">
+        insert into
+            NOTICE(
+                notice_id,
+                notice_time,
+                notice_content,
+                notice_title
+            )
+            values(
+                null,
+                #{notice.notice_time},
+                #{notice.notice_content},
+                #{notice.notice_title}
+            )
     </insert>
 
 
-    <delete id="DeleteNotice" parameterType="tb.entity.Notice">
+    <delete id="DeleteNoticeById" parameterType="tb.entity.Notice">
         delete from NOTICE
-        where notice_id = #{notice.notice_id}
+            where notice_id = #{notice.notice_id}
     </delete>
 
 </mapper>
