@@ -120,6 +120,29 @@ public class CsServiceImpl implements CsService {
             return null;
         }
     }
+
+    public Map<String, Object> selectByName(String username) {
+        try(SqlSession session = mySqlSession.getSqSession()){
+
+            CsDao csDao = session.getMapper(CsDao.class);
+            Cs cs = csDao.SelectCsByName(username);
+
+            Map<String ,Object> csInfo =  new HashMap<>();
+
+            csInfo.put("id",cs.getCs_id());
+            csInfo.put("login",cs.getCs_login());
+            csInfo.put("phone",cs.getCs_tel());
+            csInfo.put("name",cs.getCs_name());
+            csInfo.put("userStatus",cs.getCs_status() == 1);
+            csInfo.put("register",cs.getCs_register());
+            csInfo.put("img",cs.getCs_img());
+
+            return csInfo;
+
+        }catch (Exception e){
+            return null;
+        }
+    }
     public String setStatus(int id, boolean status, Timestamp unblocktime) {
 
         try(SqlSession session = mySqlSession.getSqSession()){

@@ -13,7 +13,7 @@ public interface FeedbackDao {
     Feedback selectFeedbackById(@Param("feedback_id") Integer feedbackId);
 
     // 根据编号和角色查询反馈记录列表
-    List<Feedback> selectByIdAndRole(@Param("sender_id")Integer senderId,@Param("sender_role") String senderRole,@Param("receiver_id") int receiverId,@Param("receiver_role") String receiverRole);
+    List<Feedback> selectByIdAndRole(@Param("sender_role") String senderRole,@Param("sender_id")Integer senderId,@Param("receiver_role") String receiverRole,@Param("receiver_id") int receiverId);
 
     //根据编号删除记录
     void deleteFeedbackById(Integer id);

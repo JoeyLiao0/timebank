@@ -10,11 +10,15 @@
         select * from CHAT where chat_id = #{chat_id}
     </select>
 
+    <select id="selectAllChat"   resultType="tb.entity.Chat">
+        select * from CHAT
+    </select>
+
     <select id="selectBySenderIdAndSenderRole"   resultType="tb.entity.Chat">
         select * from CHAT where chat_senderid = #{chat_senderid} and chat_senderrole = #{chat_senderrole} order by chat_timestamp
     </select>
 
-    <insert id="insertChat"  parameterType="tb.entity.Chat" useGeneratedKeys="true" keyProperty="chat.chat_id" >
+    <insert id="insertChat" parameterType="tb.entity.Chat" useGeneratedKeys="true" keyProperty="chat.chat_id" >
         insert into CHAT(
                 chat_id,
                 chat_senderid,

@@ -20,6 +20,7 @@ public interface AuService {
 
     Map<String,Object> selectById(int id);
 
+    Map<String, Object> selectByName(String username);
     String update(Map<String,Object> dataMap);
 
     String insert(Map<String,Object> dataMap);

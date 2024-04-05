@@ -82,8 +82,6 @@ public class Task extends HttpServlet {
                  */
 
 
-
-
                     Integer id = (Integer) mj.getValue("id");
                     ArrayList<Map<String,Object>> taskArray = (new TaskServiceImpl()).selectMyTake(id);
 

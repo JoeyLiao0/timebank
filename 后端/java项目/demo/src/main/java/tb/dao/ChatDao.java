@@ -14,6 +14,8 @@ public interface ChatDao {
     //根据编号角色筛选新消息
     List<Chat> selectBySenderIdAndSenderRole(@Param("chat_senderid") Integer senderId,@Param("chat_senderrole") String senderRole);
 
+    List<Chat> selectAllChat();
+
     //发送新消息
     void insertChat(@Param("chat") Chat chat);
 

@@ -120,6 +120,27 @@ public class AuServiceImpl implements AuService {
         }
     }
 
+    public Map<String, Object> selectByName(String username){
+        try(SqlSession session = mySqlSession.getSqSession()){
+
+            AuDao auDao = session.getMapper(AuDao.class);
+            Au au = auDao.SelectAuByName(username);
+
+            Map<String ,Object> auInfo =  new HashMap<>();
+
+            auInfo.put("id",au.getAu_id());
+            auInfo.put("login",au.getAu_login());
+            auInfo.put("phone",au.getAu_tel());
+            auInfo.put("name",au.getAu_name());
+            auInfo.put("userStatus",au.getAu_status() == 1);
+            auInfo.put("register",au.getAu_register());
+            auInfo.put("img",au.getAu_img());
+
+            return auInfo;
+        }catch (Exception e){
+            return null;
+        }
+    }
 
     public String setStatus(int id, boolean status, Timestamp unblocktime) {
 

@@ -1,5 +1,6 @@
 package tb.service;
 
+import javax.management.ObjectName;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,8 @@ public interface AdService {
      */
 
     ArrayList<Map<String,Object>> selectByMap(Map<String,Object> dataMap);
+
+    Map<String, Object> selectByName(String username);
 
     String setStatus(int id, boolean status); //这里加个超时时间
 

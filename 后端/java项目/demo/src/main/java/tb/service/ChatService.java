@@ -22,7 +22,7 @@ public interface ChatService {
 
 
     //根据用户身份、用户id和消息id添加已读状态
-    void isRead(String role , Integer id,List<Integer> ids);
+    String isRead(String role , Integer id,List<Integer> ids);
 
     /**
      *

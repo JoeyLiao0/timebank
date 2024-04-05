@@ -119,6 +119,31 @@ public class CuServiceImpl implements CuService {
             return null;
         }
     }
+
+    public Map<String, Object> selectByName(String username) {
+ 
+        try(SqlSession session = mySqlSession.getSqSession()){
+
+            CuDao cuDao = session.getMapper(CuDao.class);
+            Cu cu = cuDao.SelectCuByName(username);
+
+            Map<String ,Object> cuInfo =  new HashMap<>();
+
+            cuInfo.put("id",cu.getCu_id());
+            cuInfo.put("login",cu.getCu_login());
+            cuInfo.put("phone",cu.getCu_tel());
+            cuInfo.put("name",cu.getCu_name());
+            cuInfo.put("userStatus",cu.getCu_status() == 1);
+            cuInfo.put("register",cu.getCu_register());
+            cuInfo.put("img",cu.getCu_img());
+
+            return cuInfo;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+
     public String setStatus(int id, boolean status, Timestamp unblocktime) {
 
         try(SqlSession session = mySqlSession.getSqSession()){

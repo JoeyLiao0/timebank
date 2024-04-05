@@ -35,7 +35,13 @@ public class MyWebSocketServer {
 
     @OnClose
     public void onClose(Session session) {
-
+        for(String key : sessions.keySet()){
+            if(sessions.get(key)==session){
+                sessions.remove(key);
+                System.out.println("remove "+key);
+                break;
+            }
+        }
     }
 
     @OnMessage
@@ -159,8 +165,6 @@ public class MyWebSocketServer {
 
                 sendMessageToSession((String) msg.get(0).get("receiverSessionId"),JSON.toJSONString(new JSONObject(mapJson), SerializerFeature.WriteMapNullValue));
 
-
-
                 break;
 
         }
@@ -176,6 +180,7 @@ public class MyWebSocketServer {
 
     // 向指定会话发送消息的方法  
     public static void sendMessageToSession(String sessionId, String message) throws IOException {
+
         Session session = sessions.get(sessionId);
         if (session != null && session.isOpen()) {
             session.getBasicRemote().sendText(message);

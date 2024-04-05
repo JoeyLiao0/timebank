@@ -3,8 +3,9 @@ package tb.servlet.Home.MyAccount;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import tb.service.Impl.CuServiceImpl;
 import tb.service.Impl.CsServiceImpl;
-import tb.util.myDomainSetting;
+
 import tb.util.myJson;
 import tb.util.myJwt;
 
@@ -101,6 +102,37 @@ public class cuAccount extends HttpServlet {
                     res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
                     res.setStatus(200);
 
+            }else if(pathInfo.equals("/setPwd")){
+                JSONObject jsonObject = new JSONObject();
+                //先验证密码
+                //再设置密码
+                String name = (String) mj.getValue("name");
+
+                String pwd = (String) dataMap.get("pwd");
+                String newPwd = (String)dataMap.get("newPwd");
+                String msg1 = new CuServiceImpl().judgePassword(name,pwd);
+
+                Map<String,Object> map = new HashMap<>();
+                map.put("cu_id",mj.getValue("id"));
+                map.put("cu_pwd",newPwd);
+
+
+                if(msg1.equals("yes")){
+                    String msg2 = new CuServiceImpl().update(map);
+                    if(msg2==null){
+                        jsonObject.put("status", true);
+                        jsonObject.put("msg",null);
+                    }else{
+                        jsonObject.put("status", false);
+                        jsonObject.put("msg",msg2);
+                    }
+                }else{
+                    jsonObject.put("status", false);
+                    jsonObject.put("msg",msg1);
+                }
+
+                res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+                res.setStatus(200);
             }
         }
     }

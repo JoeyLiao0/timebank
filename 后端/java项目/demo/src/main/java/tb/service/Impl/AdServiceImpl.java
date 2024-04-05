@@ -118,6 +118,29 @@ public class AdServiceImpl implements AdService {
             return null;
         }
     }
+
+    public Map<String, Object> selectByName(String username) {
+        try(SqlSession session = mySqlSession.getSqSession()){
+
+            AdDao adDao = session.getMapper(AdDao.class);
+            Ad ad = adDao.SelectAdByName(username);
+
+            Map<String ,Object> adInfo =  new HashMap<>();
+
+            adInfo.put("id",ad.getAd_id());
+            adInfo.put("login",ad.getAd_login());
+            adInfo.put("phone",ad.getAd_tel());
+            adInfo.put("name",ad.getAd_name());
+            adInfo.put("userStatus", ad.getAd_status() == 1);
+            adInfo.put("register",ad.getAd_register());
+            adInfo.put("img",ad.getAd_img());
+
+            return adInfo;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
     public String setStatus(int id, boolean status) {
 
         try(SqlSession session = mySqlSession.getSqSession()){

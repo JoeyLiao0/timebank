@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -47,6 +48,8 @@ public class Login extends HttpServlet {
                     String responseJson = JSON.toJSONString(data,SerializerFeature.WriteMapNullValue);//map 转 json写入response
                     res.getWriter().write(responseJson);
                     res.setStatus(200);
+
+                    //这里调用方法发送未读消息
                 } else {
                     //token失效,401
                     res.setStatus(401);
@@ -60,21 +63,38 @@ public class Login extends HttpServlet {
                 String role = (String) dataMap.get("role");
 
                 String msg = "";
+                Map<String,Object> datamap = null;
 
                 if (role != null) {
-                    msg = switch (role) {
-                        case "AD" -> new AdServiceImpl().judgePassword(username, password);
-                        case "AU" -> new AuServiceImpl().judgePassword(username, password);
-                        case "CS" -> new CsServiceImpl().judgePassword(username, password);
-                        case "CU" -> new CuServiceImpl().judgePassword(username, password);
-                        default -> msg;
+                     switch (role) {
+                        case "AD" :
+                            msg = new AdServiceImpl().judgePassword(username, password);
+                            datamap = (Map<String, Object>) new AdServiceImpl().selectByName(username);
+                            break;
+                        case "AU" :
+                            msg = new AuServiceImpl().judgePassword(username, password);
+                            datamap = (Map<String, Object>) new AuServiceImpl().selectByName(username);
+                            break;
+                        case "CS" :
+                            msg = new CsServiceImpl().judgePassword(username, password);
+                            datamap = (Map<String, Object>) new CsServiceImpl().selectByName(username);
+                            break;
+                        case "CU" :
+                            msg =new CuServiceImpl().judgePassword(username, password);
+                            datamap = (Map<String, Object>) new CuServiceImpl().selectByName(username);
+                            break;
                     };
                 }
 
                 if (msg.equals("yes")) {
                     Map<String, String> claims = new HashMap<>();
+
+                    claims.put("id", (String) datamap.get("id"));
                     claims.put("username", username);
                     claims.put("role", role);
+                    claims.put("sessionId",role.toUpperCase()+"_"+datamap.get("id"));
+
+
                     String token = myJwt.createToken(claims);//token 里有时效，username，role
 
                     Map<String, Object> data = new HashMap<>();

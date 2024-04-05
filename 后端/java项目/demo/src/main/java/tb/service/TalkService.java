@@ -31,7 +31,7 @@ public interface TalkService {
 
 
     //根据用户id和消息id添加已读状态
-    void isRead(Integer cu_id,List<Integer> ids);
+    String isRead(Integer cu_id,List<Integer> ids);
 
 
 

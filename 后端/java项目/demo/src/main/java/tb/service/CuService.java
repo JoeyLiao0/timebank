@@ -19,6 +19,8 @@ public interface CuService {
 
     String delete(List<Integer> idArray);
 
+    Map<String, Object> selectByName(String username);
+
     Map<String,Object> selectById(int id);
 
     String update(Map<String,Object> dataMap);

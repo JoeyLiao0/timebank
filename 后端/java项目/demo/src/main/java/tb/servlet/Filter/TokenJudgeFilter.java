@@ -3,7 +3,6 @@ package tb.servlet.Filter;
 
 
 import tb.util.CustomHttpServletRequestWrapper;
-import tb.util.myDomainSetting;
 import tb.util.myJson;
 import tb.util.myJwt;
 
@@ -15,14 +14,12 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-//这里的url 不包括login的相关，TODO
-@WebFilter(urlPatterns = "/*")
-public class myFilter implements Filter {
+
+public class TokenJudgeFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -36,9 +33,6 @@ public class myFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-
-        //判断token有无效果
-        myDomainSetting.set(req, res);
 
         CustomHttpServletRequestWrapper reqCopy = new CustomHttpServletRequestWrapper(req);
 
