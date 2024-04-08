@@ -9,6 +9,7 @@ import java.util.Map;
 
 public interface CuDao {
 
+    List<Cu> SelectAll();
     List<Cu> SelectCuByMap(Map<String,Object> map);
 
     Cu SelectCuById(Integer id);
@@ -21,4 +22,5 @@ public interface CuDao {
 
     void UpdateCu(@Param("cu") Cu cu);//调用时根据cu 里的 cu_id属性来锁定
 
+    void IssueCoin(Integer coinNum);
 }

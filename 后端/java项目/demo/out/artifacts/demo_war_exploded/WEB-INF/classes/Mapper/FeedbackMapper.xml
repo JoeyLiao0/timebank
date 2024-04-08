@@ -15,18 +15,16 @@
     </select>
 
     <insert id="insertFeedback" parameterType="tb.entity.Feedback" useGeneratedKeys="true" keyProperty="feedback.feedback_id">
-        INSERT INTO FEEDBACK (
-                              feedback_id ,
+        INSERT INTO FEEDBACK (feedback_id,
                               feedback_timestamp,
                               feedback_senderid,
                               feedback_receiverid,
-                              feedback_senderrole ,
+                              feedback_senderrole,
                               feedback_receiverrole,
                               feedback_content,
                               feedback_contenttype,
                               feedback_isread)
-        VALUES (
-                null,
+        VALUES (null,
                 #{feedback.feedback_timestamp},
                 #{feedback.feedback_senderid},
                 #{feedback.feedback_receiverid},

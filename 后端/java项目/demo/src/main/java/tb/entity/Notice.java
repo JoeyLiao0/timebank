@@ -1,11 +1,5 @@
 package tb.entity;
-//notice_id int AI PK
-//notice_begintime datetime
-//notice_endtime datetime
-//notice_text varchar(255)
-//notice_title varchar(255)
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 /**

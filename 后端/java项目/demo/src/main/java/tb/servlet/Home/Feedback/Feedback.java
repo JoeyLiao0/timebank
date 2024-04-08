@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import tb.service.Impl.FeedbackServiceImpl;
+import tb.service.Impl.RelationServiceImpl;
 import tb.util.myJson;
 import tb.util.myJwt;
 
@@ -20,7 +21,7 @@ import java.util.Map;
 @WebServlet("/feedback/*")
 public class Feedback extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
         Map<String, Object> dataMap = new myJson().getMap(req);//封装，读取解析req中的json数据
 
@@ -31,9 +32,10 @@ public class Feedback extends HttpServlet {
             if (pathInfo.equals("/history")) {
                 String token = (String)dataMap.get("token");
 
-                String role = (String) new myJwt(token).getValue("role");
+                myJwt mj = new myJwt(token);
 
-                String mySessionId = (String) new myJwt(token).getValue("SessionId");
+                String role = (String) mj.getValue("role");
+
 
                 String cuSessionId = (String) dataMap.get("cuSessionId");
                 String csSessionId = (String) dataMap.get("csSessionId");
@@ -43,7 +45,7 @@ public class Feedback extends HttpServlet {
 
                 ArrayList<Map<String,Object>> feedbackArray = null ;
 
-                feedbackArray = (ArrayList<Map<String, Object>>) (new FeedbackServiceImpl()).getHistory(role,Integer.getInteger(info1[1]),Integer.getInteger(info2[2]));//获取全部信息
+                feedbackArray = (ArrayList<Map<String, Object>>) (new FeedbackServiceImpl()).getHistory(role,Integer.parseInt(info1[1]),Integer.parseInt(info2[2]));//获取全部信息
 
 
                 JSONArray jsonArray = (JSONArray) JSON.toJSON(feedbackArray);
@@ -53,6 +55,32 @@ public class Feedback extends HttpServlet {
 
                 res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
                 res.setStatus(200);
+
+            }else if(pathInfo.equals("/getId")){
+
+                String token = (String)dataMap.get("token");
+
+                myJwt mj = new myJwt(token);
+
+                Integer id = Integer.parseInt((String)mj.getValue("id"));
+
+                Integer cs_id = new RelationServiceImpl().getCs_id(id);
+
+                String sessionId = "CS_"+cs_id;
+                JSONObject jsonObject = new JSONObject();
+
+                jsonObject.put("sessionId",sessionId);
+                if(cs_id!=null){
+                    jsonObject.put("status",true);
+                    jsonObject.put("msg",null);
+                }else{
+                    jsonObject.put("status",false);
+                    jsonObject.put("msg","错误：找不到可以反馈的客服");
+                }
+
+                res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+                res.setStatus(200);
+
 
             }
         }

@@ -9,10 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
@@ -20,8 +17,7 @@ import java.nio.charset.StandardCharsets;
 public class CustomHttpServletRequestWrapper extends HttpServletRequestWrapper {
     private byte[] body;
 
-    public CustomHttpServletRequestWrapper(HttpServletRequest request) throws IOException
-    {
+    public CustomHttpServletRequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
 
         BufferedReader reader = request.getReader();
@@ -35,16 +31,14 @@ public class CustomHttpServletRequestWrapper extends HttpServletRequestWrapper {
         }
     }
 
-    public String getBody(){
+    public String getBody() {
         return new String(body, StandardCharsets.UTF_8);
     }
 
     @Override
-    public ServletInputStream getInputStream() throws IOException
-    {
+    public ServletInputStream getInputStream() throws IOException {
         final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(body);
-        return new ServletInputStream()
-        {
+        return new ServletInputStream() {
             @Override
             public boolean isFinished() {
                 return false;
@@ -60,16 +54,14 @@ public class CustomHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
             }
 
-            public int read() throws IOException
-            {
+            public int read() throws IOException {
                 return byteArrayInputStream.read();
             }
         };
     }
 
     @Override
-    public BufferedReader getReader() throws IOException
-    {
+    public BufferedReader getReader() throws IOException {
         return new BufferedReader(new InputStreamReader(this.getInputStream()));
     }
 }

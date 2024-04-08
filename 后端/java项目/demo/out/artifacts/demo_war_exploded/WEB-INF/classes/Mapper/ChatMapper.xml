@@ -4,41 +4,52 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--命名空间写接口-->
-<mapper namespace="tb.dao.ChatDao" >
+<mapper namespace="tb.dao.ChatDao">
 
-    <select id="selectChatById" parameterType="java.lang.Integer"  resultType="tb.entity.Chat">
-        select * from CHAT where chat_id = #{chat_id}
+    <select id="selectChatById" parameterType="java.lang.Integer" resultType="tb.entity.Chat">
+        select *
+        from CHAT
+        where chat_id = #{chat_id}
     </select>
 
-    <select id="selectBySenderIdAndSenderRole"   resultType="tb.entity.Chat">
-        select * from CHAT where chat_senderid = #{chat_senderid} and chat_senderrole = #{chat_senderrole} order by chat_timestamp
+    <select id="selectAllChat" resultType="tb.entity.Chat">
+        select *
+        from CHAT
     </select>
 
-    <insert id="insertChat"  parameterType="tb.entity.Chat" useGeneratedKeys="true" keyProperty="chat.chat_id" >
-        insert into CHAT(
-                chat_id,
-                chat_senderid,
-                chat_content,
-                chat_timestamp,
-                chat_senderrole,
-                chat_isread
-        )
-        values(
-                null,
+    <select id="selectBySenderIdAndSenderRole" resultType="tb.entity.Chat">
+        select *
+        from CHAT
+        where chat_senderid = #{chat_senderid}
+          and chat_senderrole = #{chat_senderrole}
+        order by chat_timestamp
+    </select>
+
+    <insert id="insertChat" parameterType="tb.entity.Chat" useGeneratedKeys="true" keyProperty="chat.chat_id">
+        insert into CHAT(chat_id,
+                         chat_senderid,
+                         chat_content,
+                         chat_timestamp,
+                         chat_senderrole,
+                         chat_isread)
+        values (null,
                 #{chat.chat_senderid},
                 #{chat.chat_content},
                 #{chat.chat_timestamp},
                 #{chat.chat_senderrole},
-                #{chat.chat_isread}
-        )
+                #{chat.chat_isread})
     </insert>
 
     <update id="updateChatIsRead">
-        update CHAT set chat_isread = #{chat_isread} where chat_id = #{chat_id}
+        update CHAT
+        set chat_isread = #{chat_isread}
+        where chat_id = #{chat_id}
     </update>
 
-    <delete id="deleteChatById" parameterType="java.lang.Integer" >
-        delete from CHAT where chat_id = #{id};
+    <delete id="deleteChatById" parameterType="java.lang.Integer">
+        delete
+        from CHAT
+        where chat_id = #{id};
     </delete>
 
 </mapper>

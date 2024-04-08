@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FeedbackDao {
     // 插入一条反馈记录
-    int insertFeedback(@Param("feedback") Feedback feedback);
+    void insertFeedback(@Param("feedback") Feedback feedback);
 
     // 根据反馈编号查询反馈记录
     Feedback selectFeedbackById(@Param("feedback_id") Integer feedbackId);

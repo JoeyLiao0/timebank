@@ -8,8 +8,6 @@ import tb.entity.Notice;
 import tb.service.NoticeService;
 import tb.util.mySqlSession;
 
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,35 +17,35 @@ import java.util.Map;
 public class NoticeServiceImpl implements NoticeService {
 
     //按时间顺序获取全部公告
-    public List<Map<String, Object>> getNotice(){
+    public List<Map<String, Object>> getNotice() {
         try (SqlSession session = mySqlSession.getSqSession()) {
             NoticeDao noticeDao = session.getMapper(NoticeDao.class);
             List<Notice> notices = noticeDao.SelectAllNotice();
-                List<Map<String,Object>> noticeArray = new ArrayList<>();
+            List<Map<String, Object>> noticeArray = new ArrayList<>();
 
-                for(Notice notice : notices){
+            for (Notice notice : notices) {
 
-                    Map<String,Object> map = new HashMap<>();
+                Map<String, Object> map = new HashMap<>();
 
-                    map.put("notice_id",notice.getNotice_id());
-                    map.put("notice_time",notice.getNotice_time());
-                    map.put("notice_title",notice.getNotice_title());
-                    map.put("notice_content",notice.getNotice_content());
+                map.put("notice_id", notice.getNotice_id());
+                map.put("notice_time", notice.getNotice_time());
+                map.put("notice_title", notice.getNotice_title());
+                map.put("notice_content", notice.getNotice_content());
 
-                    noticeArray.add(map);
-                }
+                noticeArray.add(map);
+            }
 
-                return noticeArray;
+            return noticeArray;
         } catch (Exception e) {
-                return null;
+            return null;
 
         }
     }
 
     //发布公告
-    public void publishNotice(Map<String,Object> map){
+    public void publishNotice(Map<String, Object> map) {
         try (SqlSession session = mySqlSession.getSqSession()) {
-            try{
+            try {
                 NoticeDao noticeDao = session.getMapper(NoticeDao.class);
 
                 Notice notice = new Notice();
@@ -61,15 +59,15 @@ public class NoticeServiceImpl implements NoticeService {
                 session.commit();
 
             } catch (Exception e) {
-                if(session!=null)session.rollback();
+                if (session != null) session.rollback();
             }
         }
     }
 
     //删除公告
-    public void deleteNotice(Integer notice_id){
+    public void deleteNotice(Integer notice_id) {
         try (SqlSession session = mySqlSession.getSqSession()) {
-            try{
+            try {
                 NoticeDao noticeDao = session.getMapper(NoticeDao.class);
 
                 noticeDao.DeleteNoticeById(notice_id);
@@ -77,7 +75,7 @@ public class NoticeServiceImpl implements NoticeService {
                 session.commit();
 
             } catch (Exception e) {
-                if(session!=null)session.rollback();
+                if (session != null) session.rollback();
             }
         }
     }

@@ -4,28 +4,39 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--命名空间写接口-->
-<mapper namespace="tb.dao.TaskDao" >
+<mapper namespace="tb.dao.TaskDao">
     <select id="SelectTaskById" parameterType="java.lang.Integer" resultType="tb.entity.Task">
-        select * from TASK
-            where task_id = #{taskId}
+        select *
+        from TASK
+        where task_id = #{taskId}
     </select>
 
     <select id="SelectTaskByStatusAndTimeout" parameterType="java.lang.String" resultType="tb.entity.Task">
         select * from TASK
-            where
-                1 = 1
-                <if test = "status != null" >and task_status = #{status} </if>
-                <if test = "timeout != null">and task_timeout = #{timeout}</if>
+        where
+        1 = 1
+        <if test="status != null">and task_status = #{status}</if>
+        <if test="timeout != null">and task_timeout = #{timeout}</if>
+    </select>
+
+    <select id="SelectTaskByNotStatusAndTimeout" parameterType="java.lang.String" resultType="tb.entity.Task">
+        select * from TASK
+        where
+        1 = 1
+        <if test="status != null">and task_status != #{status}</if>
+        <if test="timeout != null">and task_timeout != #{timeout}</if>
     </select>
 
     <select id="SelectTaskByPublisherId" parameterType="java.lang.Integer" resultType="tb.entity.Task">
-        select * from TASK
-            where task_publisherid = #{task_publisherId}
+        select *
+        from TASK
+        where task_publisherid = #{task_publisherId}
     </select>
 
     <select id="SelectTaskByTakerId" parameterType="java.lang.Integer" resultType="tb.entity.Task">
-        select * from TASK
-            where task_takerid = #{task_takerId}
+        select *
+        from TASK
+        where task_takerid = #{task_takerId}
     </select>
 
     <insert id="PublishNewTask" parameterType="tb.entity.Task" useGeneratedKeys="true" keyProperty="task.task_id">
@@ -79,7 +90,7 @@
         <set>
             <trim suffixOverrides=",">
                 <if test="task.task_status != null">task_status = #{task.task_status},</if>
-                <if test="task.task_timeout != null">task_auid = #{task.task_timeout},</if>
+                <if test="task.task_timeout != null">task_timeout = #{task.task_timeout},</if>
                 <if test="task.task_begintime != null">task_begintime = #{task.task_begintime},</if>
                 <if test="task.task_endtime != null">task_endtime = #{task.task_endtime},</if>
                 <if test="task.task_taketime != null">task_taketime = #{task.task_taketime},</if>
@@ -103,14 +114,16 @@
 
 
     <delete id="DeleteTaskById" parameterType="java.lang.Integer">
-        delete from TASK
-            where task_id = #{id}
+        delete
+        from TASK
+        where task_id = #{id}
     </delete>
 
 
     <delete id="DeleteTask" parameterType="tb.entity.Task">
-        delete from TASK
-            where task_id = #{task.task_id}
+        delete
+        from TASK
+        where task_id = #{task.task_id}
     </delete>
 
 

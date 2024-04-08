@@ -4,13 +4,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><!--
 
 <!-命名空间写接口-->
-<mapper namespace="tb.dao.CuDao" >
+<mapper namespace="tb.dao.CuDao">
+
+    <select id="SelectAll" resultType="tb.entity.Cu">
+        select *
+        from CU
+    </select>
 
     <select id="SelectCuByMap" resultType="tb.entity.Cu">
         select
-            *
+        *
         from
-            CU
+        CU
         where 1=1
         <if test="name != null and name !=''">
             and cu_name like "%"#{name}"%"
@@ -30,15 +35,17 @@
 
     </select>
 
-    <select id="SelectCuById"  parameterType="java.lang.Integer" resultType="tb.entity.Cu">
-        select * from CU
-            where cu_id=#{id}
+    <select id="SelectCuById" parameterType="java.lang.Integer" resultType="tb.entity.Cu">
+        select *
+        from CU
+        where cu_id = #{id}
     </select>
 
 
-    <select id="SelectCuByName"  parameterType="java.lang.String" resultType="tb.entity.Cu">
-        select * from CU
-            where cu_name=#{name}
+    <select id="SelectCuByName" parameterType="java.lang.String" resultType="tb.entity.Cu">
+        select *
+        from CU
+        where cu_name = #{name}
     </select>
 
     <insert id="InsertCu" parameterType="tb.entity.Cu">
@@ -81,8 +88,9 @@
 
 
     <delete id="DeleteCuById" parameterType="java.lang.Integer">
-        delete from CU
-            where cu_id = #{id}
+        delete
+        from CU
+        where cu_id = #{id}
     </delete>
 
 
@@ -105,8 +113,12 @@
                 <if test="cu.cu_unblocktime != null">cu_unblocktime = #{cu.cu_unblocktime}</if>
             </trim>
         </set>
-            where cu_id = #{cu.cu_id}
+        where cu_id = #{cu.cu_id}
     </update>
 
 
+    <update id="IssueCoin" parameterType="java.lang.Integer">
+        update CU
+        set cu_coin = cu_coin + #{coinNum}
+    </update>
 </mapper>

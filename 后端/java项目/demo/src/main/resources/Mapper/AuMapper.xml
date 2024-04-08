@@ -8,9 +8,9 @@
 
     <select id="SelectAuByMap" resultType="tb.entity.Au">
         select
-            *
+        *
         from
-            AU
+        AU
         where 1=1
         <if test="name != null and name !=''">
             and au_name like "%"#{name}"%"

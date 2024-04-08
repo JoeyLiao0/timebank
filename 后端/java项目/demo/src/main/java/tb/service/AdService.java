@@ -1,11 +1,8 @@
 package tb.service;
 
-import javax.management.ObjectName;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 
 
 //update 和 insert 前要转化前端json字段 为目标形式，而select则不需要
@@ -13,7 +10,7 @@ import java.util.Map;
 
 //加密都留给service实现类来做，servlet不对密码再次加密
 public interface AdService {
-    String judgePassword(String username,String password);
+    String judgePassword(String username, String password);
 
     String existUsername(String username);
 
@@ -42,19 +39,19 @@ public interface AdService {
                map.put("img", ad.getAd_img());
      */
 
-    ArrayList<Map<String,Object>> selectByMap(Map<String,Object> dataMap);
+    ArrayList<Map<String, Object>> selectByMap(Map<String, Object> dataMap);
 
     Map<String, Object> selectByName(String username);
 
     String setStatus(int id, boolean status); //这里加个超时时间
 
-    String resetPassword(int id,String newPassword);
+    String resetPassword(int id, String newPassword);
 
     String delete(List<Integer> idArray);
 
-    Map<String,Object> selectById(int id);
+    Map<String, Object> selectById(int id);
 
-    String update(Map<String,Object> dataMap);
+    String update(Map<String, Object> dataMap);
 
 
     //入参map
@@ -70,5 +67,5 @@ public interface AdService {
             ad_status
      */
 
-    String insert(Map<String,Object> dataMap);
+    String insert(Map<String, Object> dataMap);
 }

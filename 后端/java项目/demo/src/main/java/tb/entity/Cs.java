@@ -37,6 +37,9 @@ public class Cs {
     //解禁时间
     private Timestamp cs_unblocktime;
 
+    //处理反馈数
+    private Integer cs_feedbackNum;
+
     public Integer getCs_id() {
         return cs_id;
     }
@@ -115,5 +118,13 @@ public class Cs {
 
     public void setCs_unblocktime(Timestamp cs_unblocktime) {
         this.cs_unblocktime = cs_unblocktime;
+    }
+
+    public Integer getCs_feedbackNum() {
+        return cs_feedbackNum;
+    }
+
+    public void setCs_feedbackNum(Integer cs_feedbackNum) {
+        this.cs_feedbackNum = cs_feedbackNum;
     }
 }

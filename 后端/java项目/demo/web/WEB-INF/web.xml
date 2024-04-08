@@ -19,9 +19,66 @@
         <filter-class>tb.servlet.Filter.TokenJudgeFilter</filter-class>
     </filter>
 
+    <!-- 映射过滤器到URL模式 -->
     <filter-mapping>
         <filter-name>Filter2</filter-name>
-        <url-pattern>/CUM/*,/AUM/*,/CSM/*,/common/*,/taskMonitor/select,/adAccount/*,/taskReview/*,/notice/*,/auAccount/*,/csAccount/*,/task/*,/cuAccount/*,/feedback/*,/talk/*,/chat/*</url-pattern>
+        <url-pattern>/CUM/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/AUM/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/CSM/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/common/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/taskMonitor/select</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/adAccount/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/taskReview/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/notice/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/auAccount/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/csAccount/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/task/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/cuAccount/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/feedback/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/talk/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/chat/*</url-pattern>
     </filter-mapping>
 
 </web-app>

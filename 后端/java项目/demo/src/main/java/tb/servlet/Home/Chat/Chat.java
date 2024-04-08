@@ -5,8 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import tb.service.Impl.ChatServiceImpl;
-import tb.service.Impl.CsServiceImpl;
-import tb.service.Impl.TaskServiceImpl;
+
 import tb.util.myJson;
 import tb.util.myJwt;
 
@@ -16,14 +15,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
 import java.util.Map;
 
 @WebServlet("/chat/*")
 public class Chat extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
         Map<String, Object> dataMap = new myJson().getMap(req);//封装，读取解析req中的json数据
 
@@ -39,10 +38,8 @@ public class Chat extends HttpServlet {
                 String role = (String) mj.getValue("role");
                 Integer id = (Integer)mj.getValue("id");
 
-                ArrayList<Map<String,Object>> chatArray = null ;
-
-                chatArray = (ArrayList<Map<String, Object>>) (new ChatServiceImpl()).getHistory(role,id);//根据编号获取全部信息
-
+                //根据编号获取自己全部已读的信息
+                ArrayList<Map<String,Object>> chatArray = (ArrayList<Map<String, Object>>) (new ChatServiceImpl()).getHistory(role,id);
 
                 JSONArray jsonArray = (JSONArray) JSON.toJSON(chatArray);
                 JSONObject  jsonObject = new JSONObject();

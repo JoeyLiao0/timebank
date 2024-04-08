@@ -1,15 +1,18 @@
 package tb.service.Impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.apache.ibatis.session.SqlSession;
 import tb.dao.TalkDao;
-import tb.dao.TalkDao;
-import tb.dao.TalkDao;
+
 import tb.entity.Talk;
-import tb.entity.Talk;
-import tb.entity.Talk;
+
 import tb.service.TalkService;
-import tb.service.TaskService;
+
 import tb.util.mySqlSession;
+
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -17,28 +20,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TalkServiceImpl implements TalkService{
+public class TalkServiceImpl implements TalkService {
     @Override
     public List<Map<String, Object>> getUnreadMessage(Integer cu_id, Integer task_id) {
-        try(SqlSession session = mySqlSession.getSqSession()){
+        try (SqlSession session = mySqlSession.getSqSession()) {
 
             TalkDao talkDao = session.getMapper(TalkDao.class);
 
             List<Talk> talks = talkDao.selectByTaskId(task_id);
 
-            List<Map<String,Object>> unreadTalks = new ArrayList<>();
-            
-            for(Talk talk : talks){
-                if(!talk.getTalk_isread().contains("CU_"+cu_id)){
-                    Map<String,Object> map = new HashMap<>();
-                    map.put("type","talk");
-                    map.put("id",talk.getTalk_id());
-                    map.put("taskId",talk.getTalk_taskid());
-                    map.put("senderSessionId","CU_"+talk.getTalk_senderid());
-                    map.put("content",talk.getTalk_content());
-                    map.put("contentType",talk.getTalk_contenttype());
-                    map.put("timestamp",talk.getTalk_timestamp().getTime()*1000);
-                    map.put("isRead",false);
+            List<Map<String, Object>> unreadTalks = new ArrayList<>();
+
+            for (Talk talk : talks) {
+                if (!talk.getTalk_isread().contains("CU_" + cu_id)) {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("type", "talk");
+                    map.put("id", talk.getTalk_id());
+                    map.put("taskId", talk.getTalk_taskid());
+                    map.put("senderSessionId", "CU_" + talk.getTalk_senderid());
+                    map.put("content", talk.getTalk_content());
+                    map.put("contentType", talk.getTalk_contenttype());
+                    map.put("timestamp", talk.getTalk_timestamp().getTime());
+                    map.put("isRead", false);
 
                     unreadTalks.add(map);
                 }
@@ -46,53 +49,84 @@ public class TalkServiceImpl implements TalkService{
 
             return unreadTalks;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
     @Override
+    public String getUnreadMessage(Integer id) {
+
+        TaskServiceImpl taskServiceImpl = new TaskServiceImpl();
+        List<Map<String, Object>> publishTask = taskServiceImpl.selectMyPublish(id);
+        List<Map<String, Object>> takeTask = taskServiceImpl.selectMyTake(id);
+        List<Integer> task_ids = new ArrayList<>();
+
+        for (Map<String, Object> map : publishTask) {
+            Integer task_id = (Integer) map.get("task_id");
+            task_ids.add(task_id);
+        }
+        for (Map<String, Object> map : takeTask) {
+            Integer task_id = (Integer) map.get("task_id");
+            task_ids.add(task_id);
+        }
+
+        List<Map<String, Object>> talkArray = new ArrayList<>();
+        for (Integer task_id : task_ids) {
+            List<Map<String, Object>> talks = getUnreadMessage(id, task_id);
+            talkArray.addAll(talks);
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = (JSONArray) JSON.toJSON(talkArray);
+        jsonObject.put("type", "talk/unread");
+        jsonObject.put("msg", jsonArray);
+
+        return JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue);
+    }
+
+    @Override
     public String isRead(Integer cu_id, List<Integer> ids) {
-        try(SqlSession session = mySqlSession.getSqSession()){
-            try{
+        try (SqlSession session = mySqlSession.getSqSession()) {
+            try {
                 TalkDao talkDao = session.getMapper(TalkDao.class);
 
-                for(Integer talk_id : ids){
+                for (Integer talk_id : ids) {
                     Talk talk = talkDao.selectByTalkId(talk_id);
-                    talkDao.updateTalkIsRead(talk_id,talk.getTalk_isread()+" CU+"+cu_id);
+                    talkDao.updateTalkIsRead(talk_id, talk.getTalk_isread() + " CU+" + cu_id);
                 }
                 session.commit();
                 return null;
-            }catch (Exception e){
-                if(session!=null){
+            } catch (Exception e) {
+                if (session != null) {
                     session.rollback();
                 }
-                return "设置状态失败 "+e.getMessage();
+                return "设置状态失败 " + e.getMessage();
             }
         }
     }
 
     @Override
     public List<Map<String, Object>> getHistory(Integer cu_id, Integer task_id) {
-        try(SqlSession session = mySqlSession.getSqSession()){
+        try (SqlSession session = mySqlSession.getSqSession()) {
 
             TalkDao talkDao = session.getMapper(TalkDao.class);
 
             List<Talk> talks = talkDao.selectByTaskId(task_id);
 
-            List<Map<String,Object>> unreadTalks = new ArrayList<>();
+            List<Map<String, Object>> unreadTalks = new ArrayList<>();
 
-            for(Talk talk : talks){
-                if(talk.getTalk_isread().contains("CU_"+cu_id)){
-                    Map<String,Object> map = new HashMap<>();
-                    map.put("type","talk");
-                    map.put("id",talk.getTalk_id());
-                    map.put("taskId",talk.getTalk_taskid());
-                    map.put("senderSessionId","CU_"+talk.getTalk_senderid());
-                    map.put("content",talk.getTalk_content());
-                    map.put("contentType",talk.getTalk_contenttype());
-                    map.put("timestamp",talk.getTalk_timestamp().getTime()*1000);
-                    map.put("isRead",false);
+            for (Talk talk : talks) {
+                if (talk.getTalk_isread().contains("CU_" + cu_id)) {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("type", "talk");
+                    map.put("id", talk.getTalk_id());
+                    map.put("taskId", talk.getTalk_taskid());
+                    map.put("senderSessionId", "CU_" + talk.getTalk_senderid());
+                    map.put("content", talk.getTalk_content());
+                    map.put("contentType", talk.getTalk_contenttype());
+                    map.put("timestamp", talk.getTalk_timestamp().getTime());
+                    map.put("isRead", false);
 
                     unreadTalks.add(map);
                 }
@@ -100,15 +134,15 @@ public class TalkServiceImpl implements TalkService{
 
             return unreadTalks;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
     @Override
     public Integer sendMessage(Map<String, Object> datamap) {
-        try(SqlSession session = mySqlSession.getSqSession()){
-            try{
+        try (SqlSession session = mySqlSession.getSqSession()) {
+            try {
                 TalkDao talkDao = session.getMapper(TalkDao.class);
 
                 Talk talk = new Talk();
@@ -123,20 +157,18 @@ public class TalkServiceImpl implements TalkService{
 
 
                 talk.setTalk_content((String) datamap.get("content"));
-                talk.setTalk_contenttype((String)datamap.get("contentType"));
-                talk.setTalk_timestamp(new Timestamp((long)datamap.get("timestamp")*1000));
+                talk.setTalk_contenttype((String) datamap.get("contentType"));
+                talk.setTalk_timestamp(new Timestamp((long) datamap.get("timestamp")));
                 talk.setTalk_isread(senderSessionId);
 
                 talkDao.insertTalk(talk);
 
                 session.commit();
 
-                Integer talk_id = talk.getTalk_id();
+                return talk.getTalk_id();
 
-                return talk_id;
-
-            }catch (Exception e){
-                if(session!=null){
+            } catch (Exception e) {
+                if (session != null) {
                     session.rollback();
                 }
             }
@@ -144,4 +176,6 @@ public class TalkServiceImpl implements TalkService{
 
         return -1;
     }
+
+
 }

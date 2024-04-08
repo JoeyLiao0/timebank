@@ -1,14 +1,6 @@
 package tb.entity;
 
 
-//au_id int AI PK
-//au_name varchar(255)
-//au_pwd varchar(255)
-//au_img varchar(255)
-//au_login datetime
-//au_tel varchar(255)
-//au_register datetime
-
 import java.sql.Timestamp;
 
 /**

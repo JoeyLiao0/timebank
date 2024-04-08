@@ -1,6 +1,6 @@
 package tb.service;
 
-import java.sql.Time;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,4 +26,8 @@ public interface CuService {
     String update(Map<String,Object> dataMap);
 
     String insert(Map<String,Object> dataMap);
+
+    Map<String, Object> getStatisticAboutCoin();
+
+    String issueCoin(Integer coinNum);
 }

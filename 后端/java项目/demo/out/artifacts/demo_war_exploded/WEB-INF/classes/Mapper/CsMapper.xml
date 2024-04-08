@@ -4,12 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--命名空间写接口-->
-<mapper namespace="tb.dao.CsDao" >
+<mapper namespace="tb.dao.CsDao">
+
+    <select id="getMinFeedbackNumCs" resultType="tb.entity.Cs">
+        SELECT *
+        FROM CS
+        WHERE cs_feedbackNum = (SELECT MIN(cs_feedbackNum) FROM CS WHERE cs_status = 1)
+          AND cs_statas = 1;
+    </select>
+
     <select id="SelectCsByMap" resultType="tb.entity.Cs">
         select
-            *
+        *
         from
-            CS
+        CS
         where 1=1
         <if test="name != null and name !=''">
             and cs_name like "%"#{name}"%"
@@ -29,50 +37,53 @@
 
     </select>
 
-    <select id="SelectCsById"  parameterType="java.lang.Integer" resultType="tb.entity.Cs">
-        select * from CS
-            where cs_id=#{id}
+    <select id="SelectCsById" parameterType="java.lang.Integer" resultType="tb.entity.Cs">
+        select *
+        from CS
+        where cs_id = #{id}
     </select>
 
 
-    <select id="SelectCsByName"  parameterType="java.lang.String" resultType="tb.entity.Cs">
-        select * from CS
-            where cs_name=#{name}
+    <select id="SelectCsByName" parameterType="java.lang.String" resultType="tb.entity.Cs">
+        select *
+        from CS
+        where cs_name = #{name}
     </select>
 
     <insert id="InsertCs" parameterType="tb.entity.Cs">
         insert into CS
-            <trim prefix="(" suffix=")" suffixOverrides=",">
-                cs_id,
-                cs_name,
-                cs_pwd,
-                <if test="cs.cs_img != null">cs_img,</if>
-                <if test="cs.cs_login !=null">cs_login,</if>
-                cs_tel,
-                cs_register,
-                cs_salt,
-                cs_status,
-                <if test="cs.cs_unblocktime != null">cs_unblocktime</if>
-            </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            cs_id,
+            cs_name,
+            cs_pwd,
+            <if test="cs.cs_img != null">cs_img,</if>
+            <if test="cs.cs_login !=null">cs_login,</if>
+            cs_tel,
+            cs_register,
+            cs_salt,
+            cs_status,
+            <if test="cs.cs_unblocktime != null">cs_unblocktime</if>
+        </trim>
         values
-            <trim prefix="(" suffix=")" suffixOverrides=",">
-                null,
-                #{cs.cs_name},
-                #{cs.cs_pwd},
-                <if test="cs.cs_img != null">#{cs.cs_img},</if>
-                <if test="cs.cs_login !=null">#{cs.cs_login},</if>
-                #{cs.cs_tel},
-                #{cs.cs_register},
-                #{cs.cs_salt},
-                #{cs.cs_status},
-                <if test="cs.cs_unblocktime != null">#{cs.cs_unblocktime}</if>
-            </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            null,
+            #{cs.cs_name},
+            #{cs.cs_pwd},
+            <if test="cs.cs_img != null">#{cs.cs_img},</if>
+            <if test="cs.cs_login !=null">#{cs.cs_login},</if>
+            #{cs.cs_tel},
+            #{cs.cs_register},
+            #{cs.cs_salt},
+            #{cs.cs_status},
+            <if test="cs.cs_unblocktime != null">#{cs.cs_unblocktime}</if>
+        </trim>
     </insert>
 
 
     <delete id="DeleteCsById" parameterType="java.lang.Integer">
-        delete from CS
-            where cs_id = #{id}
+        delete
+        from CS
+        where cs_id = #{id}
     </delete>
 
 

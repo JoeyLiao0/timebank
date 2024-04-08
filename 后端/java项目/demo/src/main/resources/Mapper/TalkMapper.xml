@@ -20,8 +20,9 @@
         </insert>
 
         <delete id="deleteTalkById" parameterType="java.lang.Integer">
-            delete from Talk
-                where talk_id = #{talk_id}
+            delete
+            from Talk
+            where talk_id = #{talk_id}
         </delete>
 
         <update id="updateTalkIsRead">

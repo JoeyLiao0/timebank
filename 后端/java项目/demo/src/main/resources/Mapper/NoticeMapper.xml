@@ -12,19 +12,14 @@
 
 
     <insert id="InsertNewNotice"  parameterType="tb.entity.Notice" useGeneratedKeys="true" keyProperty="notice.notice_id">
-        insert into
-            NOTICE(
-                notice_id,
-                notice_time,
-                notice_content,
-                notice_title
-            )
-            values(
-                null,
+        insert into NOTICE(notice_id,
+                           notice_time,
+                           notice_content,
+                           notice_title)
+        values (null,
                 #{notice.notice_time},
                 #{notice.notice_content},
-                #{notice.notice_title}
-            )
+                #{notice.notice_title})
     </insert>
 
 

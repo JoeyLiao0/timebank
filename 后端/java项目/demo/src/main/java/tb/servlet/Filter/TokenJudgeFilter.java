@@ -1,12 +1,10 @@
 package tb.servlet.Filter;
 
 
-
 import tb.util.CustomHttpServletRequestWrapper;
 import tb.util.myJson;
 import tb.util.myJwt;
 
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -22,7 +20,7 @@ import java.util.Map;
 public class TokenJudgeFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         // 初始化代码  
     }
 
@@ -38,7 +36,6 @@ public class TokenJudgeFilter implements Filter {
 
         Map<String, Object> dataMap = new myJson().getMap(reqCopy);//封装，读取解析req中的json数据
 
-        String pathInfo = req.getPathInfo();
 
         String token = (String) dataMap.get("token");//json
 
@@ -49,7 +46,7 @@ public class TokenJudgeFilter implements Filter {
         if (!mj.judgeToken()) {
 
             (res).sendError(HttpServletResponse.SC_UNAUTHORIZED, "token错误");
-            return ;
+            return;
 
         }
 

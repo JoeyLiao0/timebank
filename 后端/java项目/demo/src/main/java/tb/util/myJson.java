@@ -20,11 +20,9 @@ public class myJson {
         }
 
         // 使用fastjson解析JSON字符串为Map
-        Map<String, Object> dataMap = JSON.parseObject(jsonString.toString(), new TypeReference<Map<String, Object>>() {});
 
 
-
-        return dataMap;
+        return JSON.parseObject(jsonString.toString(), new TypeReference<Map<String, Object>>() {});
     }
 
 }

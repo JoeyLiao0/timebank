@@ -1,15 +1,7 @@
 package tb.entity;
 
 import java.sql.Timestamp;
-import java.sql.Timestamp;
 
-//ad_id int AI PK
-//ad_name varchar(255)
-//ad_pwd varchar(255)
-//ad_img varchar(255)
-//ad_login datetime
-//ad_tel varchar(255)
-//ad_register datetime
 
 /**
  * 管理员实体类

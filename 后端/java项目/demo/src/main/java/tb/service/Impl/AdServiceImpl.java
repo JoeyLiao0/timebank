@@ -15,7 +15,7 @@ import java.util.*;
 public class AdServiceImpl implements AdService {
     public String judgePassword(String username, String password) {
 
-        try(SqlSession session = mySqlSession.getSqSession()){
+        try (SqlSession session = mySqlSession.getSqSession()) {
 
             AdDao adDao = session.getMapper(AdDao.class);
             Ad ad = adDao.SelectAdByName(username);
@@ -28,7 +28,7 @@ public class AdServiceImpl implements AdService {
             String storedPwd = ad.getAd_pwd();
 
 
-            String hashedPassword = DigestUtil.sha256Hex(password+salt);
+            String hashedPassword = DigestUtil.sha256Hex(password + salt);
 
             if (hashedPassword.equals(storedPwd)) {
                 //说明密码正确，验证成功
@@ -36,14 +36,14 @@ public class AdServiceImpl implements AdService {
             } else {
                 return "密码错误！";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return e.getMessage();
         }
     }
 
     public String existUsername(String username) {
 
-        try(SqlSession session = mySqlSession.getSqSession()) {
+        try (SqlSession session = mySqlSession.getSqSession()) {
 
             AdDao adDao = session.getMapper(AdDao.class);
             Ad ad = adDao.SelectAdByName(username);
@@ -60,7 +60,7 @@ public class AdServiceImpl implements AdService {
 
     public ArrayList<Map<String, Object>> selectByMap(Map<String, Object> dataMap) {
 
-        try(SqlSession session = mySqlSession.getSqSession()){
+        try (SqlSession session = mySqlSession.getSqSession()) {
             //get不存在的字段返回null
             //dto转数据库可以处理的数据
             Map<String, Object> DataMap = new HashMap<>();
@@ -91,81 +91,81 @@ public class AdServiceImpl implements AdService {
             }
 
             return maps;
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
 
     }
 
     public Map<String, Object> selectById(int id) {
-        try(SqlSession session = mySqlSession.getSqSession()){
+        try (SqlSession session = mySqlSession.getSqSession()) {
 
             AdDao adDao = session.getMapper(AdDao.class);
             Ad ad = adDao.SelectAdById(id);
 
-            Map<String ,Object> adInfo =  new HashMap<>();
+            Map<String, Object> adInfo = new HashMap<>();
 
-            adInfo.put("id",ad.getAd_id());
-            adInfo.put("login",ad.getAd_login());
-            adInfo.put("phone",ad.getAd_tel());
-            adInfo.put("name",ad.getAd_name());
+            adInfo.put("id", ad.getAd_id());
+            adInfo.put("login", ad.getAd_login());
+            adInfo.put("phone", ad.getAd_tel());
+            adInfo.put("name", ad.getAd_name());
             adInfo.put("userStatus", ad.getAd_status() == 1);
-            adInfo.put("register",ad.getAd_register());
-            adInfo.put("img",ad.getAd_img());
+            adInfo.put("register", ad.getAd_register());
+            adInfo.put("img", ad.getAd_img());
 
             return adInfo;
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
     public Map<String, Object> selectByName(String username) {
-        try(SqlSession session = mySqlSession.getSqSession()){
+        try (SqlSession session = mySqlSession.getSqSession()) {
 
             AdDao adDao = session.getMapper(AdDao.class);
             Ad ad = adDao.SelectAdByName(username);
 
-            Map<String ,Object> adInfo =  new HashMap<>();
+            Map<String, Object> adInfo = new HashMap<>();
 
-            adInfo.put("id",ad.getAd_id());
-            adInfo.put("login",ad.getAd_login());
-            adInfo.put("phone",ad.getAd_tel());
-            adInfo.put("name",ad.getAd_name());
+            adInfo.put("id", ad.getAd_id());
+            adInfo.put("login", ad.getAd_login());
+            adInfo.put("phone", ad.getAd_tel());
+            adInfo.put("name", ad.getAd_name());
             adInfo.put("userStatus", ad.getAd_status() == 1);
-            adInfo.put("register",ad.getAd_register());
-            adInfo.put("img",ad.getAd_img());
+            adInfo.put("register", ad.getAd_register());
+            adInfo.put("img", ad.getAd_img());
 
             return adInfo;
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
     public String setStatus(int id, boolean status) {
 
-        try(SqlSession session = mySqlSession.getSqSession()){
-            try{
+        try (SqlSession session = mySqlSession.getSqSession()) {
+            try {
                 AdDao adDao = session.getMapper(AdDao.class);
 
                 Ad ad = adDao.SelectAdById(id);
 
-                ad.setAd_status(status ?1:0);
+                ad.setAd_status(status ? 1 : 0);
                 adDao.UpdateAd(ad);
                 session.commit();
 
-                return null;
-            }catch (Exception e){
-                if(session!=null){
+                return "yes";
+            } catch (Exception e) {
+                if (session != null) {
                     session.rollback();
                 }
-                return "设置状态失败 "+e.getMessage();
+                return "设置状态失败 " + e.getMessage();
             }
         }
     }
 
     public String resetPassword(int id, String newPassword) {
         try (SqlSession session = mySqlSession.getSqSession()) {
-            try{
+            try {
                 AdDao adDao = session.getMapper(AdDao.class);
                 Ad ad = adDao.SelectAdById(id);
 
@@ -188,12 +188,12 @@ public class AdServiceImpl implements AdService {
                 adDao.UpdateAd(ad);
                 session.commit();
 
-                return null;
-            }catch (Exception e) {
+                return "yes";
+            } catch (Exception e) {
                 // 记录异常信息，并可能抛出运行时异常或记录到日志中
 //            throw new RuntimeException("重置密码失败", e);
-                if(session!=null)session.rollback();
-                return "重置密码失败 "+e.getMessage();
+                if (session != null) session.rollback();
+                return "重置密码失败 " + e.getMessage();
             }
 
         }
@@ -202,16 +202,16 @@ public class AdServiceImpl implements AdService {
 
     public String delete(List<Integer> idArray) {
         try (SqlSession session = mySqlSession.getSqSession()) {
-            try{
+            try {
                 AdDao adDao = session.getMapper(AdDao.class);
-                for(Integer id :idArray){
+                for (Integer id : idArray) {
                     adDao.DeleteAdById(id);
                 }
                 session.commit();
-                return null;
-            }catch (Exception e) {
-                if(session!=null)session.rollback();
-                return "删除账号失败 "+e.getMessage();
+                return "yes";
+            } catch (Exception e) {
+                if (session != null) session.rollback();
+                return "删除账号失败 " + e.getMessage();
             }
         }
     }
@@ -222,15 +222,15 @@ public class AdServiceImpl implements AdService {
 
     public String update(Map<String, Object> dataMap) {
         try (SqlSession session = mySqlSession.getSqSession()) {
-            try{
+            try {
                 AdDao adDao = session.getMapper(AdDao.class);
                 Ad ad = adDao.SelectAdById((Integer) dataMap.get("ad_id"));
-                if(ad == null){
+                if (ad == null) {
                     throw new Exception("用户不存在！");
                 }
 
 
-                if(dataMap.get("ad_pwd")!=null){
+                if (dataMap.get("ad_pwd") != null) {
                     // 生成盐值
                     byte[] salt = new byte[16]; // 长度可以根据需要调整
                     SecureRandom random = new SecureRandom();
@@ -238,7 +238,7 @@ public class AdServiceImpl implements AdService {
                     String saltString = Base64.getEncoder().encodeToString(salt);
 
                     // 拼接密码和盐值，并使用SHA-256哈希
-                    String hashedPassword = DigestUtil.sha256Hex((String) dataMap.get("ad_pwd")+ saltString);
+                    String hashedPassword = DigestUtil.sha256Hex(dataMap.get("ad_pwd") + saltString);
 
                     ad.setAd_pwd(hashedPassword);
                     ad.setAd_salt(saltString);
@@ -254,56 +254,56 @@ public class AdServiceImpl implements AdService {
 
                 adDao.UpdateAd(ad);
                 session.commit();
-                return null;
-            }catch (Exception e) {
-                if(session!=null)session.rollback();
-                return "更新信息失败,"+e.getMessage();
+                return "yes";
+            } catch (Exception e) {
+                if (session != null) session.rollback();
+                return "更新信息失败," + e.getMessage();
             }
         }
     }
 
     public String insert(Map<String, Object> dataMap) {
         try (SqlSession session = mySqlSession.getSqSession()) {
-            try{
+            try {
                 AdDao adDao = session.getMapper(AdDao.class);
 
                 Ad ad = new Ad();
-                ad.setAd_name((String)dataMap.get("ad_name"));
+                ad.setAd_name((String) dataMap.get("ad_name"));
 
-                if(existUsername((String)dataMap.get("ad_name")).equals("yes")){
+                if (existUsername((String) dataMap.get("ad_name")).equals("yes")) {
                     throw new Exception("账号已存在！");
                 }
 
-                String pwd = (String)dataMap.get("ad_pwd");
+                String pwd = (String) dataMap.get("ad_pwd");
                 //生成盐
                 SecureRandom random = new SecureRandom();
-                byte bytes[] = new byte[15];
+                byte[] bytes = new byte[15];
                 random.nextBytes(bytes);
                 // 将字节数组转换为Base64编码的字符串，仅包含字母和数字
-                String saltString = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+                StringBuilder saltString = new StringBuilder(Base64.getUrlEncoder().withoutPadding().encodeToString(bytes));
                 // 删除Base64中的非字母数字字符（如'+'和'/'）
-                saltString = saltString.replaceAll("\\+", "").replaceAll("/", "");
+                saltString = new StringBuilder(saltString.toString().replaceAll("\\+", "").replaceAll("/", ""));
                 // 如果生成的字符串长度小于指定的盐长度，则填充'='以达到指定长度
                 while (saltString.length() < 15) {
-                    saltString += '=';
+                    saltString.append('=');
                 }
-                String decrypt = DigestUtil.sha256Hex(pwd+saltString);
+                String decrypt = DigestUtil.sha256Hex(pwd + saltString);
 
 
                 ad.setAd_pwd(decrypt);
-                ad.setAd_salt(saltString);
-                ad.setAd_tel((String)dataMap.get("ad_tel"));
+                ad.setAd_salt(saltString.toString());
+                ad.setAd_tel((String) dataMap.get("ad_tel"));
                 ad.setAd_register((Timestamp) dataMap.get("ad_register"));
                 ad.setAd_status(1);
                 ad.setAd_login((Timestamp) dataMap.get("ad_login"));
-                ad.setAd_img((String)dataMap.get("ad_img"));
+                ad.setAd_img((String) dataMap.get("ad_img"));
 
                 adDao.InsertAd(ad);
                 session.commit();
-                return null;
-            }catch (Exception e) {
-                if(session!=null)session.rollback();
-                return "新增账号失败,"+e.getMessage();
+                return "yes";
+            } catch (Exception e) {
+                if (session != null) session.rollback();
+                return "新增账号失败," + e.getMessage();
             }
         }
     }

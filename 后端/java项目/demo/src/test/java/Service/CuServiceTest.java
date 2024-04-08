@@ -61,7 +61,7 @@ public class CuServiceTest {
     public void TestUpdate(){
 
         Map<String,Object> DataMap = new HashMap<>();
-        DataMap.put("cu_id",2);
+//        DataMap.put("cu_id",1);
         DataMap.put("cu_name", "new_liao2");
         DataMap.put("cu_pwd", "1");
         DataMap.put("cu_tel","new");
@@ -69,7 +69,7 @@ public class CuServiceTest {
         DataMap.put("cu_status",0);
         DataMap.put("cu_login",new Timestamp(System.currentTimeMillis()-10000));
         DataMap.put("cu_img","new.png");
-        DataMap.put("cu_coin",1000);
+        DataMap.put("cu_coin",1);
 
         cuServiceImpl.update(DataMap);
 

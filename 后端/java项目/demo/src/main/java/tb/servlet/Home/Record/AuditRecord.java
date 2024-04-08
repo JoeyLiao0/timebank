@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
  * 往期审核汇总
  */
 
-@WebServlet("/taskReview/*")
 public class AuditRecord {
 
 

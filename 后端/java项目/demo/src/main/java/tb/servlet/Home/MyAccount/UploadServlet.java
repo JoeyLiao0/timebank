@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +25,16 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import tb.service.Impl.CsServiceImpl;
+
 import tb.service.Impl.CuServiceImpl;
 import tb.util.myJwt;
 
 @WebServlet("/uploadServlet")
-@MultipartConfig
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2,
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 50
+)
 public class UploadServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (!ServletFileUpload.isMultipartContent(request)) {
@@ -36,17 +43,24 @@ public class UploadServlet extends HttpServlet {
         JSONObject jsonObject = new JSONObject();
         Integer id = null;
         try {
-            List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+
+            File temp = new File(request.getSession().getServletContext().getRealPath("/temp"));
+            temp.mkdirs();
+            System.out.println("建立成功");
+            DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
+            diskFileItemFactory.setRepository(temp);
+
+            List<FileItem> multiparts = new ServletFileUpload(diskFileItemFactory).parseRequest(request);
 
             for (FileItem item : multiparts) {
                 if (item.isFormField()) {
                     String name = item.getFieldName();
-                    if(name.equals("token")){
+                    if (name.equals("token")) {
                         String token = item.getString();
                         myJwt mj = new myJwt(token);
-                        if(mj.judgeToken()){
-                            id = (Integer) mj.getValue("id");
-                        }else{
+                        if (mj.judgeToken()) {
+                            id = Integer.parseInt((String) mj.getValue("id"));
+                        } else {
                             throw new Exception("token失效");
                         }
                     }
@@ -57,23 +71,40 @@ public class UploadServlet extends HttpServlet {
                     String uniquePrefix = UUID.randomUUID().toString() + "_";
                     // 获取项目的static目录路径
                     String staticDir = request.getServletContext().getRealPath("") + File.separator + "static";
-                    String fileName = staticDir + File.separator + uniquePrefix +item.getName();
+                    String fileName = staticDir + File.separator + uniquePrefix + item.getName();
 
                     item.write(new File(fileName));
 
-                    Map<String,Object> map = new HashMap<>();
-                    map.put("cu_id",id);
-                    map.put("cu_img",fileName);
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("cu_id", id);
+                    map.put("cu_img", fileName);
                     //成功后，将图片路径和账号对应起来
-                    new CuServiceImpl().update(map);
+
+                    CuServiceImpl cuServiceImpl = new CuServiceImpl();
+
+                    cuServiceImpl.update(map);
+
+                    Map<String, Object> m = cuServiceImpl.selectById(id);
+                    String filePath = (String) m.get("userImg");
+
+                    // 转换路径为Path对象
+                    Path path = Paths.get(filePath);
+
+                    try {
+                        // 删除被用户换掉的文件
+                        Files.delete(path);
+                        System.out.println("文件已成功删除!");
+                    } catch (IOException e) {
+                        System.err.println("删除文件时发生错误: " + e.getMessage());
+                    }
 
                 }
             }
             jsonObject.put("status", true);
-            jsonObject.put("msg",null);
+            jsonObject.put("msg", null);
         } catch (Exception e) {
             jsonObject.put("status", false);
-            jsonObject.put("msg",e.getMessage());
+            jsonObject.put("msg", e.getMessage());
         }
 
         response.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回

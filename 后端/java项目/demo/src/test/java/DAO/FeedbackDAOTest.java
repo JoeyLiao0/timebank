@@ -85,7 +85,7 @@ public class FeedbackDAOTest {
         try(SqlSession session = mySqlSession.getSqSession()){
             FeedbackDao feedbackDao = session.getMapper(FeedbackDao.class);
 
-            ArrayList<Feedback> feedbacks = (ArrayList<Feedback>) feedbackDao.selectByIdAndRole(1,"CU",1,"CS");
+            ArrayList<Feedback> feedbacks = (ArrayList<Feedback>) feedbackDao.selectByIdAndRole("CU",1,"CS",1);
 
             for(Feedback feedback : feedbacks){
                 System.out.println(feedback);

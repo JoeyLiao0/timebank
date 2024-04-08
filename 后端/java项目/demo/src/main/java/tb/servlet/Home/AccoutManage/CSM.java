@@ -3,11 +3,11 @@ package tb.servlet.Home.AccoutManage;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import tb.service.Impl.AuServiceImpl;
+
 import tb.service.Impl.CsServiceImpl;
-import tb.util.myDomainSetting;
+
 import tb.util.myJson;
-import tb.util.myJwt;
+
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,8 +25,9 @@ import java.util.Map;
 
 @WebServlet("/CSM/*")
 public class CSM extends HttpServlet {
+
     @Override
-    public void doGet(HttpServletRequest req , HttpServletResponse res) throws IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
 
         Map<String, Object> dataMap = new myJson().getMap(req);//封装，读取解析req中的json数据
@@ -36,110 +37,109 @@ public class CSM extends HttpServlet {
 
         if (pathInfo != null) {
             // 根据pathInfo的值决定如何处理请求
-            if (pathInfo.equals("/selectById")) {
-                /**
-                 * 第二层查询客服
-                 */
+            switch (pathInfo) {
+                case "/selectById" -> {
 
-                Integer id = (Integer) dataMap.get("id");
+                    //查询客服的详细信息，包含 反馈处理个数 feedbackNum , 头像 userImg
 
+                    //TODO 这里类型待验证，是java.lang.String 还是 java.lang.Integer
 
-                    Map<String,Object> data = null ;
+                    System.out.println("servlet: /CSM/selectById: id 的类型为 " + dataMap.get("id").getClass());
 
-                    data = (new CsServiceImpl()).selectById(id);//根据编号获取全部信息
+                    Integer id = (Integer) dataMap.get("id");
 
-                    JSONObject jsonObject = null;
+                    //根据编号获取全部信息
+                    Map<String, Object> data = (new CsServiceImpl()).selectById(id);
 
-                    if(data!=null){
+                    JSONObject jsonObject;
+
+                    if (data != null) {
                         jsonObject = new JSONObject(data);
-                        jsonObject.put("status",true);
-                    }else{
+                        jsonObject.put("status", true);
+                    } else {
                         jsonObject = new JSONObject();
-                        jsonObject.put("status",false);
+                        jsonObject.put("status", false);
                     }
 
                     res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+
                     res.setStatus(200);
 
 
-            }else{
-                res.setStatus(404);
-            }
-        }
-    }
-    @Override
-    public void doPost(HttpServletRequest req , HttpServletResponse res) throws IOException {
+                }
+                case "/updateById" -> {
+
+                    //更新单个客服的信息
+
+                    //TODO 这里类型待验证，是java.lang.String 还是 java.lang.Integer
+
+                    System.out.println("servlet: /CSM/updateById:id 的类型为 " + dataMap.get("id").getClass());
 
 
-        Map<String, Object> dataMap = new myJson().getMap(req);//封装，读取解析req中的json数据
+                    Map<String, Object> datamap = new HashMap<>();
 
-        String pathInfo = req.getPathInfo();
+                    //对前端传来的数据进行转化
+                    datamap.put("cs_id", dataMap.get("id"));
+                    datamap.put("cs_name", dataMap.get("name"));
+                    datamap.put("cs_tel", dataMap.get("phone"));
+                    datamap.put("cs_img", dataMap.get("img"));
 
-
-
-        if (pathInfo != null) {
-            // 根据pathInfo的值决定如何处理请求
-            if (pathInfo.equals("/updateById")) {
-                /**
-                 * 更新单个客服信息
-                 */
-
-
-                    JSONObject jsonObject = new JSONObject();
-
-                    Map<String,Object> datamap = new HashMap<>();
-
-                    datamap.put("cs_id",dataMap.get("id"));
-                    datamap.put("cs_name",dataMap.get("name"));
-                    datamap.put("cs_tel",dataMap.get("phone"));
-                    datamap.put("cs_img",dataMap.get("img"));
-
+                    //更新客服个人信息
                     String msg = new CsServiceImpl().update(datamap);
 
-                    if(msg==null){//更新个人信息
+                    JSONObject jsonObject = new JSONObject();
+
+                    if (msg != null && msg.equals("yes")) {
                         //更新成功
-                        jsonObject.put("status",true);
-                        jsonObject.put("msg",null);
-                    }else{
+                        jsonObject.put("status", true);
+                        jsonObject.put("msg", null);
+                    } else {
                         //更新失败
-                        jsonObject.put("status",false);
-                        jsonObject.put("msg","错误原因");
+                        jsonObject.put("status", false);
+                        jsonObject.put("msg", "错误原因");
                     }
 
                     res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+
                     res.setStatus(200);
 
-            }else if(pathInfo.equals("/insert")){
-                /**
-                 * 增加单个客服
-                 */
+                }
+                case "/insert" -> {
+
+                    //增加单个客服账号
+
+                    //TODO 这里的pwd待验证是不是对应的是123456
+                    String pwd = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92";
+
+                    Map<String, Object> datamap = new HashMap<>();
+
+                    datamap.put("cs_name", dataMap.get("name"));
+                    datamap.put("cs_pwd", pwd);
+                    datamap.put("cs_tel", dataMap.get("phone"));
+                    datamap.put("cs_img", dataMap.get("img"));
+                    datamap.put("cs_register", new Timestamp(System.currentTimeMillis()));//当前时间就认为是账号的注册时间
 
 
-
-                    Map<String,Object> datamap = new HashMap<>();
-
-                    datamap.put("cs_name",dataMap.get("name"));
-                    datamap.put("cs_pwd","123456");//这里应该是123456的加密形式
-                    datamap.put("cs_tel",dataMap.get("phone"));
-                    datamap.put("cs_img",dataMap.get("img"));
-                    datamap.put("cs_register",new Timestamp(System.currentTimeMillis()));
+                    //增加一个普通用户
+                    String msg = new CsServiceImpl().insert(datamap);
 
                     JSONObject jsonObject = new JSONObject();
-                    String msg = new CsServiceImpl().insert(datamap);//增加一个普通用户
 
-                    if(msg==null){
+                    if (msg != null && msg.equals("yes")) {
                         //新增成功
-                        jsonObject.put("status",true);
-                        jsonObject.put("msg",null);
-                    }else{
-                        //新增失败失败
-                        jsonObject.put("status",false);
-                        jsonObject.put("msg","错误原因");
+                        jsonObject.put("status", true);
+                        jsonObject.put("msg", null);
+                    } else {
+                        //新增失败
+                        jsonObject.put("status", false);
+                        jsonObject.put("msg", "错误原因");
                     }
 
                     res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+
                     res.setStatus(200);
 
+                }
             }
 
         }

@@ -1,10 +1,5 @@
 package tb.entity;
-//talk_taskid int PK
-//talk_senderid int
-//talk_content varchar(255)
-//talk_timestamp varchar(255)
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 /**

@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class DomainSetFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         // 初始化代码
     }
 
@@ -22,7 +22,6 @@ public class DomainSetFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-
 
 
         myDomainSetting.set(req, res);

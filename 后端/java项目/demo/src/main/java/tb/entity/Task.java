@@ -1,6 +1,5 @@
 package tb.entity;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 /**

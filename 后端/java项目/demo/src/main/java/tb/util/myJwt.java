@@ -1,8 +1,10 @@
 package tb.util;
+
 import io.jsonwebtoken.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecureDigestAlgorithm;
@@ -20,7 +22,7 @@ public class myJwt {
     /**
      * 过期时间(单位:秒)
      */
-    public static final int ACCESS_EXPIRE = 60*60;
+    public static final int ACCESS_EXPIRE = 60 * 60;
     /**
      * 加密算法
      */
@@ -57,17 +59,21 @@ public class myJwt {
      */
 
 
-    public myJwt(String token){
+    public myJwt(String token) {
         this.token = token;
     }
-    public myJwt(){
+
+    public myJwt() {
 
     }
+
     public static String createToken(Map<String, String> claims) {
 
-        String username = (String)claims.get("username");
-        String role = (String)claims.get("role");
-        //String phonenum = (String)claims.get("phonenum");
+        String username = claims.get("username");
+        String role = claims.get("role");
+        String id = claims.get("id");
+        String sessionId = claims.get("sessionId");
+
         Date exprireDate = Date.from(Instant.now().plusSeconds(ACCESS_EXPIRE));
 
         return Jwts.builder()
@@ -78,7 +84,9 @@ public class myJwt {
                 .and()
                 // 设置自定义负载信息payload
                 .claim("username", username)
-                .claim("role",role)
+                .claim("role", role)
+                .claim("id", id)
+                .claim("sessionId", sessionId)
                 //.claim("phonenum",phonenum)
                 // 过期日期
                 .expiration(exprireDate)
@@ -90,8 +98,10 @@ public class myJwt {
                 .signWith(KEY, ALGORITHM)
                 .compact();
     }
+
     /**
      * 解析token
+     *
      * @param token token
      * @return Jws<Claims>
      */
@@ -112,79 +122,81 @@ public class myJwt {
 
 
     //因为判断时要调用非static方法，这里的judgeToken不设置为static
-    public boolean judgeToken(){
+    public boolean judgeToken() {
 
-        //TODO
-        if(this.token!=null)return true;//测试用
-        System.out.println("测试：token自动返回true");
+//        //TODO
+//        if(this.token!=null)return true;//测试用
+//        System.out.println("测试：token自动返回true");
 
 
-        try{
+        try {
             Claims claim = parsePayload(this.token);
-            String role = (String)claim.get("role");
-            String username = (String)claim.get("username");
+            String role = (String) claim.get("role");
+            String username = (String) claim.get("username");
 
             Date date = claim.getExpiration();
 
-            if(date.before(new Date())){
+            if (date.after(new Date())) {
                 //token未过期
-                switch (role){
+                switch (role) {
                     case "AD":
-                        if(new AdServiceImpl().existUsername(username).equals("yes")){
+                        if (new AdServiceImpl().existUsername(username).equals("yes")) {
                             //存在，correct
                             return true;
                         }
                         break;
                     case "AU":
-                        if(new AuServiceImpl().existUsername(username).equals("yes")){
+                        if (new AuServiceImpl().existUsername(username).equals("yes")) {
                             //存在，correct
                             return true;
                         }
                         break;
                     case "CS":
-                        if(new CsServiceImpl().existUsername(username).equals("yes")){
+                        if (new CsServiceImpl().existUsername(username).equals("yes")) {
                             //存在，correct
                             return true;
                         }
                         break;
                     case "CU":
-                        if(new CuServiceImpl().existUsername(username).equals("yes")){
+                        if (new CuServiceImpl().existUsername(username).equals("yes")) {
                             //存在，correct
                             return true;
                         }
                         break;
                 }
-            }else{
+            } else {
                 //其他原因
                 return false;
             }
-        }catch(RuntimeException e){
+        } catch (RuntimeException e) {
             return false;
         }
         return false;
 
     }
 
-    public String updateTokenTime(){
+    public String updateTokenTime() {
         Claims claim = parsePayload(this.token);
-        String role = (String)claim.get("role");
-        String username = (String)claim.get("username");
+        String role = (String) claim.get("role");
+        String username = (String) claim.get("username");
+        String id = (String) claim.get("id");
+        String sessionId = (String) claim.get("sessionId");
 
-        Map<String ,String> m = new HashMap<>();
-        m.put("role",role);
-        m.put("username",username);
+        Map<String, String> m = new HashMap<>();
+        m.put("role", role);
+        m.put("username", username);
+        m.put("id", id);
+        m.put("sessionId", sessionId);
 
-        String newtoken = createToken(m);
-
-        return newtoken;
+        return createToken(m);
     }
 
-    public void setToken(String token){
+    public void setToken(String token) {
         this.token = token;
     }
 
-    public Object getValue(String Key){
-        if(this.token!=null)return null;
+    public Object getValue(String Key) {
+//        if(this.token!=null)return null;
         Claims claim = parsePayload(this.token);
         return claim.get(Key);
     }

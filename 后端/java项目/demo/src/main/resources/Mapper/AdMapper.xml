@@ -8,40 +8,42 @@ resultType表示查询对象的返回类型为User类型
 namespace是名称空间，要和User.java所在的cn.mybatis.bean目录对应不能写错
 -->
 <!--命名空间写接口-->
-<mapper namespace="tb.dao.AdDao" >
+<mapper namespace="tb.dao.AdDao">
     <select id="SelectAdByMap" resultType="tb.entity.Ad">
         select
-            *
+        *
         from
-            AD
+        AD
         where 1=1
-            <if test="name != null and name !=''">
-                and ad_name like "%"#{name}"%"
-            </if>
-            <if test="tel != null and tel !=''">
-                and ad_tel like "%"#{tel}"%"
-            </if>
-            <if test="registerBegin != null and registerEnd != null">
-                and ad_register between #{registerBegin} and #{registerEnd}
-            </if>
-            <if test="loginBegin != null and loginEnd != null">
-                and ad_login between #{loginBegin} and #{loginEnd}
-            </if>
-            <if test="userStatus == 0 or userStatus == 1">
-                and ad_status = #{userStatus}
-            </if>
+        <if test="name != null and name !=''">
+            and ad_name like "%"#{name}"%"
+        </if>
+        <if test="tel != null and tel !=''">
+            and ad_tel like "%"#{tel}"%"
+        </if>
+        <if test="registerBegin != null and registerEnd != null">
+            and ad_register between #{registerBegin} and #{registerEnd}
+        </if>
+        <if test="loginBegin != null and loginEnd != null">
+            and ad_login between #{loginBegin} and #{loginEnd}
+        </if>
+        <if test="userStatus == 0 or userStatus == 1">
+            and ad_status = #{userStatus}
+        </if>
     </select>
 
 
-    <select id="SelectAdById"  parameterType="java.lang.Integer" resultType="tb.entity.Ad">
-        select * from AD
-                 where ad_id=#{id}
+    <select id="SelectAdById" parameterType="java.lang.Integer" resultType="tb.entity.Ad">
+        select *
+        from AD
+        where ad_id = #{id}
     </select>
 
 
-    <select id="SelectAdByName"  parameterType="java.lang.String" resultType="tb.entity.Ad">
-        select * from AD
-                 where ad_name=#{name}
+    <select id="SelectAdByName" parameterType="java.lang.String" resultType="tb.entity.Ad">
+        select *
+        from AD
+        where ad_name = #{name}
     </select>
 
 
@@ -77,8 +79,9 @@ namespace是名称空间，要和User.java所在的cn.mybatis.bean目录对应�
 
 
     <delete id="DeleteAdById" parameterType="java.lang.Integer">
-        delete from AD
-               where ad_id = #{id}
+        delete
+        from AD
+        where ad_id = #{id}
     </delete>
 
     <update id="UpdateAd" parameterType="tb.entity.Ad">

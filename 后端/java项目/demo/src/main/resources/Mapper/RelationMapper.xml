@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--命名空间写接口-->
+<mapper namespace="tb.dao.RelationDao">
+
+    <select id="Select" parameterType="java.lang.Integer" resultType="tb.entity.Relation">
+        select * from Relation
+        where 1=1
+
+        <if test="cu_id!=null">and cu_id = #{cu_id}</if>
+        <if test="cs_id!=null">and cs_id = #{cs_id}</if>
+
+    </select>
+
+
+    <insert id="Insert" parameterType="tb.entity.Relation" useGeneratedKeys="true" keyProperty="relation.id">
+        insert into Relation
+        (id,
+         cu_id,
+         cs_id)
+        values (null,
+                #{relation.cu_id},
+                #{relation.cs_id})
+    </insert>
+
+
+    <delete id="Delete" parameterType="java.lang.Integer">
+        delete
+        from Relation
+        where id = #{id}
+    </delete>
+
+</mapper>

@@ -13,6 +13,7 @@ import java.util.List;
 public interface TaskDao {
 
     List<Task> SelectTaskByStatusAndTimeout(@Param("status") String status,@Param("timeout") String timeout);
+    List<Task> SelectTaskByNotStatusAndTimeout(@Param("status") String status,@Param("timeout") String timeout);
 
     List<Task> SelectTaskByPublisherId(Integer publisherId);
 

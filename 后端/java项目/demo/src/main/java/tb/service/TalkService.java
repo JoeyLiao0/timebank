@@ -9,65 +9,58 @@ public interface TalkService {
     //根据用户id和任务id获取这个任务对话中的未读消息
 
     /**
-     *
      * 返回格式
      * [{
-     *  type:"talk"
-     *  id
-     *  taskId
-     *  senderSessionId
-     *  content
-     *  contentType
-     *  timestamp
-     *  isRead
-     *  }]
+     * type:"talk"
+     * id
+     * taskId
+     * senderSessionId
+     * content
+     * contentType
+     * timestamp
+     * isRead
+     * }]
      */
 
 
-    List<Map<String,Object>> getUnreadMessage(Integer cu_id,Integer task_id);
+    List<Map<String, Object>> getUnreadMessage(Integer cu_id, Integer task_id);
 
 
-
+    String getUnreadMessage(Integer cu_id);
 
 
     //根据用户id和消息id添加已读状态
-    String isRead(Integer cu_id,List<Integer> ids);
-
-
-
+    String isRead(Integer cu_id, List<Integer> ids);
 
 
     /**
-     *
      * 返回格式
      * [{
-     *  type:"talk"
-     *  id
-     *  taskId
-     *  senderSessionId
-     *  content
-     *  contentType
-     *  timestamp
-     *  isRead
-     *  }]
+     * type:"talk"
+     * id
+     * taskId
+     * senderSessionId
+     * content
+     * contentType
+     * timestamp
+     * isRead
+     * }]
      */
     //获取这个任务id下的全部历史消息
-    List<Map<String,Object>> getHistory(Integer cu_id,Integer task_id);
-
+    List<Map<String, Object>> getHistory(Integer cu_id, Integer task_id);
 
 
     /**
-     *
      * 参数格式
      * [{
-     *  type:"talk"
-     *  taskId
-     *  senderSessionId
-     *  receiverSessionId
-     *  content
-     *  contentType
-     *  timestamp
-     *  }]
+     * type:"talk"
+     * taskId
+     * senderSessionId
+     * receiverSessionId
+     * content
+     * contentType
+     * timestamp
+     * }]
      */
     //添加一条消息记录
     Integer sendMessage(Map<String, Object> datamap);
