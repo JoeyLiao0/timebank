@@ -17,6 +17,7 @@
         1 = 1
         <if test="status != null">and task_status = #{status}</if>
         <if test="timeout != null">and task_timeout = #{timeout}</if>
+        Order by task_begintime
     </select>
 
     <select id="SelectTaskByNotStatusAndTimeout" parameterType="java.lang.String" resultType="tb.entity.Task">
@@ -25,18 +26,21 @@
         1 = 1
         <if test="status != null">and task_status != #{status}</if>
         <if test="timeout != null">and task_timeout != #{timeout}</if>
+        Order by task_begintime
     </select>
 
     <select id="SelectTaskByPublisherId" parameterType="java.lang.Integer" resultType="tb.entity.Task">
         select *
         from TASK
         where task_publisherid = #{task_publisherId}
+        Order by task_begintime DESC
     </select>
 
     <select id="SelectTaskByTakerId" parameterType="java.lang.Integer" resultType="tb.entity.Task">
         select *
         from TASK
         where task_takerid = #{task_takerId}
+        Order by task_taketime DESC
     </select>
 
     <insert id="PublishNewTask" parameterType="tb.entity.Task" useGeneratedKeys="true" keyProperty="task.task_id">

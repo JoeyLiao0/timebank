@@ -36,9 +36,9 @@ public class RelationServiceImpl implements RelationService {
         try (SqlSession session = mySqlSession.getSqSession()) {
             RelationDao relationDao = session.getMapper(RelationDao.class);
 
-            Relation relation = (Relation) relationDao.Select(cu_id, null);
+            List<Relation> relations = relationDao.Select(cu_id, null);
 
-            if (relation == null) {
+            if (relations == null || relations.isEmpty()) {
                 //没有记录的话，为他分配当前关联量最小的且有效的客服
                 //所以客服表要多一个字段为feedbackNum 表示其目前处理有多个对话
 
@@ -53,12 +53,14 @@ public class RelationServiceImpl implements RelationService {
                     session.commit();
 
                     return cs_id;
+                }else{
+                    return null;
                 }
 
-                return null;
+            }else{
+                return relations.get(0).getCs_id();
             }
 
-            return relation.getCs_id();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

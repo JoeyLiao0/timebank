@@ -30,14 +30,15 @@ public class register extends HttpServlet {
         datamap.put("cu_tel", dataMap.get("telephone"));
         datamap.put("cu_img", null);
         datamap.put("cu_register", new Timestamp(System.currentTimeMillis()));
-        datamap.put("cu_coin", 0);
+        datamap.put("cu_coin", 10);
         datamap.put("cu_login", null);
 
         JSONObject jsonObject = new JSONObject();
 
         String msg = new CuServiceImpl().insert(datamap);//增加一个普通用户
 
-        if (msg == null) {
+        if (msg != null&&msg.equals("yes")) {
+
             //新增成功
             jsonObject.put("status", true);
             jsonObject.put("msg", null);

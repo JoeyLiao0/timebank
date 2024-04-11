@@ -3,6 +3,7 @@ package tb.service.Impl;
 import cn.hutool.crypto.digest.DigestUtil;
 import org.apache.ibatis.session.SqlSession;
 import tb.dao.CuDao;
+import tb.entity.Au;
 import tb.entity.Cu;
 import tb.service.CuService;
 import tb.util.mySqlSession;
@@ -99,11 +100,32 @@ public class CuServiceImpl implements CuService {
             DataMap.put("id", dataMap.get("id"));
             DataMap.put("name", dataMap.get("name"));
             DataMap.put("tel", dataMap.get("phone"));
-            DataMap.put("registerBegin", dataMap.get("registerBegin"));
-            DataMap.put("registerEnd", dataMap.get("registerEnd"));
-            DataMap.put("loginBegin", dataMap.get("loginBegin"));
-            DataMap.put("loginEnd", dataMap.get("loginEnd"));
-            DataMap.put("userStatus", ((Boolean) dataMap.get("userStatus")) ? 1 : 0);
+            if (dataMap.get("registerBegin") != null) {
+                DataMap.put("registerBegin", new Timestamp((long) dataMap.get("registerBegin")));
+            }else{
+                DataMap.put("registerBegin", null);
+            }
+            if (dataMap.get("registerEnd") != null) {
+                DataMap.put("registerEnd", new Timestamp((long) dataMap.get("registerEnd")));
+            }else{
+                DataMap.put("registerEnd", null);
+
+            }
+            if (dataMap.get("loginBegin") != null) {
+                DataMap.put("loginBegin", new Timestamp((long) dataMap.get("loginBegin")));
+            }else{
+                DataMap.put("loginBegin", null);
+            }
+            if (dataMap.get("loginEnd") != null) {
+                DataMap.put("loginEnd", new Timestamp((long) dataMap.get("loginEnd")));
+            }else {
+                DataMap.put("loginEnd", null);
+            }
+            if (dataMap.get("userStatus") != null) {
+                DataMap.put("userStatus", ((Boolean) dataMap.get("userStatus")) ? 1 : 0);
+            } else {
+                DataMap.put("userStatus", null);
+            }
 
             CuDao cuDao = session.getMapper(CuDao.class);
             ArrayList<Cu> cus = (ArrayList<Cu>) cuDao.SelectCuByMap(DataMap);
@@ -259,10 +281,16 @@ public class CuServiceImpl implements CuService {
                     throw new Exception("用户不存在！");
                 }
 
+                Cu _cu_ = cuDao.SelectCuByName((String) dataMap.get("cu_name"));
+                if(_cu_!=null){
+                    throw new Exception("用户名不能和其他人重复");
+                }
+
                 cu.setCu_name((String) dataMap.get("cu_name"));
                 cu.setCu_tel((String) dataMap.get("cu_tel"));
                 cu.setCu_img((String) dataMap.get("cu_img"));
                 cu.setCu_coin((Integer) dataMap.get("cu_coin"));
+                cu.setCu_login((Timestamp) dataMap.get("cu_login"));
                 //TODO 这里cu的score可以设置吗
 
                 cuDao.UpdateCu(cu);
@@ -316,7 +344,7 @@ public class CuServiceImpl implements CuService {
                 cu.setCu_login((Timestamp) dataMap.get("cu_login"));
                 cu.setCu_img((String) dataMap.get("cu_img"));
 
-                cu.setCu_coin(10);//这个初始值写成可调的值
+                cu.setCu_coin((Integer)dataMap.get("cu_coin"));
 
                 cu.setCu_release(0);
                 cu.setCu_accept(0);

@@ -114,6 +114,8 @@ public class Task extends HttpServlet {
 //                    System.out.println(dataMap.get("task_begintime"));
 //                    System.out.println(dataMap.get((String)"task_begintime"));
 
+                    System.out.println(dataMap.get("task_begintime").getClass());
+
                     long task_begintime = (long) dataMap.get("task_begintime");
 
                     long task_endtime = (long) dataMap.get("task_endtime");
@@ -154,7 +156,7 @@ public class Task extends HttpServlet {
                     msg = new TaskServiceImpl().take(id, task_id);
                     JSONObject jsonObject = new JSONObject();
 
-                    if (msg == null) {
+                    if (msg != null && msg.equals("yes")) {
                         jsonObject.put("status", true);
                     } else {
                         jsonObject.put("status", false);
@@ -175,11 +177,12 @@ public class Task extends HttpServlet {
                     Integer task_id = (Integer) (dataMap.get("task_id"));
 
                     String msg;
+                    //这里如果成功，就返还全部时间币
                     msg = new TaskServiceImpl().publishCancel(id, task_id);
 
                     JSONObject jsonObject = new JSONObject();
 
-                    if (msg.equals("yes")) {
+                    if (msg!=null && msg.equals("yes")) {
                         jsonObject.put("status", true);
                     } else {
                         jsonObject.put("status", false);
@@ -204,7 +207,7 @@ public class Task extends HttpServlet {
 
                     JSONObject jsonObject = new JSONObject();
 
-                    if (msg == null) {
+                    if (msg != null && msg.equals("yes")) {
                         jsonObject.put("status", true);
                     } else {
                         jsonObject.put("status", false);
@@ -231,7 +234,7 @@ public class Task extends HttpServlet {
 
                     JSONObject jsonObject = new JSONObject();
 
-                    if (msg != null) {
+                    if (msg != null && msg.equals("yes")) {
                         jsonObject.put("status", true);
                     } else {
                         jsonObject.put("status", false);
@@ -256,7 +259,7 @@ public class Task extends HttpServlet {
 
                     JSONObject jsonObject = new JSONObject();
 
-                    if (msg != null) {
+                    if (msg != null && msg.equals("yes")) {
                         jsonObject.put("status", true);
                     } else {
                         jsonObject.put("status", false);
@@ -284,7 +287,7 @@ public class Task extends HttpServlet {
 
                     JSONObject jsonObject = new JSONObject();
 
-                    if (msg != null) {
+                    if (msg != null && msg.equals("yes")) {
                         jsonObject.put("status", true);
                     } else {
                         jsonObject.put("status", false);

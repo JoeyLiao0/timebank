@@ -36,7 +36,7 @@ public class Chat extends HttpServlet {
 
                 myJwt mj = new myJwt(token);
                 String role = (String) mj.getValue("role");
-                Integer id = (Integer)mj.getValue("id");
+                Integer id = Integer.parseInt((String)mj.getValue("id"));
 
                 //根据编号获取自己全部已读的信息
                 ArrayList<Map<String,Object>> chatArray = (ArrayList<Map<String, Object>>) (new ChatServiceImpl()).getHistory(role,id);

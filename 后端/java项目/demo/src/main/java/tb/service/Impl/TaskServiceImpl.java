@@ -41,15 +41,18 @@ public class TaskServiceImpl implements TaskService {
                 taskMap.put("task_coin", task.getTask_coin());
                 taskMap.put("task_title", task.getTask_title());
                 taskMap.put("task_text", task.getTask_text());
-                taskMap.put("task_status", status + "_" + timeout);
+                taskMap.put("task_status", task.getTask_status()+ "_" + task.getTask_timeout());
                 taskMap.put("task_advice", task.getTask_advice());
+                taskMap.put("task_auid",task.getTask_auid());
                 taskMap.put("task_takerId", task.getTask_takerid());
                 taskMap.put("task_publisherId", task.getTask_publisherid());
-                taskMap.put("task_begintime", task.getTask_begintime().getTime());
-                taskMap.put("task_endtime", task.getTask_endtime().getTime());
-                taskMap.put("task_finishtime", task.getTask_finishtime().getTime());
+                taskMap.put("task_begintime", task.getTask_begintime());
+                taskMap.put("task_endtime", task.getTask_endtime());
+                taskMap.put("task_finishtime", task.getTask_finishtime());
                 taskMap.put("task_score", task.getTask_score());
                 taskMap.put("task_location", task.getTask_location());
+                taskMap.put("task_taketime",task.getTask_taketime());
+                taskMap.put("task_evidence",task.getTask_evidence());
 
                 taskArray2.add(taskMap);
 
@@ -86,11 +89,13 @@ public class TaskServiceImpl implements TaskService {
                 taskMap.put("task_advice", task.getTask_advice());
                 taskMap.put("task_takerId", task.getTask_takerid());
                 taskMap.put("task_publisherId", task.getTask_publisherid());
-                taskMap.put("task_begintime", task.getTask_begintime().getTime());
-                taskMap.put("task_endtime", task.getTask_endtime().getTime());
-                taskMap.put("task_finishtime", task.getTask_finishtime().getTime());
+                taskMap.put("task_taketime",task.getTask_taketime());
+                taskMap.put("task_begintime", task.getTask_begintime());
+                taskMap.put("task_endtime", task.getTask_endtime());
+                taskMap.put("task_finishtime", task.getTask_finishtime());
                 taskMap.put("task_score", task.getTask_score());
                 taskMap.put("task_location", task.getTask_location());
+                taskMap.put("task_auid",task.getTask_auid());
 
                 taskArray2.add(taskMap);
 
@@ -131,8 +136,8 @@ public class TaskServiceImpl implements TaskService {
                 taskMap.put("task_title", task.getTask_title());
                 taskMap.put("task_text", task.getTask_text());
                 taskMap.put("task_location", task.getTask_location());
-                taskMap.put("task_begintime", task.getTask_begintime().getTime() / 1000);
-                taskMap.put("task_endtime", task.getTask_endtime().getTime() / 1000);
+                taskMap.put("task_begintime", task.getTask_begintime().getTime() );
+                taskMap.put("task_endtime", task.getTask_endtime().getTime());
 
                 taskArray2.add(taskMap);
 
@@ -172,7 +177,7 @@ public class TaskServiceImpl implements TaskService {
 
                 map.put("task_advice", task.getTask_advice());
 
-                map.put("task_taskerId", task.getTask_takerid());
+                map.put("task_takerId", task.getTask_takerid());
                 map.put("task_takerName", cu.getCu_name());
 
                 map.put("task_location", task.getTask_location());
@@ -215,7 +220,7 @@ public class TaskServiceImpl implements TaskService {
                 map.put("task_title", task.getTask_title());
                 map.put("task_text", task.getTask_text());
 
-                map.put("task_status", task.getTask_status());
+                map.put("task_status", task.getTask_status()+"-"+task.getTask_timeout());
 
                 map.put("task_publisherId", task.getTask_publisherid());
                 map.put("task_publisherName", cu.getCu_name());
@@ -223,9 +228,9 @@ public class TaskServiceImpl implements TaskService {
                 map.put("task_location", task.getTask_location());
 
                 map.put("task_score", task.getTask_score());
-                map.put("task_begintime", task.getTask_begintime().getTime() / 1000);
-                map.put("task_endtime", task.getTask_endtime().getTime() / 1000);
-                map.put("task_finishtime", task.getTask_finishtime().getTime() / 1000);
+                map.put("task_begintime", task.getTask_begintime());
+                map.put("task_endtime", task.getTask_endtime());
+                map.put("task_finishtime", task.getTask_finishtime());
 
                 taskArray2.add(map);
 
@@ -351,6 +356,11 @@ public class TaskServiceImpl implements TaskService {
                     task.setTask_timeout("00");
                     taskDao.UpdateTask(task);
 
+                    CuDao cuDao = session.getMapper(CuDao.class);
+
+                    Cu cu  = cuDao.SelectCuById(publisherId);
+
+
                     session.commit();
                     return "yes";
                 }
@@ -373,11 +383,13 @@ public class TaskServiceImpl implements TaskService {
                 if (task.getTask_takerid() != (int) takerId) {
                     throw new Exception("此任务并不是你领取的，无法取消领取！");
                 } else if (!(task.getTask_status().equals("2100") && task.getTask_timeout().equals("00")
-                        && (new Timestamp(System.currentTimeMillis()).getTime() - task.getTask_taketime().getTime()) / 1000 < 2 * 60)) {//这个2可以由管理员设置
+                        && (new Timestamp(System.currentTimeMillis()).getTime() - task.getTask_taketime().getTime()) / 1000 < 5 * 60)) {//这个5可以由管理员设置
                     throw new Exception("此任务无法取消领取！");
                 } else {
                     task.setTask_status("2000");
+                    task.setTask_takerid(-1);
                     //根据状态码来展现数据，所以过时的数据不需要清零，下次会覆盖
+
                     taskDao.UpdateTask(task);
                     session.commit();
                     return "yes";
@@ -402,7 +414,7 @@ public class TaskServiceImpl implements TaskService {
 
                 if (task.getTask_takerid() != (int) taskerId) {
                     throw new Exception("此任务并不是你领取的，无法完成！");
-                } else if (!task.getTask_status().equals("2100-00") && !task.getTask_status().equals("2100-10")) {
+                } else if (!(task.getTask_status().equals("2100") && (task.getTask_timeout().equals("00")||task.getTask_timeout().equals("10")))) {
                     throw new Exception("此任务未在规定的时间完成！");
                 } else {
 
@@ -490,7 +502,7 @@ public class TaskServiceImpl implements TaskService {
 
                     task.setTask_status("2121");
 
-                    if (task_score <= 5 && task_score >= 1) throw new Exception("评分非法！");
+                    if (!(task_score <= 5 && task_score >= 1)) throw new Exception("评分非法！");
 
                     task.setTask_score(task_score);
 
@@ -552,44 +564,56 @@ public class TaskServiceImpl implements TaskService {
                 CuDao cuDao = session.getMapper(CuDao.class);
                 Cu cu = cuDao.SelectCuById(task.getTask_publisherid());
 
-                //TODO 这里要考虑到领取
-                if (delayType == 1 && task_status.charAt(2) == '0' && task_timeout.equals("00")) {
-                    //到了第一个截止日期
-                    //如果未完成，应该把时间状态码设为10
-                    task_timeout = "10";
-                    task.setTask_timeout(task_timeout);
 
-                    //返还一定比例时间币
-                    Integer task_coin = task.getTask_coin() / 2;
-                    Integer back_coin = task.getTask_coin() - task_coin;
-                    task.setTask_coin(task_coin);
+                if (delayType == 1 && task_timeout.equals("00")){
 
-                    cu.setCu_coin(cu.getCu_coin() + back_coin);
-                    //TODO 这里可能要记录
-                    cuDao.UpdateCu(cu);
+                    if(task_status.equals("0000")||task_status.equals("2000")||task_status.equals("2100")){
+                        task.setTask_timeout("10");
+                        taskDao.UpdateTask(task);
+                    }
 
-                } else if (delayType == 2 && task_status.charAt(2) == '0' && task_timeout.equals("10")) {
-                    //到了第二个截止日期
-                    task_timeout = "20";
-                    //返还全部时间币
-                    task.setTask_timeout(task_timeout);
+                    //第一个时间点超时
+                    if(task_status.equals("0000")||task_status.equals("2000")){
+                        //未审核已超时
+                        //返还全部时间币
+                        Integer back_coin = task.getTask_coin();
+                        cu.setCu_coin(cu.getCu_coin() + back_coin);
 
-                    Integer task_coin = task.getTask_coin();
+                        cuDao.UpdateCu(cu);
+                    }
 
-                    task.setTask_coin(0);
+                    session.commit();
 
-                    cu.setCu_coin(cu.getCu_coin() + task_coin);
-                    cuDao.UpdateCu(cu);
-                } else if (delayType == 3 && task_status.charAt(3) == '0') {
-                    //到了第三个截止日期
-                    task_timeout = task_timeout.charAt(0) + "1";
-                    task.setTask_timeout(task_timeout);
-                    task.setTask_score(5);
+                } else if (delayType == 2) {
+
+                    //第二个时间点超时
+                    if(task_status.equals("2100") && task_timeout.equals("10")){
+                        //只有这种情况会需要调整为第二种
+                        task.setTask_timeout("20");
+                        taskDao.UpdateTask(task);
+                        //此时全部退还时间币
+                        cu.setCu_coin(cu.getCu_coin()+task.getTask_coin());
+                        cuDao.UpdateCu(cu);
+                        session.commit();
+                    }
+
+
+                } else if (delayType == 3 ) {
+                    //第三个时间点
+
+                    if(task_status.equals("2120")) {
+                        task.setTask_score(5);
+                        task_timeout = task_timeout.charAt(0) + "1";
+
+                        task.setTask_status(task_status.substring(0,3)+"1");
+                        task.setTask_timeout(task_timeout);
+
+                        taskDao.UpdateTask(task);
+                        session.commit();
+
+                    }
+
                 }
-
-                taskDao.UpdateTask(task);
-
-                session.commit();
 
                 return "yes";
 

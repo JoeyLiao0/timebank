@@ -43,7 +43,7 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     //发布公告
-    public void publishNotice(Map<String, Object> map) {
+    public String publishNotice(Map<String, Object> map) {
         try (SqlSession session = mySqlSession.getSqSession()) {
             try {
                 NoticeDao noticeDao = session.getMapper(NoticeDao.class);
@@ -58,14 +58,17 @@ public class NoticeServiceImpl implements NoticeService {
 
                 session.commit();
 
+                return "yes";
             } catch (Exception e) {
                 if (session != null) session.rollback();
+                return null;
             }
         }
+
     }
 
     //删除公告
-    public void deleteNotice(Integer notice_id) {
+    public String deleteNotice(Integer notice_id) {
         try (SqlSession session = mySqlSession.getSqSession()) {
             try {
                 NoticeDao noticeDao = session.getMapper(NoticeDao.class);
@@ -74,9 +77,12 @@ public class NoticeServiceImpl implements NoticeService {
 
                 session.commit();
 
+                return "yes";
             } catch (Exception e) {
                 if (session != null) session.rollback();
+                return null;
             }
         }
+
     }
 }

@@ -38,7 +38,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>Filter2</filter-name>
-        <url-pattern>/taskMonitor/select</url-pattern>
+        <url-pattern>/taskMonitor/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>Filter2</filter-name>
@@ -79,6 +79,10 @@
     <filter-mapping>
         <filter-name>Filter2</filter-name>
         <url-pattern>/chat/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filter2</filter-name>
+        <url-pattern>/coin/*</url-pattern>
     </filter-mapping>
 
 </web-app>

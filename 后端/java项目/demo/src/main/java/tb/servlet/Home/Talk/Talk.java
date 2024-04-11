@@ -35,7 +35,7 @@ public class Talk extends HttpServlet {
 
                 String token = (String)dataMap.get("token");
 
-                Integer cu_id = (Integer) new myJwt(token).getValue("id");
+                Integer cu_id = Integer.parseInt((String) new myJwt(token).getValue("id"));
 
                 ArrayList<Map<String,Object>> talkArray  ;
 

@@ -5,8 +5,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.apache.ibatis.session.SqlSession;
+import tb.dao.CsDao;
+import tb.dao.CuDao;
 import tb.dao.FeedbackDao;
 
+import tb.entity.Cs;
+import tb.entity.Cu;
 import tb.entity.Feedback;
 
 import tb.service.FeedbackService;
@@ -32,6 +36,31 @@ public class FeedbackServiceImpl implements FeedbackService {
                 SessionId = "CS_" + cs_id;
             }
 
+            CuDao cuDao = session.getMapper(CuDao.class);
+            Cu cu = cuDao.SelectCuById(cu_id);
+
+
+
+            String cu_name = null;
+            String cu_img = null;
+
+            if(cu!=null){
+                cu_name = cu.getCu_name();
+                cu_img = cu.getCu_img();
+            }
+            String cs_name = null;
+            String cs_img = null;
+
+            CsDao csDao = session.getMapper(CsDao.class);
+            Cs cs = csDao.SelectCsById(cs_id);
+
+            if(cu!=null){
+                cs_name = cs.getCs_name();
+                cs_img = cs.getCs_img();
+            }
+
+
+
             FeedbackDao feedbackDao = session.getMapper(FeedbackDao.class);
 
             //通过客服id和用户id找到对应的feedback
@@ -41,50 +70,74 @@ public class FeedbackServiceImpl implements FeedbackService {
             List<Map<String, Object>> feedbacks = new ArrayList<>();
             int i = 0, j = 0;
 
-            if (list1 == null && list2 != null) {
+            if (list1.isEmpty() && !list2.isEmpty()) {
                 for (Feedback feedback : list2) {
                     if (!feedback.getFeedback_isread().contains(SessionId)) {
                         Map<String, Object> map = new HashMap<>();
                         turnFeedbackToMap(feedback, map);
+                        map.put("cu_name",cu_name);
+                        map.put("cu_img",cu_img);
+                        map.put("cs_name",cs_name);
+                        map.put("cs_img",cs_img);
                         feedbacks.add(map);
                     }
 
                 }
             }
-            if (list1 != null && list2 == null) {
+            if (!list1.isEmpty() && list2.isEmpty()) {
                 for (Feedback feedback : list1) {
                     if (!feedback.getFeedback_isread().contains(SessionId)) {
                         Map<String, Object> map = new HashMap<>();
                         turnFeedbackToMap(feedback, map);
+                        map.put("cu_name",cu_name);
+                        map.put("cu_img",cu_img);
+                        map.put("cs_name",cs_name);
+                        map.put("cs_img",cs_img);
                         feedbacks.add(map);
                     }
                 }
             }
-            while (list1 != null && list2 != null) {
+            while (!list1.isEmpty() && !list2.isEmpty()) {
                 Map<String, Object> map = new HashMap<>();
                 if (i == list1.size() && j == list2.size()) {
                     break;
                 } else if (i == list1.size()) {
                     if (!list2.get(j).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list2.get(j), map);
+                        map.put("cu_name",cu_name);
+                        map.put("cu_img",cu_img);
+                        map.put("cs_name",cs_name);
+                        map.put("cs_img",cs_img);
                         feedbacks.add(map);
                     }
                     j++;
                 } else if (j == list2.size()) {
                     if (!list1.get(i).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list1.get(i), map);
+                        map.put("cu_name",cu_name);
+                        map.put("cu_img",cu_img);
+                        map.put("cs_name",cs_name);
+                        map.put("cs_img",cs_img);
                         feedbacks.add(map);
                     }
                     i++;
                 } else if (list1.get(i).getFeedback_timestamp().before(list2.get(j).getFeedback_timestamp())) {
-                    if (!list1.get(j).getFeedback_isread().contains(SessionId)) {
+                    if (!list1.get(i).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list1.get(i), map);
+                        map.put("cu_name",cu_name);
+                        map.put("cu_img",cu_img);
+                        map.put("cs_name",cs_name);
+                        map.put("cs_img",cs_img);
                         feedbacks.add(map);
                     }
                     i++;
                 } else {
-                    if (!list1.get(j).getFeedback_isread().contains(SessionId)) {
+                    if (!list2.get(j).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list2.get(j), map);
+                        map.put("cu_name",cu_name);
+                        map.put("cu_img",cu_img);
+                        map.put("cs_name",cs_name);
+                        map.put("cs_img",cs_img);
                         feedbacks.add(map);
                     }
                     j++;
@@ -119,7 +172,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
             List<Map<String, Object>> feedbackArray = new ArrayList<>();
             for (Integer cu_id : cu_ids) {
-                List<Map<String, Object>> feedback = getUnreadMessage("CU", cu_id, id);//cs_id 唯一
+                List<Map<String, Object>> feedback = getUnreadMessage("CS", cu_id, id);//cs_id 唯一
                 feedbackArray.addAll(feedback);
             }
             JSONObject jsonObject = new JSONObject();
@@ -137,11 +190,12 @@ public class FeedbackServiceImpl implements FeedbackService {
     private void turnFeedbackToMap(Feedback feedback, Map<String, Object> map) {
         map.put("type", "feedback");
         map.put("id", feedback.getFeedback_id());
-        map.put("senderSessionId", feedback.getFeedback_senderrole().toUpperCase() + "_" + feedback.getFeedback_id());
+        map.put("senderSessionId", feedback.getFeedback_senderrole().toUpperCase() + "_" + feedback.getFeedback_senderid());
         map.put("content", feedback.getFeedback_content());
         map.put("contentType", feedback.getFeedback_contenttype());
-        map.put("timestamp", feedback.getFeedback_timestamp().getTime() * 1000);
+        map.put("timestamp", feedback.getFeedback_timestamp().getTime());
         map.put("isRead", false);
+
     }
 
     @Override
@@ -185,7 +239,7 @@ public class FeedbackServiceImpl implements FeedbackService {
             List<Map<String, Object>> feedbacks = new ArrayList<>();
             int i = 0, j = 0;
 
-            if (list1 == null && list2 != null) {
+            if (list1.isEmpty() && !list2.isEmpty()) {
                 for (Feedback feedback : list2) {
                     if (feedback.getFeedback_isread().contains(SessionId)) {
                         Map<String, Object> map = new HashMap<>();
@@ -195,7 +249,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
                 }
             }
-            if (list1 != null && list2 == null) {
+            if (!list1.isEmpty() && list2.isEmpty()) {
                 for (Feedback feedback : list1) {
                     if (feedback.getFeedback_isread().contains(SessionId)) {
                         Map<String, Object> map = new HashMap<>();
@@ -204,7 +258,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                     }
                 }
             }
-            while (list1 != null && list2 != null) {
+            while (!list1.isEmpty() && !list2.isEmpty()) {
                 Map<String, Object> map = new HashMap<>();
                 if (i == list1.size() && j == list2.size()) {
                     break;
@@ -221,13 +275,13 @@ public class FeedbackServiceImpl implements FeedbackService {
                     }
                     i++;
                 } else if (list1.get(i).getFeedback_timestamp().before(list2.get(j).getFeedback_timestamp())) {
-                    if (list1.get(j).getFeedback_isread().contains(SessionId)) {
+                    if (list1.get(i).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list1.get(i), map);
                         feedbacks.add(map);
                     }
                     i++;
                 } else {
-                    if (list1.get(j).getFeedback_isread().contains(SessionId)) {
+                    if (list2.get(j).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list2.get(j), map);
                         feedbacks.add(map);
                     }
@@ -256,14 +310,14 @@ public class FeedbackServiceImpl implements FeedbackService {
                 String[] info2 = receiverSessionId.split("_");
 
                 feedback.setFeedback_receiverrole(info2[0]);
-                feedback.setFeedback_receiverid(Integer.getInteger(info2[1]));
+                feedback.setFeedback_receiverid(Integer.parseInt(info2[1]));
 
                 feedback.setFeedback_senderrole(info1[0]);
-                feedback.setFeedback_senderid(Integer.getInteger(info1[1]));
+                feedback.setFeedback_senderid(Integer.parseInt(info1[1]));
 
                 feedback.setFeedback_content((String) datamap.get("content"));
                 feedback.setFeedback_contenttype((String) datamap.get("contentType"));
-                feedback.setFeedback_timestamp(new Timestamp((long) datamap.get("timestamp") * 1000));
+                feedback.setFeedback_timestamp(new Timestamp((long) datamap.get("timestamp")));
                 feedback.setFeedback_isread(senderSessionId);
 
                 feedbackDao.insertFeedback(feedback);

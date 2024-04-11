@@ -4,6 +4,7 @@ import cn.hutool.crypto.digest.DigestUtil;
 import org.apache.ibatis.session.SqlSession;
 import tb.dao.CsDao;
 
+import tb.entity.Au;
 import tb.entity.Cs;
 
 import tb.service.CsService;
@@ -68,11 +69,32 @@ public class CsServiceImpl implements CsService {
             DataMap.put("id", dataMap.get("id"));
             DataMap.put("name", dataMap.get("name"));
             DataMap.put("tel", dataMap.get("phone"));
-            DataMap.put("registerBegin", dataMap.get("registerBegin"));
-            DataMap.put("registerEnd", dataMap.get("registerEnd"));
-            DataMap.put("loginBegin", dataMap.get("loginBegin"));
-            DataMap.put("loginEnd", dataMap.get("loginEnd"));
-            DataMap.put("userStatus", ((Boolean) dataMap.get("userStatus")) ? 1 : 0);
+            if (dataMap.get("registerBegin") != null) {
+                DataMap.put("registerBegin", new Timestamp((long) dataMap.get("registerBegin")));
+            }else{
+                DataMap.put("registerBegin", null);
+            }
+            if (dataMap.get("registerEnd") != null) {
+                DataMap.put("registerEnd", new Timestamp((long) dataMap.get("registerEnd")));
+            }else{
+                DataMap.put("registerEnd", null);
+
+            }
+            if (dataMap.get("loginBegin") != null) {
+                DataMap.put("loginBegin", new Timestamp((long) dataMap.get("loginBegin")));
+            }else{
+                DataMap.put("loginBegin", null);
+            }
+            if (dataMap.get("loginEnd") != null) {
+                DataMap.put("loginEnd", new Timestamp((long) dataMap.get("loginEnd")));
+            }else {
+                DataMap.put("loginEnd", null);
+            }
+            if (dataMap.get("userStatus") != null) {
+                DataMap.put("userStatus", ((Boolean) dataMap.get("userStatus")) ? 1 : 0);
+            } else {
+                DataMap.put("userStatus", null);
+            }
 
             CsDao csDao = session.getMapper(CsDao.class);
             ArrayList<Cs> css = (ArrayList<Cs>) csDao.SelectCsByMap(DataMap);
@@ -113,6 +135,7 @@ public class CsServiceImpl implements CsService {
             csInfo.put("userStatus", cs.getCs_status() == 1);
             csInfo.put("register", cs.getCs_register());
             csInfo.put("img", cs.getCs_img());
+            csInfo.put("processNum",cs.getCs_feedbackNum());
 
             return csInfo;
 
@@ -234,11 +257,16 @@ public class CsServiceImpl implements CsService {
                     throw new Exception("用户不存在！");
                 }
 
+                Cs _cs_ = csDao.SelectCsByName((String)dataMap.get("cs_name"));
+                if(_cs_!=null){
+                    throw new Exception("用户名不能和其他人重复");
+                }
+
 
                 cs.setCs_name((String) dataMap.get("cs_name"));
                 cs.setCs_tel((String) dataMap.get("cs_tel"));
                 cs.setCs_img((String) dataMap.get("cs_img"));
-
+                cs.setCs_login((Timestamp) dataMap.get("cs_login"));
                 csDao.UpdateCs(cs);
 
                 session.commit();
@@ -308,10 +336,10 @@ public class CsServiceImpl implements CsService {
         try (SqlSession session = mySqlSession.getSqSession()) {
 
             CsDao csDao = session.getMapper(CsDao.class);
-            Cs cs = csDao.getMinFeedbackNumCs();
+            List<Cs> css = csDao.getMinFeedbackNumCs();
 
-            if (cs != null) {
-                return cs.getCs_id();
+            if (css != null&&!css.isEmpty()) {
+                return css.get(0).getCs_id();
             } else {
                 throw new Exception("没有客服，无法反馈");
             }

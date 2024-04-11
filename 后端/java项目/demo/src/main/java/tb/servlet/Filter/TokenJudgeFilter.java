@@ -31,27 +31,36 @@ public class TokenJudgeFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
+        String method = req.getMethod();
 
-        CustomHttpServletRequestWrapper reqCopy = new CustomHttpServletRequestWrapper(req);
+        if ("POST".equalsIgnoreCase(method)) {
+            // 处理POST请求的逻辑
 
-        Map<String, Object> dataMap = new myJson().getMap(reqCopy);//封装，读取解析req中的json数据
+
+            CustomHttpServletRequestWrapper reqCopy = new CustomHttpServletRequestWrapper(req);
+
+            Map<String, Object> dataMap = new myJson().getMap(reqCopy);//封装，读取解析req中的json数据
 
 
-        String token = (String) dataMap.get("token");//json
+            String token = (String) dataMap.get("token");//json
 
-        myJwt mj = new myJwt(token);
+            myJwt mj = new myJwt(token);
 
-        //此时判断token是否有效
+            //此时判断token是否有效
 
-        if (!mj.judgeToken()) {
+            if (!mj.judgeToken()) {
 
-            (res).sendError(HttpServletResponse.SC_UNAUTHORIZED, "token错误");
-            return;
+                (res).sendError(HttpServletResponse.SC_UNAUTHORIZED, "token错误");
+                return;
 
+            }
+
+            chain.doFilter(reqCopy, res);
+        }else if ("OPTIONS".equalsIgnoreCase(method)) {
+
+            res.setStatus(200);
+            return ;
         }
-
-        chain.doFilter(reqCopy, res);
-
 
     }
 

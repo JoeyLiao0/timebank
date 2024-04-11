@@ -1,18 +1,19 @@
 package tb.websocket;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import tb.service.Impl.ChatServiceImpl;
-import tb.service.Impl.FeedbackServiceImpl;
-import tb.service.Impl.TalkServiceImpl;
+import tb.service.Impl.*;
 
 import tb.util.myJwt;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,149 +27,253 @@ public class MyWebSocketServer {
 
     @OnOpen
     public void onOpen(Session session) {
-        Map<String, List<String>> map = session.getRequestParameterMap();
-        String sessionId = ((List<String>)map.get("sessionId")).get(0);
-        // 当新的WebSocket连接建立时，将会话ID和会话对象存入映射
-        sessions.put(sessionId, session);
-        System.out.println("New connection established: " + sessionId);
+        try {
+            Map<String, List<String>> map2 = session.getRequestParameterMap();
+            String sessionId = (map2.get("sessionId")).get(0);
+            // 当新的WebSocket连接建立时，将会话ID和会话对象存入映射
+            sessions.put(sessionId, session);
+
+            System.out.println("test");
+            System.out.println(sessions.get("sessionId"));
+
+            System.out.println("New connection established: " + sessionId);
+//            sendMessageToSession(sessionId, "Can you hear me?");
+
+            String[] s = sessionId.split("_");
+            String role = s[0];
+            Integer id = Integer.parseInt(s[1]);
+
+            //一建立连接即发送消息
+            switch (role) {
+                case "CU" -> {
+                    //反馈和任务交流
+                    String message1 = new FeedbackServiceImpl().getUnreadMessage(id, role);
+
+                    MyWebSocketServer.sendMessageToSession(sessionId, message1);
+
+                    String message2 = new TalkServiceImpl().getUnreadMessage(id);
+
+                    MyWebSocketServer.sendMessageToSession(sessionId, message2);
+
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("cu_id", id);
+                    map.put("cu_login", new Timestamp(System.currentTimeMillis()));
+                    new CuServiceImpl().update(map);
+                }
+                case "AD" -> {
+                    //内部交流通道
+                    String message = new ChatServiceImpl().getUnreadMessage2(role, id);
+
+                    MyWebSocketServer.sendMessageToSession(sessionId, message);
+
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("ad_id", id);
+                    map.put("ad_login", new Timestamp(System.currentTimeMillis()));
+                    new AdServiceImpl().update(map);
+                }
+                case "AU" -> {
+                    String message = new ChatServiceImpl().getUnreadMessage2(role, id);
+
+                    MyWebSocketServer.sendMessageToSession(sessionId, message);
+
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("au_id", id);
+                    map.put("au_login", new Timestamp(System.currentTimeMillis()));
+                    new AuServiceImpl().update(map);
+                }
+                case "CS" -> {
+                    //内部交流通道和反馈
+
+                    String message = new ChatServiceImpl().getUnreadMessage2(role, id);
+
+                    MyWebSocketServer.sendMessageToSession(sessionId, message);
+
+
+                    String message1 = new FeedbackServiceImpl().getUnreadMessage(id, role);
+
+                    MyWebSocketServer.sendMessageToSession(sessionId, message1);
+
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("cs_id", id);
+                    map.put("cs_login", new Timestamp(System.currentTimeMillis()));
+                    new CsServiceImpl().update(map);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @OnClose
     public void onClose(Session session) {
-        for(String key : sessions.keySet()){
-            if(sessions.get(key)==session){
-                sessions.remove(key);
-                System.out.println("remove "+key);
-                break;
+        try {
+            for (String key : sessions.keySet()) {
+                if (sessions.get(key) == session) {
+                    sessions.remove(key);
+                    System.out.println("remove " + key);
+                    break;
+                }
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+
     }
 
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
-        Map<String, Object> dataMap = JSON.parseObject(message, new TypeReference<Map<String, Object>>() {});
-        List<Map<String,Object>> msg = (List<Map<String, Object>>) dataMap.get("msg");
+
+        System.out.println(message);
+
+        Map<String, Object> dataMap = JSON.parseObject(message, new TypeReference<Map<String, Object>>() {
+        });
+
 
         String type1 = (String) dataMap.get("type");
 
         String token = null;
         List<Integer> idArray = null;
         myJwt mj = null;
-        Map<String,Object> map = null;
-        Map<String,Object> mapJson = null;
+        Map<String, Object> map = null;
+        Map<String, Object> mapJson = null;
         JSONObject jsonObject = null;
+        JSONArray jsonArray = null;
+        Map<String,Object> msg = null;
 
-        switch (type1){
+        if (type1 != null) {
+            switch (type1) {
 
-            case"chatIsRead":
+                case "chatIsRead":
 
-                token = (String)dataMap.get("token");
-                mj = new myJwt(token);
+                    token = (String) dataMap.get("token");
 
-                //只需要修改数据库代码
-                idArray = (List<Integer>) msg.get(0).get("id");
-                new ChatServiceImpl().isRead((String)mj.getValue("role"),(Integer) mj.getValue("id"),idArray);
-                break;
+                    mj = new myJwt(token);
 
-            case"chat/send":
+                    jsonArray = (JSONArray) dataMap.get("id");
 
-                map = new HashMap<>();
-                map.put("senderSessionId",msg.get(0).get("senderSessionId"));
-                map.put("content",msg.get(0).get("content"));
-                map.put("contentType",msg.get(0).get("contentType"));
-                map.put("timestamp",msg.get(0).get("timestamp"));
+                    idArray = jsonArray.toJavaObject(new TypeReference<List<Integer>>(){});
 
-                Integer chat_id = new ChatServiceImpl().sendMessage(map);//这里不包含广播给其他人,要返回一个编号
+                    new ChatServiceImpl().isRead((String) mj.getValue("role"), Integer.parseInt((String) mj.getValue("id")), idArray);
+                    break;
 
-                //这里广播给其他人
+                case "chat/send":
 
-                map.put("id",chat_id);
-                map.put("type","chat");
+                    msg = ((JSONObject)dataMap.get("msg")).toJavaObject(new TypeReference<Map<String,Object>>(){});
 
-                jsonObject = new JSONObject(map);
+                    map = new HashMap<>();
+                    map.put("senderSessionId", msg.get("senderSessionId"));
+                    map.put("content", msg.get("content"));
+                    map.put("contentType", msg.get("contentType"));
+                    map.put("timestamp", msg.get("timestamp"));
 
-                mapJson.put("type","chat/receive");
-                mapJson.put("msg",jsonObject);
+                    Integer chat_id = new ChatServiceImpl().sendMessage(map);//这里不包含广播给其他人,要返回一个编号
 
-                for(String id : sessions.keySet()){
-                    if(!(id.charAt(0)=='C'&&id.charAt(1)=='U')){
-                        //只有普通用户不在群里
-                        sendMessageToSession(id,JSON.toJSONString(new JSONObject(mapJson), SerializerFeature.WriteMapNullValue));
+                    //这里广播给其他人
+
+                    map.put("id", chat_id);
+                    map.put("type", "chat");
+                    map.put("isRead",false);
+
+                    jsonObject = new JSONObject(map);
+
+                    mapJson = new HashMap<>();
+                    mapJson.put("type", "chat/receive");
+                    mapJson.put("msg", jsonObject);
+
+
+                    for (String id : sessions.keySet()) {
+                        if (!id.contains("CU")&&!id.equals(msg.get("senderSessionId"))) {
+                            //除了普通用户
+                            sendMessageToSession(id, JSON.toJSONString(new JSONObject(mapJson), SerializerFeature.WriteMapNullValue));
+                        }
                     }
-                }
 
-                break;
+                    break;
 
-            case"feedbackIsRead":
+                case "feedbackIsRead":
 
-                token = (String)dataMap.get("token");
-                mj = new myJwt(token);
+                    token = (String) dataMap.get("token");
 
-                idArray = (List<Integer>) msg.get(0).get("id");
-                new FeedbackServiceImpl().isRead((String)mj.getValue("role"),(Integer) mj.getValue("id"),idArray);
-                break;
+                    mj = new myJwt(token);
 
-            case"feedback/send":
-                map = new HashMap<>();
-                map.put("senderSessionId",msg.get(0).get("senderSessionId"));
-                map.put("receiverSessionId",msg.get(0).get("receiverSessionId"));
-                map.put("content",msg.get(0).get("content"));
-                map.put("contentType",msg.get(0).get("contentType"));
-                map.put("timestamp",msg.get(0).get("timestamp"));
+                    jsonArray = (JSONArray) dataMap.get("id");
 
-                Integer feedback_id = new FeedbackServiceImpl().sendMessage(map);//这里要包含发送消息给另一个人
+                    idArray = jsonArray.toJavaObject(new TypeReference<List<Integer>>(){});
 
+                    new FeedbackServiceImpl().isRead((String) mj.getValue("role"), Integer.parseInt((String) mj.getValue("id")), idArray);
+                    break;
 
-                map.put("type","feedback");
-                map.put("id",feedback_id);
-                map.put("isRead",false);
+                case "feedback/send":
 
-                jsonObject = new JSONObject(map);
+                    msg = ((JSONObject)dataMap.get("msg")).toJavaObject(new TypeReference<Map<String,Object>>(){});
 
-                mapJson.put("type","feedback/receive");
-                mapJson.put("msg",jsonObject);
+                    map = new HashMap<>();
+                    map.put("senderSessionId", msg.get("senderSessionId"));
+                    map.put("receiverSessionId", msg.get("receiverSessionId"));
+                    map.put("content", msg.get("content"));
+                    map.put("contentType", msg.get("contentType"));
+                    map.put("timestamp", msg.get("timestamp"));
 
-                sendMessageToSession((String) msg.get(0).get("receiverSessionId"),JSON.toJSONString(new JSONObject(mapJson), SerializerFeature.WriteMapNullValue));
-
-                break;
-
-            case"talkIsRead":
-                token = (String)dataMap.get("token");
-                mj = new myJwt(token);
-
-                idArray = (List<Integer>) msg.get(0).get("id");
-                new TalkServiceImpl().isRead((Integer) mj.getValue("id"),idArray);
-                break;
-
-            case"talk/send":
-
-                map = new HashMap<>();
-                map.put("senderSessionId",msg.get(0).get("senderSessionId"));
-                map.put("receiverSessionId",msg.get(0).get("receiverSessionId"));
-                map.put("taskId",msg.get(0).get("taskId"));
-                map.put("content",msg.get(0).get("content"));
-                map.put("contentType",msg.get(0).get("contentType"));
-                map.put("timestamp",msg.get(0).get("timestamp"));
-
-                Integer talk_id = new TalkServiceImpl().sendMessage(map);//这里要包含发送消息给另一个人
-
-                map.put("type","talk");
-                map.put("id",talk_id);
-                map.put("isRead",false);
-                jsonObject = new JSONObject(map);
+                    Integer feedback_id = new FeedbackServiceImpl().sendMessage(map);//这里要包含发送消息给另一个人
 
 
-                mapJson.put("type","chat/receive");
-                mapJson.put("msg",jsonObject);
+                    map.put("type", "feedback");
+                    map.put("id", feedback_id);
+                    map.put("isRead", false);
 
-                //TODO 3月28日晚
+                    jsonObject = new JSONObject(map);
 
-                sendMessageToSession((String) msg.get(0).get("receiverSessionId"),JSON.toJSONString(new JSONObject(mapJson), SerializerFeature.WriteMapNullValue));
+                    mapJson = new HashMap<>();
+                    mapJson.put("type", "feedback/receive");
+                    mapJson.put("msg", jsonObject);
 
-                break;
+                    sendMessageToSession((String) msg.get("receiverSessionId"), JSON.toJSONString(new JSONObject(mapJson), SerializerFeature.WriteMapNullValue));
 
+                    break;
+
+                case "talkIsRead":
+
+                    token = (String) dataMap.get("token");
+
+                    mj = new myJwt(token);
+
+                    jsonArray = (JSONArray) dataMap.get("id");
+
+                    idArray = jsonArray.toJavaObject(new TypeReference<List<Integer>>(){});
+
+                    new TalkServiceImpl().isRead((Integer) mj.getValue("id"), idArray);
+                    break;
+
+                case "talk/send":
+                    msg = ((JSONObject)dataMap.get("msg")).toJavaObject(new TypeReference<Map<String,Object>>(){});
+
+                    map = new HashMap<>();
+                    map.put("senderSessionId", msg.get("senderSessionId"));
+                    map.put("receiverSessionId", msg.get("receiverSessionId"));
+                    map.put("taskId", msg.get("taskId"));
+                    map.put("content", msg.get("content"));
+                    map.put("contentType", msg.get("contentType"));
+                    map.put("timestamp", msg.get("timestamp"));
+
+                    Integer talk_id = new TalkServiceImpl().sendMessage(map);//这里要包含发送消息给另一个人
+
+                    map.put("type", "talk");
+                    map.put("id", talk_id);
+                    map.put("isRead", false);
+                    jsonObject = new JSONObject(map);
+
+
+                    mapJson = new HashMap<>();
+                    mapJson.put("type", "chat/receive");
+                    mapJson.put("msg", jsonObject);
+
+                    sendMessageToSession((String) msg.get("receiverSessionId"), JSON.toJSONString(new JSONObject(mapJson), SerializerFeature.WriteMapNullValue));
+
+                    break;
+
+            }
         }
-
 
     }
 
@@ -182,6 +287,7 @@ public class MyWebSocketServer {
     public static void sendMessageToSession(String sessionId, String message) throws IOException {
 
         Session session = sessions.get(sessionId);
+//        System.out.println("是否打开：" + session.isOpen());
         if (session != null && session.isOpen()) {
             session.getBasicRemote().sendText(message);
         } else {

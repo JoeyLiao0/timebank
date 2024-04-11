@@ -79,13 +79,13 @@ public class AdServiceTest {
 
         Map<String,Object> map = new HashMap<>();
 
-        map.put("ad_name","liao2");
-        map.put("ad_pwd","pwd");
-        map.put("ad_tel","11111");
+        map.put("ad_name","ad");
+        map.put("ad_pwd","8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92");
+        map.put("ad_tel","123456789");
         map.put("ad_register",new Timestamp(System.currentTimeMillis()));
-        map.put("ad_status",0);
-        map.put("ad_login",new Timestamp(System.currentTimeMillis()+1000));
-        map.put("ad_img","1.png");
+        map.put("ad_status",1);
+        map.put("ad_login",null);
+        map.put("ad_img",null);
 
         System.out.println(adServiceImpl.insert(map));
     }

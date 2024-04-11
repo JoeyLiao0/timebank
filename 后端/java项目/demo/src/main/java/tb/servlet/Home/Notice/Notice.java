@@ -58,8 +58,19 @@ public class Notice extends HttpServlet {
                     map.put("notice_title", dataMap.get("notice_title"));
                     map.put("notice_content", dataMap.get("notice_content"));
 
-                    new NoticeServiceImpl().publishNotice(map);
+                    String msg =  new NoticeServiceImpl().publishNotice(map);
 
+                    JSONObject jsonObject = new JSONObject();
+
+
+                    if (msg!=null&&msg.equals("yes")){
+                        jsonObject.put("status",true);
+                        jsonObject.put("msg",null);
+                    }else{
+                        jsonObject.put("status",false);
+                        jsonObject.put("msg",msg);
+                    }
+                    res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
                     res.setStatus(200);
                 }
                 case "/delete" -> {
@@ -67,8 +78,17 @@ public class Notice extends HttpServlet {
 
                     Integer id = (Integer) dataMap.get("notice_id");
 
-                    new NoticeServiceImpl().deleteNotice(id);
+                    String msg = new NoticeServiceImpl().deleteNotice(id);
 
+                    JSONObject jsonObject = new JSONObject();
+                    if (msg!=null&&msg.equals("yes")){
+                        jsonObject.put("status",true);
+                        jsonObject.put("msg",null);
+                    }else{
+                        jsonObject.put("status",false);
+                        jsonObject.put("msg",msg);
+                    }
+                    res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
                     res.setStatus(200);
                 }
             }

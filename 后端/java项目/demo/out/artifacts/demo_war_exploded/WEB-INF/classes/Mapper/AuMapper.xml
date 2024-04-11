@@ -56,6 +56,7 @@
             au_salt,
             au_status,
             <if test="au.au_unblocktime != null">au_unblocktime</if>
+            <if test="au.au_auditNum != null">au_auditNum</if>
         </trim>
 
         values
@@ -71,6 +72,7 @@
             #{au.au_salt},
             #{au.au_status},
             <if test="au.au_unblocktime != null">#{au.au_unblocktime}</if>
+            <if test="au.au_auditNum != null">#{au.au_auditNum}</if>
         </trim>
 
     </insert>
@@ -95,6 +97,7 @@
                 <if test="au.au_salt != null">au_salt = #{au.au_salt},</if>
                 <if test="au.au_status != null">au_status = #{au.au_status},</if>
                 <if test="au.au_unblocktime != null">au_unblocktime = #{au.au_unblocktime}</if>
+                <if test="au.au_auditNum != null">au_auditNum = #{au.au_auditNum}</if>
             </trim>
         </set>
             where au_id = #{au.au_id}

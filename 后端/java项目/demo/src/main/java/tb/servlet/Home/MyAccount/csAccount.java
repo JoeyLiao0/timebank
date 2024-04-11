@@ -43,7 +43,7 @@ public class csAccount extends HttpServlet {
             switch (pathInfo) {
                 case "/get" -> {
 
-                    Integer id = (Integer) mj.getValue("id");//从token里提取id
+                    Integer id = Integer.parseInt((String) mj.getValue("id"));//从token里提取id
 
 
                     Map<String, Object> map = new CsServiceImpl().selectById(id);//根据id来获取
@@ -75,12 +75,13 @@ public class csAccount extends HttpServlet {
                     Map<String, Object> map = new HashMap<>();
                     map.put("cs_name", dataMap.get("name"));
                     map.put("cs_tel", dataMap.get("tel"));
+                    map.put("cs_id",Integer.parseInt((String)mj.getValue("id")));
 
-                    String msg = new CsServiceImpl().update(dataMap);
+                    String msg = new CsServiceImpl().update(map);
 
                     JSONObject jsonObject = new JSONObject();
 
-                    if (msg == null) {
+                    if (msg!=null && msg.equals("yes")) {
                         jsonObject.put("status", true);
                     } else {
                         jsonObject.put("status", false);
@@ -98,20 +99,20 @@ public class csAccount extends HttpServlet {
                     JSONObject jsonObject = new JSONObject();
                     //先验证密码
                     //再设置密码
-                    String name = (String) mj.getValue("name");
+                    String name = (String) mj.getValue("username");
 
                     String pwd = (String) dataMap.get("pwd");
                     String newPwd = (String) dataMap.get("newPwd");
                     String msg1 = new CsServiceImpl().judgePassword(name, pwd);
 
                     Map<String, Object> map = new HashMap<>();
-                    map.put("cs_id", mj.getValue("id"));
+                    map.put("cs_id", Integer.parseInt((String)mj.getValue("id")));
                     map.put("cs_pwd", newPwd);
 
 
-                    if (msg1.equals("yes")) {
+                    if (msg1!=null && msg1.equals("yes")) {
                         String msg2 = new CsServiceImpl().update(map);
-                        if (msg2 == null) {
+                        if (msg2 != null && msg2.equals("yes")) {
                             jsonObject.put("status", true);
                             jsonObject.put("msg", null);
                         } else {

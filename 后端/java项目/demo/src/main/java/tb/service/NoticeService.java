@@ -12,9 +12,9 @@ public interface NoticeService {
     List<Map<String, Object>> getNotice();
 
     //发布公告
-    void publishNotice(Map<String, Object> notice);
+    String publishNotice(Map<String, Object> notice);
 
     //删除公告
-    void deleteNotice(Integer notice_id);
+    String deleteNotice(Integer notice_id);
 
 }

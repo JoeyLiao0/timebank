@@ -45,7 +45,7 @@ public class Feedback extends HttpServlet {
 
                 ArrayList<Map<String,Object>> feedbackArray = null ;
 
-                feedbackArray = (ArrayList<Map<String, Object>>) (new FeedbackServiceImpl()).getHistory(role,Integer.parseInt(info1[1]),Integer.parseInt(info2[2]));//获取全部信息
+                feedbackArray = (ArrayList<Map<String, Object>>) (new FeedbackServiceImpl()).getHistory(role,Integer.parseInt(info1[1]),Integer.parseInt(info2[1]));//获取全部信息
 
 
                 JSONArray jsonArray = (JSONArray) JSON.toJSON(feedbackArray);

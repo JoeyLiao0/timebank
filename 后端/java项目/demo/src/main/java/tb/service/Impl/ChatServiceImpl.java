@@ -36,7 +36,7 @@ public class ChatServiceImpl implements ChatService {
                     map.put("senderSessionId", chat.getChat_senderrole().toUpperCase() + "_" + chat.getChat_senderid());
                     map.put("content", chat.getChat_content());
                     map.put("contentType", chat.getChat_contenttype());
-                    map.put("timestamp", chat.getChat_timestamp().getTime() * 1000);
+                    map.put("timestamp", chat.getChat_timestamp().getTime());
                     map.put("isRead", false);
 
                     unreadChats.add(map);
@@ -103,7 +103,7 @@ public class ChatServiceImpl implements ChatService {
                     map.put("senderSessionId", chat.getChat_senderrole().toUpperCase() + "_" + chat.getChat_senderid());
                     map.put("content", chat.getChat_content());
                     map.put("contentType", chat.getChat_contenttype());
-                    map.put("timestamp", chat.getChat_timestamp().getTime() * 1000);
+                    map.put("timestamp", chat.getChat_timestamp().getTime());
                     map.put("isRead", true);
 
                     unreadChats.add(map);
@@ -132,10 +132,10 @@ public class ChatServiceImpl implements ChatService {
                 String senderSessionId = (String) datamap.get("senderSessionId");
                 String[] info = (senderSessionId.split("_"));
                 chat.setChat_senderrole(info[0]);
-                chat.setChat_senderid(Integer.getInteger(info[1]));
+                chat.setChat_senderid(Integer.parseInt(info[1]));
                 chat.setChat_content((String) datamap.get("content"));
                 chat.setChat_contenttype((String) datamap.get("contentType"));
-                chat.setChat_timestamp(new Timestamp((long) datamap.get("timestamp") * 1000));
+                chat.setChat_timestamp(new Timestamp((long) datamap.get("timestamp")));
                 chat.setChat_isread(senderSessionId);
 
                 chatDao.insertChat(chat);

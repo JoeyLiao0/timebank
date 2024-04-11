@@ -65,13 +65,35 @@ public class AdServiceImpl implements AdService {
             //dto转数据库可以处理的数据
             Map<String, Object> DataMap = new HashMap<>();
 
+            DataMap.put("id",dataMap.get("id"));
             DataMap.put("name", dataMap.get("name"));
             DataMap.put("tel", dataMap.get("phone"));
-            DataMap.put("registerBegin", dataMap.get("registerBegin"));
-            DataMap.put("registerEnd", dataMap.get("registerEnd"));
-            DataMap.put("loginBegin", dataMap.get("loginBegin"));
-            DataMap.put("loginEnd", dataMap.get("loginEnd"));
-            DataMap.put("userStatus", ((Boolean) dataMap.get("userStatus")) ? 1 : 0);
+            if (dataMap.get("registerBegin") != null) {
+                DataMap.put("registerBegin", new Timestamp((long) dataMap.get("registerBegin")));
+            }else{
+                DataMap.put("registerBegin", null);
+            }
+            if (dataMap.get("registerEnd") != null) {
+                DataMap.put("registerEnd", new Timestamp((long) dataMap.get("registerEnd")));
+            }else{
+                DataMap.put("registerEnd", null);
+
+            }
+            if (dataMap.get("loginBegin") != null) {
+                DataMap.put("loginBegin", new Timestamp((long) dataMap.get("loginBegin")));
+            }else{
+                DataMap.put("loginBegin", null);
+            }
+            if (dataMap.get("loginEnd") != null) {
+                DataMap.put("loginEnd", new Timestamp((long) dataMap.get("loginEnd")));
+            }else {
+                DataMap.put("loginEnd", null);
+            }
+            if (dataMap.get("userStatus") != null) {
+                DataMap.put("userStatus", ((Boolean) dataMap.get("userStatus")) ? 1 : 0);
+            } else {
+                DataMap.put("userStatus", null);
+            }
 
             AdDao adDao = session.getMapper(AdDao.class);
             ArrayList<Ad> ads = (ArrayList<Ad>) adDao.SelectAdByMap(DataMap);

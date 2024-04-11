@@ -93,7 +93,7 @@ public class cuAccount extends HttpServlet {
 
                     JSONObject jsonObject = new JSONObject();
 
-                    if (msg == null) {
+                    if (msg != null && msg.equals("yes")) {
                         jsonObject.put("status", true);
                     } else {
                         jsonObject.put("status", false);
@@ -119,9 +119,9 @@ public class cuAccount extends HttpServlet {
                     int id = Integer.parseInt((String) mj.getValue("id"));
 
 
-                    if (msg1.equals("yes")) {
+                    if (msg1 != null && msg1.equals("yes")) {
                         String msg2 = new CuServiceImpl().resetPassword(id, newPwd);
-                        if (msg2 == null) {
+                        if (msg2 !=null && msg2.equals("yes")) {
                             jsonObject.put("status", true);
                             jsonObject.put("msg", null);
                         } else {

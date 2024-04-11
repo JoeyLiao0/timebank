@@ -50,7 +50,7 @@ public class TaskReview extends HttpServlet {
                     res.setStatus(200);
 
                 }
-                case "review" -> {
+                case "/review" -> {
                     Integer id = Integer.parseInt((String) mj.getValue("id"));
                     Integer task_id = (Integer) dataMap.get("task_id");
                     Integer reviewStatus = (Integer) dataMap.get("reviewStatus");
@@ -75,7 +75,7 @@ public class TaskReview extends HttpServlet {
 
                     res.setStatus(200);
                 }
-                case "history" -> {
+                case "/history" -> {
 
                     //获取全部已审核的任务
 
@@ -92,6 +92,32 @@ public class TaskReview extends HttpServlet {
 
                     res.setStatus(200);
                 }
+                case "/myHistory"-> {
+                    //获取自己审核的任务
+
+                    String status = "0000";
+                    String timeout = null;
+
+                    Integer au_id = Integer.parseInt((String)mj.getValue("id"));
+
+                    ArrayList<Map<String, Object>> taskArray = (new TaskServiceImpl()).selectTaskByNotStatus(status, timeout);
+
+                    for(Map<String,Object> task : taskArray){
+                        if(au_id != task.get("task_auid")){
+                            taskArray.remove(task);
+                        }
+                    }
+
+                    JSONArray jsonArray = (JSONArray) JSON.toJSON(taskArray);
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("taskArray", jsonArray);
+
+                    res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+
+                    res.setStatus(200);
+
+                }
+
             }
         }
     }

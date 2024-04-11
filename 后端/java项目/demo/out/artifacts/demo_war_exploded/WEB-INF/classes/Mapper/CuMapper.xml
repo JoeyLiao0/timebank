@@ -17,6 +17,9 @@
         from
         CU
         where 1=1
+        <if test="id !=null" >
+            and cu_id = #{id}
+        </if>
         <if test="name != null and name !=''">
             and cu_name like "%"#{name}"%"
         </if>

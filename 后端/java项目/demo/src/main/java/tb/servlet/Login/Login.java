@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 
 import java.util.Map;
@@ -49,47 +50,36 @@ public class Login extends HttpServlet {
 
                     res.setStatus(200);
 
-
-                    //这里调用方法发送未读消息
-
-                    String sessionId = (String) mj.getValue("sessionId");
+                    //这里更新最近登录时间
                     Integer id = Integer.parseInt((String) mj.getValue("id"));
                     String role = (String) mj.getValue("role");
-                    if (sessionId.contains("CU")) {
-                        //反馈和任务交流
-                        String message1 = new FeedbackServiceImpl().getUnreadMessage(id, role);
-
-                        MyWebSocketServer.sendMessageToSession(sessionId, message1);
-
-                        String message2 = new TalkServiceImpl().getUnreadMessage(id);
-
-                        MyWebSocketServer.sendMessageToSession(sessionId, message2);
-
-                    } else if (sessionId.contains("AD")) {
-                        //内部交流通道
-                        String message = new ChatServiceImpl().getUnreadMessage2(role, id);
-
-                        MyWebSocketServer.sendMessageToSession(sessionId, message);
-
-                    } else if (sessionId.contains("AU")) {
-                        //内部交流通道
-
-                        String message = new ChatServiceImpl().getUnreadMessage2(role, id);
-
-                        MyWebSocketServer.sendMessageToSession(sessionId, message);
-
-                    } else if (sessionId.contains("CS")) {
-                        //内部交流通道和反馈
-
-                        String message = new ChatServiceImpl().getUnreadMessage2(role, id);
-
-                        MyWebSocketServer.sendMessageToSession(sessionId, message);
-
-
-                        String message1 = new FeedbackServiceImpl().getUnreadMessage(id, role);
-
-                        MyWebSocketServer.sendMessageToSession(sessionId, message1);
+                    switch (role) {
+                        case "CU" -> {
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("cu_id",id);
+                            map.put("cu_login",new Timestamp(System.currentTimeMillis()));
+                            new CuServiceImpl().update(map);
+                        }
+                        case "AD" -> {
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("ad_id",id);
+                            map.put("ad_login",new Timestamp(System.currentTimeMillis()));
+                            new AdServiceImpl().update(map);
+                        }
+                        case "AU"->{
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("au_id",id);
+                            map.put("au_login",new Timestamp(System.currentTimeMillis()));
+                            new AuServiceImpl().update(map);
+                        }
+                        case "CS" -> {
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("cs_id",id);
+                            map.put("cs_login",new Timestamp(System.currentTimeMillis()));
+                            new CsServiceImpl().update(map);
+                        }
                     }
+
 
                 } else {
                     //token失效,401
@@ -141,7 +131,7 @@ public class Login extends HttpServlet {
 
                     Map<String, Object> data = new HashMap<>();
                     data.put("token", token);
-                    data.put("status", "true");
+                    data.put("status", true);
                     String responseJson = JSON.toJSONString(data);//map 转 json写入response
                     res.getWriter().write(responseJson);
                     res.setStatus(200);

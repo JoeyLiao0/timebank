@@ -130,12 +130,12 @@ public class CUM extends HttpServlet {
 
                     JSONObject jsonObject = new JSONObject();
 
-                    if (msg == null) {
+                    if (msg !=null &&msg.equals("yes")) {
                         //新增成功
                         jsonObject.put("status", true);
                         jsonObject.put("msg", null);
                     } else {
-                        //新增失败失败
+                        //新增失败
                         jsonObject.put("status", false);
                         jsonObject.put("msg", "错误原因");
                     }

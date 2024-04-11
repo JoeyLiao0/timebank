@@ -30,4 +30,6 @@ public interface CuService {
     Map<String, Object> getStatisticAboutCoin();
 
     String issueCoin(Integer coinNum);
+
+
 }

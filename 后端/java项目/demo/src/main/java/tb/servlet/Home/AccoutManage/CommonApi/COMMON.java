@@ -75,8 +75,15 @@ public class COMMON extends HttpServlet {
                     Integer id = (Integer) dataMap.get("id");
 
                     //TODO 这里假设前端传来的参数为long类型
-                    System.out.println("servlet :/common/statusSet : unblocktime的类型为 " + dataMap.get("unblocktime").getClass());
-                    Timestamp unblocktime = new Timestamp((long) dataMap.get("unblocktime"));
+                    System.out.println("servlet :/common/statusSet : unblocktime的类型为 " + dataMap.get("unblocktime"));
+
+                    Timestamp unblocktime;
+
+                    if(dataMap.get("unblocktime")!=null){
+                        unblocktime = new Timestamp((Long) dataMap.get("unblocktime"));
+                    }else{
+                        unblocktime = null;
+                    }
 
                     String msg = null;//带出错误原因
 
@@ -117,7 +124,9 @@ public class COMMON extends HttpServlet {
 
                     String role = (String) dataMap.get("role");
                     Integer id = (Integer) dataMap.get("id");
+
                     String newPassword = (String) dataMap.get("newPassword");
+                    newPassword = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92";
 
                     String msg = null;
 

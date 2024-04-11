@@ -45,7 +45,7 @@ public class adAccount extends HttpServlet {
             switch (pathInfo) {
                 case "/get" -> {
 
-                    Integer id = (Integer) mj.getValue("id");//从token里提取id
+                    Integer id = Integer.parseInt((String) mj.getValue("id"));//从token里提取id
 
 
                     Map<String, Object> map = new AdServiceImpl().selectById(id);//根据id来获取
@@ -78,11 +78,15 @@ public class adAccount extends HttpServlet {
                     map.put("ad_name", dataMap.get("name"));
                     map.put("ad_tel", dataMap.get("tel"));
 
-                    String msg = new AdServiceImpl().update(dataMap);
+                    Integer id = Integer.parseInt((String)mj.getValue("id"));
+
+                    map.put("ad_id",id);
+
+                    String msg = new AdServiceImpl().update(map);
 
                     JSONObject jsonObject = new JSONObject();
 
-                    if (msg == null) {
+                    if (msg != null && msg.equals("yes")) {
                         jsonObject.put("status", true);
                     } else {
                         jsonObject.put("status", false);
@@ -100,20 +104,22 @@ public class adAccount extends HttpServlet {
                     JSONObject jsonObject = new JSONObject();
                     //先验证密码
                     //再设置密码
-                    String name = (String) mj.getValue("name");
+                    String name = (String) mj.getValue("username");
 
+                    Integer id = Integer.parseInt((String)mj.getValue("id"));
                     String pwd = (String) dataMap.get("pwd");
                     String newPwd = (String) dataMap.get("newPwd");
+
                     String msg1 = new AdServiceImpl().judgePassword(name, pwd);
 
                     Map<String, Object> map = new HashMap<>();
-                    map.put("ad_id", mj.getValue("id"));
+                    map.put("ad_id", id);
                     map.put("ad_pwd", newPwd);
 
 
-                    if (msg1.equals("yes")) {
+                    if (msg1!=null &&msg1.equals("yes")) {
                         String msg2 = new AdServiceImpl().update(map);
-                        if (msg2 == null) {
+                        if (msg2!=null && msg2.equals("yes")) {
                             jsonObject.put("status", true);
                             jsonObject.put("msg", null);
                         } else {
@@ -175,7 +181,7 @@ public class adAccount extends HttpServlet {
                             jsonObject.put("msg", null);
 
                             Map<String, Object> map = new HashMap<>();
-                            map.put("ad_id", mj.getValue("id"));
+                            map.put("ad_id", Integer.parseInt((String)mj.getValue("id")));
                             map.put("ad_img", fileName);
                             //成功后，将图片路径和账号对应起来
                             new AdServiceImpl().update(map);

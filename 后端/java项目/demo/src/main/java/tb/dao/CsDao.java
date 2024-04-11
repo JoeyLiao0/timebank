@@ -19,6 +19,6 @@ public interface CsDao {
 
     void UpdateCs(@Param("cs") Cs cs);//调用时根据cs 里的 cs_id属性来锁定
 
-    Cs getMinFeedbackNumCs();
+    List<Cs> getMinFeedbackNumCs();
 
 }

@@ -53,7 +53,7 @@ public class Coin extends HttpServlet {
 
                 //TODO 这里类型待验证，是java.lang.String 还是 java.lang.Integer
 
-                System.out.println("servlet: /coin/issue: id 的类型为 " + dataMap.get("id").getClass());
+//                System.out.println("servlet: /coin/issue: id 的类型为 " + dataMap.get("id").getClass());
 
                 //为每个用户发放时间币
                 Integer coinNum = (Integer) dataMap.get("coinNum");

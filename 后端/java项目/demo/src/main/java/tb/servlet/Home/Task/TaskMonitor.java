@@ -39,7 +39,7 @@ public class TaskMonitor extends HttpServlet {
 
                 String _status = (String) dataMap.get("status");
 
-                String []list = _status.split("_");
+                String []list = _status.split("-");
 
                 String status = list[0];
                 String timeout = list[1];
@@ -53,6 +53,8 @@ public class TaskMonitor extends HttpServlet {
                 res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
                 res.setStatus(200);
 
+            }else if(pathInfo.equals("/info")){
+                //TODO 待开发
             }
         }
     }

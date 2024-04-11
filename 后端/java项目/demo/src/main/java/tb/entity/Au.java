@@ -31,10 +31,20 @@ public class Au {
     //审核员账号注册时间
     private Timestamp au_register;
 
+    public Integer getAuditNum() {
+        return auditNum;
+    }
+
+    public void setAuditNum(Integer auditNum) {
+        this.auditNum = auditNum;
+    }
+
     //状态
     private Integer au_status;
 
     private Timestamp au_unblocktime;
+
+    private Integer auditNum;
 
     public Integer getAu_id() {
         return au_id;

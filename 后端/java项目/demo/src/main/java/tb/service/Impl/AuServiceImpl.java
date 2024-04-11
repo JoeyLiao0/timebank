@@ -68,11 +68,32 @@ public class AuServiceImpl implements AuService {
             DataMap.put("id", dataMap.get("id"));
             DataMap.put("name", dataMap.get("name"));
             DataMap.put("tel", dataMap.get("phone"));
-            DataMap.put("registerBegin", dataMap.get("registerBegin"));
-            DataMap.put("registerEnd", dataMap.get("registerEnd"));
-            DataMap.put("loginBegin", dataMap.get("loginBegin"));
-            DataMap.put("loginEnd", dataMap.get("loginEnd"));
-            DataMap.put("userStatus", ((Boolean) dataMap.get("userStatus")) ? 1 : 0);
+            if (dataMap.get("registerBegin") != null) {
+                DataMap.put("registerBegin", new Timestamp((long) dataMap.get("registerBegin")));
+            }else{
+                DataMap.put("registerBegin", null);
+            }
+            if (dataMap.get("registerEnd") != null) {
+                DataMap.put("registerEnd", new Timestamp((long) dataMap.get("registerEnd")));
+            }else{
+                DataMap.put("registerEnd", null);
+
+            }
+            if (dataMap.get("loginBegin") != null) {
+                DataMap.put("loginBegin", new Timestamp((long) dataMap.get("loginBegin")));
+            }else{
+                DataMap.put("loginBegin", null);
+            }
+            if (dataMap.get("loginEnd") != null) {
+                DataMap.put("loginEnd", new Timestamp((long) dataMap.get("loginEnd")));
+            }else {
+                DataMap.put("loginEnd", null);
+            }
+            if (dataMap.get("userStatus") != null) {
+                DataMap.put("userStatus", ((Boolean) dataMap.get("userStatus")) ? 1 : 0);
+            } else {
+                DataMap.put("userStatus", null);
+            }
 
             AuDao auDao = session.getMapper(AuDao.class);
             ArrayList<Au> aus = (ArrayList<Au>) auDao.SelectAuByMap(DataMap);
@@ -113,6 +134,7 @@ public class AuServiceImpl implements AuService {
             auInfo.put("userStatus", au.getAu_status() == 1);
             auInfo.put("register", au.getAu_register());
             auInfo.put("img", au.getAu_img());
+            auInfo.put("auditNum",au.getAuditNum());
 
             return auInfo;
         } catch (Exception e) {
@@ -224,13 +246,19 @@ public class AuServiceImpl implements AuService {
                 AuDao auDao = session.getMapper(AuDao.class);
 
                 Au au = auDao.SelectAuById((Integer) dataMap.get("au_id"));
+
                 if (au == null) {
                     throw new Exception("用户不存在！");
                 }
+                Au _au_ = auDao.SelectAuByName((String) dataMap.get("au_name"));
+                if(_au_!=null){
+                    throw new Exception("用户名不能和其他人重复");
+                }
+
                 au.setAu_name((String) dataMap.get("au_name"));
                 au.setAu_tel((String) dataMap.get("au_tel"));
                 au.setAu_img((String) dataMap.get("au_img"));
-
+                au.setAu_login((Timestamp) dataMap.get("au_login"));
                 auDao.UpdateAu(au);
 
                 session.commit();
