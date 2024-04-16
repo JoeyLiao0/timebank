@@ -78,6 +78,7 @@ public class Notice extends HttpServlet {
 
                     Integer id = (Integer) dataMap.get("notice_id");
 
+                    System.out.println("公告删除"+dataMap);
                     String msg = new NoticeServiceImpl().deleteNotice(id);
 
                     JSONObject jsonObject = new JSONObject();

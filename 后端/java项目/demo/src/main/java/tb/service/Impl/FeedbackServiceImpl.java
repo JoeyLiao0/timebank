@@ -39,8 +39,6 @@ public class FeedbackServiceImpl implements FeedbackService {
             CuDao cuDao = session.getMapper(CuDao.class);
             Cu cu = cuDao.SelectCuById(cu_id);
 
-
-
             String cu_name = null;
             String cu_img = null;
 
@@ -48,13 +46,14 @@ public class FeedbackServiceImpl implements FeedbackService {
                 cu_name = cu.getCu_name();
                 cu_img = cu.getCu_img();
             }
+
             String cs_name = null;
             String cs_img = null;
 
             CsDao csDao = session.getMapper(CsDao.class);
             Cs cs = csDao.SelectCsById(cs_id);
 
-            if(cu!=null){
+            if(cs!=null){
                 cs_name = cs.getCs_name();
                 cs_img = cs.getCs_img();
             }
@@ -75,10 +74,14 @@ public class FeedbackServiceImpl implements FeedbackService {
                     if (!feedback.getFeedback_isread().contains(SessionId)) {
                         Map<String, Object> map = new HashMap<>();
                         turnFeedbackToMap(feedback, map);
-                        map.put("cu_name",cu_name);
-                        map.put("cu_img",cu_img);
-                        map.put("cs_name",cs_name);
-                        map.put("cs_img",cs_img);
+                        String senderSessionId = (String) map.get("senderSessionId");
+                        if(senderSessionId.contains("CU")) {
+                            map.put("senderName", cu_name);
+                            map.put("senderImg", cu_img);
+                        }else if(senderSessionId.contains("CS")){
+                            map.put("senderName", cs_name);
+                            map.put("senderImg", cs_img);
+                        }
                         feedbacks.add(map);
                     }
 
@@ -89,10 +92,14 @@ public class FeedbackServiceImpl implements FeedbackService {
                     if (!feedback.getFeedback_isread().contains(SessionId)) {
                         Map<String, Object> map = new HashMap<>();
                         turnFeedbackToMap(feedback, map);
-                        map.put("cu_name",cu_name);
-                        map.put("cu_img",cu_img);
-                        map.put("cs_name",cs_name);
-                        map.put("cs_img",cs_img);
+                        String senderSessionId = (String) map.get("senderSessionId");
+                        if(senderSessionId.contains("CU")) {
+                            map.put("senderName", cu_name);
+                            map.put("senderImg", cu_img);
+                        }else if(senderSessionId.contains("CS")){
+                            map.put("senderName", cs_name);
+                            map.put("senderImg", cs_img);
+                        }
                         feedbacks.add(map);
                     }
                 }
@@ -104,40 +111,56 @@ public class FeedbackServiceImpl implements FeedbackService {
                 } else if (i == list1.size()) {
                     if (!list2.get(j).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list2.get(j), map);
-                        map.put("cu_name",cu_name);
-                        map.put("cu_img",cu_img);
-                        map.put("cs_name",cs_name);
-                        map.put("cs_img",cs_img);
+                        String senderSessionId = (String) map.get("senderSessionId");
+                        if(senderSessionId.contains("CU")) {
+                            map.put("senderName", cu_name);
+                            map.put("senderImg", cu_img);
+                        }else if(senderSessionId.contains("CS")){
+                            map.put("senderName", cs_name);
+                            map.put("senderImg", cs_img);
+                        }
                         feedbacks.add(map);
                     }
                     j++;
                 } else if (j == list2.size()) {
                     if (!list1.get(i).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list1.get(i), map);
-                        map.put("cu_name",cu_name);
-                        map.put("cu_img",cu_img);
-                        map.put("cs_name",cs_name);
-                        map.put("cs_img",cs_img);
+                        String senderSessionId = (String) map.get("senderSessionId");
+                        if(senderSessionId.contains("CU")) {
+                            map.put("senderName", cu_name);
+                            map.put("senderImg", cu_img);
+                        }else if(senderSessionId.contains("CS")){
+                            map.put("senderName", cs_name);
+                            map.put("senderImg", cs_img);
+                        }
                         feedbacks.add(map);
                     }
                     i++;
                 } else if (list1.get(i).getFeedback_timestamp().before(list2.get(j).getFeedback_timestamp())) {
                     if (!list1.get(i).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list1.get(i), map);
-                        map.put("cu_name",cu_name);
-                        map.put("cu_img",cu_img);
-                        map.put("cs_name",cs_name);
-                        map.put("cs_img",cs_img);
+                        String senderSessionId = (String) map.get("senderSessionId");
+                        if(senderSessionId.contains("CU")) {
+                            map.put("senderName", cu_name);
+                            map.put("senderImg", cu_img);
+                        }else if(senderSessionId.contains("CS")){
+                            map.put("senderName", cs_name);
+                            map.put("senderImg", cs_img);
+                        }
                         feedbacks.add(map);
                     }
                     i++;
                 } else {
                     if (!list2.get(j).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list2.get(j), map);
-                        map.put("cu_name",cu_name);
-                        map.put("cu_img",cu_img);
-                        map.put("cs_name",cs_name);
-                        map.put("cs_img",cs_img);
+                        String senderSessionId = (String) map.get("senderSessionId");
+                        if(senderSessionId.contains("CU")) {
+                            map.put("senderName", cu_name);
+                            map.put("senderImg", cu_img);
+                        }else if(senderSessionId.contains("CS")){
+                            map.put("senderName", cs_name);
+                            map.put("senderImg", cs_img);
+                        }
                         feedbacks.add(map);
                     }
                     j++;
@@ -230,6 +253,27 @@ public class FeedbackServiceImpl implements FeedbackService {
                 SessionId = "CS_" + cs_id;
             }
 
+            CuDao cuDao = session.getMapper(CuDao.class);
+            Cu cu = cuDao.SelectCuById(cu_id);
+
+            String cu_name = null;
+            String cu_img = null;
+
+            if(cu!=null){
+                cu_name = cu.getCu_name();
+                cu_img = cu.getCu_img();
+            }
+            String cs_name = null;
+            String cs_img = null;
+
+            CsDao csDao = session.getMapper(CsDao.class);
+            Cs cs = csDao.SelectCsById(cs_id);
+
+            if(cs!=null){
+                cs_name = cs.getCs_name();
+                cs_img = cs.getCs_img();
+            }
+
             FeedbackDao feedbackDao = session.getMapper(FeedbackDao.class);
 
             //通过客服id和用户id找到对应的feedback
@@ -244,6 +288,15 @@ public class FeedbackServiceImpl implements FeedbackService {
                     if (feedback.getFeedback_isread().contains(SessionId)) {
                         Map<String, Object> map = new HashMap<>();
                         turnFeedbackToMap(feedback, map);
+                        String senderSessionId = (String) map.get("senderSessionId");
+                        if(senderSessionId.contains("CU")) {
+                            map.put("senderName", cu_name);
+                            map.put("senderImg", cu_img);
+                        }else if(senderSessionId.contains("CS")){
+                            map.put("senderName", cs_name);
+                            map.put("senderImg", cs_img);
+                        }
+                        map.replace("isRead",true);
                         feedbacks.add(map);
                     }
 
@@ -254,6 +307,15 @@ public class FeedbackServiceImpl implements FeedbackService {
                     if (feedback.getFeedback_isread().contains(SessionId)) {
                         Map<String, Object> map = new HashMap<>();
                         turnFeedbackToMap(feedback, map);
+                        String senderSessionId = (String) map.get("senderSessionId");
+                        if(senderSessionId.contains("CU")) {
+                            map.put("senderName", cu_name);
+                            map.put("senderImg", cu_img);
+                        }else if(senderSessionId.contains("CS")){
+                            map.put("senderName", cs_name);
+                            map.put("senderImg", cs_img);
+                        }
+                        map.replace("isRead",true);
                         feedbacks.add(map);
                     }
                 }
@@ -265,24 +327,60 @@ public class FeedbackServiceImpl implements FeedbackService {
                 } else if (i == list1.size()) {
                     if (list2.get(j).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list2.get(j), map);
+                        String senderSessionId = (String) map.get("senderSessionId");
+                        if(senderSessionId.contains("CU")) {
+                            map.put("senderName", cu_name);
+                            map.put("senderImg", cu_img);
+                        }else if(senderSessionId.contains("CS")){
+                            map.put("senderName", cs_name);
+                            map.put("senderImg", cs_img);
+                        }
+                        map.replace("isRead",true);
                         feedbacks.add(map);
                     }
                     j++;
                 } else if (j == list2.size()) {
                     if (list1.get(i).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list1.get(i), map);
+                        String senderSessionId = (String) map.get("senderSessionId");
+                        if(senderSessionId.contains("CU")) {
+                            map.put("senderName", cu_name);
+                            map.put("senderImg", cu_img);
+                        }else if(senderSessionId.contains("CS")){
+                            map.put("senderName", cs_name);
+                            map.put("senderImg", cs_img);
+                        }
+                        map.replace("isRead",true);
                         feedbacks.add(map);
                     }
                     i++;
                 } else if (list1.get(i).getFeedback_timestamp().before(list2.get(j).getFeedback_timestamp())) {
                     if (list1.get(i).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list1.get(i), map);
+                        String senderSessionId = (String) map.get("senderSessionId");
+                        if(senderSessionId.contains("CU")) {
+                            map.put("senderName", cu_name);
+                            map.put("senderImg", cu_img);
+                        }else if(senderSessionId.contains("CS")){
+                            map.put("senderName", cs_name);
+                            map.put("senderImg", cs_img);
+                        }
+                        map.replace("isRead",true);
                         feedbacks.add(map);
                     }
                     i++;
                 } else {
                     if (list2.get(j).getFeedback_isread().contains(SessionId)) {
                         turnFeedbackToMap(list2.get(j), map);
+                        String senderSessionId = (String) map.get("senderSessionId");
+                        if(senderSessionId.contains("CU")) {
+                            map.put("senderName", cu_name);
+                            map.put("senderImg", cu_img);
+                        }else if(senderSessionId.contains("CS")){
+                            map.put("senderName", cs_name);
+                            map.put("senderImg", cs_img);
+                        }
+                        map.replace("isRead",true);
                         feedbacks.add(map);
                     }
                     j++;

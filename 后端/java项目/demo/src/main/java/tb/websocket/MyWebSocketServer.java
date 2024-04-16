@@ -11,9 +11,10 @@ import tb.util.myJwt;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.awt.*;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MyWebSocketServer {
 
     // 使用ConcurrentHashMap来存储会话和会话ID的映射  
-    private static ConcurrentHashMap<String, Session> sessions = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<String, Session> sessions = new ConcurrentHashMap<>();
 
     @OnOpen
     public void onOpen(Session session) {
@@ -33,21 +34,23 @@ public class MyWebSocketServer {
             // 当新的WebSocket连接建立时，将会话ID和会话对象存入映射
             sessions.put(sessionId, session);
 
-            System.out.println("test");
-            System.out.println(sessions.get("sessionId"));
+            System.out.println("新的连接已建立 sessionId: " + sessionId + "  结束");
+            System.out.println("此时sessions.keySet 有"+sessions.keySet()+" 结束");
 
-            System.out.println("New connection established: " + sessionId);
-//            sendMessageToSession(sessionId, "Can you hear me?");
 
             String[] s = sessionId.split("_");
             String role = s[0];
+            System.out.println("提取出来的role为" + role + " 结束");
             Integer id = Integer.parseInt(s[1]);
+            System.out.println("提取出来的id为" + id + " 结束");
 
             //一建立连接即发送消息
             switch (role) {
                 case "CU" -> {
                     //反馈和任务交流
                     String message1 = new FeedbackServiceImpl().getUnreadMessage(id, role);
+
+                    System.out.println("普通用户登录获取未读反馈消息");
 
                     MyWebSocketServer.sendMessageToSession(sessionId, message1);
 
@@ -124,7 +127,7 @@ public class MyWebSocketServer {
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
 
-        System.out.println(message);
+        System.out.println("收到的消息为"+message + " 结束");
 
         Map<String, Object> dataMap = JSON.parseObject(message, new TypeReference<Map<String, Object>>() {
         });
@@ -174,6 +177,8 @@ public class MyWebSocketServer {
                     map.put("id", chat_id);
                     map.put("type", "chat");
                     map.put("isRead",false);
+                    map.put("senderImg",msg.get("senderImg"));
+                    map.put("senderName",msg.get("senderName"));
 
                     jsonObject = new JSONObject(map);
 
@@ -185,6 +190,7 @@ public class MyWebSocketServer {
                     for (String id : sessions.keySet()) {
                         if (!id.contains("CU")&&!id.equals(msg.get("senderSessionId"))) {
                             //除了普通用户
+                            System.out.println("chat接收者 "+ id);
                             sendMessageToSession(id, JSON.toJSONString(new JSONObject(mapJson), SerializerFeature.WriteMapNullValue));
                         }
                     }
@@ -208,6 +214,7 @@ public class MyWebSocketServer {
 
                     msg = ((JSONObject)dataMap.get("msg")).toJavaObject(new TypeReference<Map<String,Object>>(){});
 
+
                     map = new HashMap<>();
                     map.put("senderSessionId", msg.get("senderSessionId"));
                     map.put("receiverSessionId", msg.get("receiverSessionId"));
@@ -221,6 +228,8 @@ public class MyWebSocketServer {
                     map.put("type", "feedback");
                     map.put("id", feedback_id);
                     map.put("isRead", false);
+                    map.put("senderImg",msg.get("senderImg"));
+                    map.put("senderName",msg.get("senderName"));
 
                     jsonObject = new JSONObject(map);
 
@@ -242,7 +251,7 @@ public class MyWebSocketServer {
 
                     idArray = jsonArray.toJavaObject(new TypeReference<List<Integer>>(){});
 
-                    new TalkServiceImpl().isRead((Integer) mj.getValue("id"), idArray);
+                    new TalkServiceImpl().isRead(Integer.parseInt((String) mj.getValue("id")), idArray);
                     break;
 
                 case "talk/send":
@@ -261,11 +270,14 @@ public class MyWebSocketServer {
                     map.put("type", "talk");
                     map.put("id", talk_id);
                     map.put("isRead", false);
+                    map.put("senderImg",msg.get("senderImg"));
+                    map.put("senderName",msg.get("senderName"));
+
                     jsonObject = new JSONObject(map);
 
 
                     mapJson = new HashMap<>();
-                    mapJson.put("type", "chat/receive");
+                    mapJson.put("type", "talk/receive");
                     mapJson.put("msg", jsonObject);
 
                     sendMessageToSession((String) msg.get("receiverSessionId"), JSON.toJSONString(new JSONObject(mapJson), SerializerFeature.WriteMapNullValue));
@@ -289,12 +301,13 @@ public class MyWebSocketServer {
         Session session = sessions.get(sessionId);
 //        System.out.println("是否打开：" + session.isOpen());
         if (session != null && session.isOpen()) {
-            session.getBasicRemote().sendText(message);
+            synchronized (session) {//加锁，保证不会同时被执行
+                session.getBasicRemote().sendText(message);
+            }
         } else {
             System.err.println("Session not found or not open: " + sessionId);
         }
 
     }
-
 
 }

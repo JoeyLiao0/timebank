@@ -55,6 +55,9 @@ public class TalkServiceImpl implements TalkService {
                     if(sender!=null){
                         map.put("senderName",sender.getCu_name());
                         map.put("senderImg",sender.getCu_img());
+                    }else{
+                        map.put("senderName","该用户已注销");
+                        map.put("senderImg",null);
                     }
 
 //                    map.put("receiverName",receiver.getCu_name());
@@ -111,7 +114,7 @@ public class TalkServiceImpl implements TalkService {
 
                 for (Integer talk_id : ids) {
                     Talk talk = talkDao.selectByTalkId(talk_id);
-                    talkDao.updateTalkIsRead(talk_id, talk.getTalk_isread() + " CU+" + cu_id);
+                    talkDao.updateTalkIsRead(talk_id, talk.getTalk_isread() + " CU_" + cu_id);
                 }
                 session.commit();
                 return null;
@@ -130,12 +133,14 @@ public class TalkServiceImpl implements TalkService {
 
             TalkDao talkDao = session.getMapper(TalkDao.class);
 
+            CuDao cuDao = session.getMapper(CuDao.class);
+
             List<Talk> talks = talkDao.selectByTaskId(task_id);
 
             List<Map<String, Object>> unreadTalks = new ArrayList<>();
 
             for (Talk talk : talks) {
-                if (talk.getTalk_isread().contains("CU_" + cu_id)) {
+                if (talk!=null&&talk.getTalk_isread().contains("CU_" + cu_id)) {
                     Map<String, Object> map = new HashMap<>();
                     map.put("type", "talk");
                     map.put("id", talk.getTalk_id());
@@ -144,8 +149,16 @@ public class TalkServiceImpl implements TalkService {
                     map.put("content", talk.getTalk_content());
                     map.put("contentType", talk.getTalk_contenttype());
                     map.put("timestamp", talk.getTalk_timestamp().getTime());
-                    map.put("isRead", false);
+                    map.put("isRead", true);
+                    Cu sender =cuDao.SelectCuById(talk.getTalk_senderid());
 
+                    if(sender!=null){
+                        map.put("senderName",sender.getCu_name());
+                        map.put("senderImg",sender.getCu_img());
+                    }else{
+                        map.put("senderName","该用户已注销");
+                        map.put("senderImg",null);
+                    }
                     unreadTalks.add(map);
                 }
             }

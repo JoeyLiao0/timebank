@@ -8,6 +8,7 @@ import tb.entity.Au;
 import tb.service.AuService;
 import tb.util.mySqlSession;
 
+import java.io.File;
 import java.security.SecureRandom;
 
 import java.sql.Timestamp;
@@ -305,7 +306,9 @@ public class AuServiceImpl implements AuService {
                 au.setAu_register((Timestamp) dataMap.get("au_register"));
                 au.setAu_status(1);
                 au.setAu_img((String) dataMap.get("au_img"));
+
                 //TODO 这里加一些审核字段
+                au.setAuditNum(0);
 
                 auDao.InsertAu(au);
 

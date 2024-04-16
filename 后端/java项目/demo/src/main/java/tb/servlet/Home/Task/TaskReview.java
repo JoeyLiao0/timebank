@@ -84,7 +84,17 @@ public class TaskReview extends HttpServlet {
 
                     ArrayList<Map<String, Object>> taskArray = (new TaskServiceImpl()).selectTaskByNotStatus(status, timeout);
 
-                    JSONArray jsonArray = (JSONArray) JSON.toJSON(taskArray);
+                    ArrayList<Map<String, Object>> taskArray2 = new ArrayList<>();
+
+                    for(Map<String,Object> task : taskArray){
+                        if(task.get("task_status")!=null&&!((String)task.get("task_status")).contains("9999")){
+                            //排除取消的
+                            taskArray2.add(task);
+                        }
+                    }
+
+
+                    JSONArray jsonArray = (JSONArray) JSON.toJSON(taskArray2);
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("taskArray", jsonArray);
 
@@ -102,13 +112,15 @@ public class TaskReview extends HttpServlet {
 
                     ArrayList<Map<String, Object>> taskArray = (new TaskServiceImpl()).selectTaskByNotStatus(status, timeout);
 
+                    ArrayList<Map<String,Object>> taskArray2 = new ArrayList<>();
                     for(Map<String,Object> task : taskArray){
-                        if(au_id != task.get("task_auid")){
-                            taskArray.remove(task);
+                        if(au_id == task.get("task_auid")&&task.get("status")!=null&&!((String)task.get("status")).contains("9999")){
+                            //选择自己的，且排除取消的
+                            taskArray2.add(task);
                         }
                     }
 
-                    JSONArray jsonArray = (JSONArray) JSON.toJSON(taskArray);
+                    JSONArray jsonArray = (JSONArray) JSON.toJSON(taskArray2);
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("taskArray", jsonArray);
 

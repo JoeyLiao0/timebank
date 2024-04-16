@@ -13,10 +13,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * 管理员
@@ -109,14 +111,23 @@ public class CSM extends HttpServlet {
                     //增加单个客服账号
 
                     //TODO 这里的pwd待验证是不是对应的是123456
+
                     String pwd = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92";
-
+                    if(dataMap.get("pwd")!=null && dataMap.get("pwd")!=""){
+                        pwd = (String) dataMap.get("pwd");
+                    }
                     Map<String, Object> datamap = new HashMap<>();
-
+                    if (dataMap.get("img") == null) {
+                        int imgId = new Random().nextInt(6) + 1;
+                        String staticDir =  File.separator + "userImg" + File.separator + "defaultImg";
+                        String imgUrl = staticDir + File.separator + imgId + ".png";
+                        datamap.put("cs_img", imgUrl);
+                    } else {
+                        datamap.put("cs_img", dataMap.get("img"));
+                    }
                     datamap.put("cs_name", dataMap.get("name"));
                     datamap.put("cs_pwd", pwd);
                     datamap.put("cs_tel", dataMap.get("phone"));
-                    datamap.put("cs_img", dataMap.get("img"));
                     datamap.put("cs_register", new Timestamp(System.currentTimeMillis()));//当前时间就认为是账号的注册时间
 
 

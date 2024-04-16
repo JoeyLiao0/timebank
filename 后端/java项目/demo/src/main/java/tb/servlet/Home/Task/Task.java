@@ -221,33 +221,35 @@ public class Task extends HttpServlet {
 
 
                 }
-                case "/takerFinish" -> {
+                //这个takerFinish写成upload
 
-                    Integer id = Integer.parseInt((String) mj.getValue("id"));
-
-                    Integer task_id = (Integer) dataMap.get("task_id");
-
-                    //TODO 这个图片怎么读取？
-
-                    String msg;
-                    msg = new TaskServiceImpl().takerFinish(id, task_id);
-
-                    JSONObject jsonObject = new JSONObject();
-
-                    if (msg != null && msg.equals("yes")) {
-                        jsonObject.put("status", true);
-                    } else {
-                        jsonObject.put("status", false);
-                    }
-
-                    jsonObject.put("msg", msg);
-
-                    res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
-
-                    res.setStatus(200);
-
-
-                }
+//                case "/takerFinish" -> {
+//
+//                    Integer id = Integer.parseInt((String) mj.getValue("id"));
+//
+//                    Integer task_id = (Integer) dataMap.get("task_id");
+//
+//                    //TODO 这个图片怎么读取？
+//
+//                    String msg;
+//                    msg = new TaskServiceImpl().takerFinish(id, task_id);
+//
+//                    JSONObject jsonObject = new JSONObject();
+//
+//                    if (msg != null && msg.equals("yes")) {
+//                        jsonObject.put("status", true);
+//                    } else {
+//                        jsonObject.put("status", false);
+//                    }
+//
+//                    jsonObject.put("msg", msg);
+//
+//                    res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+//
+//                    res.setStatus(200);
+//
+//
+//                }
                 case "/publisherFinish" -> {
 
                     Integer id = Integer.parseInt((String) mj.getValue("id"));

@@ -335,17 +335,25 @@ public class CsServiceImpl implements CsService {
     public Integer getCsIdToFeedback() {
         try (SqlSession session = mySqlSession.getSqSession()) {
 
-            CsDao csDao = session.getMapper(CsDao.class);
-            List<Cs> css = csDao.getMinFeedbackNumCs();
+            try{
+                CsDao csDao = session.getMapper(CsDao.class);
+                List<Cs> css = csDao.getMinFeedbackNumCs();
 
-            if (css != null&&!css.isEmpty()) {
-                return css.get(0).getCs_id();
-            } else {
-                throw new Exception("没有客服，无法反馈");
+                if (css != null&&!css.isEmpty()) {
+                    //同时客服反馈数要+1
+                    css.get(0).setCs_feedbackNum(css.get(0).getCs_feedbackNum()+1);
+                    csDao.UpdateCs(css.get(0));
+
+                    session.commit();
+
+                    return css.get(0).getCs_id();
+                } else {
+                    throw new Exception("没有客服，无法反馈");
+                }
+            }catch (Exception e) {
+                if(session!=null)session.rollback();
+                return null;
             }
-
-        } catch (Exception e) {
-            return null;
         }
     }
 }

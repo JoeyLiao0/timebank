@@ -40,6 +40,9 @@ public class Feedback extends HttpServlet {
                 String cuSessionId = (String) dataMap.get("cuSessionId");
                 String csSessionId = (String) dataMap.get("csSessionId");
 
+                System.out.println("feedback/history对应的cuSessionId为"+cuSessionId);
+                System.out.println("feedback/history对应的csSessionId为"+csSessionId);
+
                 String [] info1 = cuSessionId.split("_");
                 String [] info2 = csSessionId.split("_");
 

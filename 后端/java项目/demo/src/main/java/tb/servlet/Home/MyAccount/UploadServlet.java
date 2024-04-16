@@ -27,6 +27,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 
 import tb.service.Impl.CuServiceImpl;
+import tb.service.Impl.TaskServiceImpl;
 import tb.util.myJwt;
 
 @WebServlet("/uploadServlet")
@@ -42,6 +43,7 @@ public class UploadServlet extends HttpServlet {
         }
         JSONObject jsonObject = new JSONObject();
         Integer id = null;
+        Integer taskId = null;
         try {
 
             File temp = new File(request.getSession().getServletContext().getRealPath("/temp"));
@@ -51,6 +53,7 @@ public class UploadServlet extends HttpServlet {
             diskFileItemFactory.setRepository(temp);
 
             List<FileItem> multiparts = new ServletFileUpload(diskFileItemFactory).parseRequest(request);
+
 
             for (FileItem item : multiparts) {
                 if (item.isFormField()) {
@@ -63,39 +66,86 @@ public class UploadServlet extends HttpServlet {
                         } else {
                             throw new Exception("token失效");
                         }
+                    } else if (name.equals("taskId")) {
+                        taskId = Integer.parseInt(item.getString());
                     }
                 }
             }
             for (FileItem item : multiparts) {
                 if (!item.isFormField()) {
-                    String uniquePrefix = UUID.randomUUID().toString() + "_";
-                    // 获取项目的static目录路径
-                    String staticDir = request.getServletContext().getRealPath("") + File.separator + "static";
-                    String fileName = staticDir + File.separator + uniquePrefix + item.getName();
 
-                    item.write(new File(fileName));
+                    if (item.getFieldName().equals("userImg")) {
+                        String uniquePrefix = UUID.randomUUID().toString() + "_";
+                        // 获取项目的目录路径
+                        String staticDir = request.getServletContext().getRealPath("") + "static";
 
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("cu_id", id);
-                    map.put("cu_img", fileName);
-                    //成功后，将图片路径和账号对应起来
+                        //这个是文件的相对路径，用作数据库存储
 
-                    CuServiceImpl cuServiceImpl = new CuServiceImpl();
+                        String FileName = File.separator + "userImg" + File.separator + uniquePrefix + item.getName();
 
-                    cuServiceImpl.update(map);
+                        //文件的绝对路径，用于文件上传
 
-                    Map<String, Object> m = cuServiceImpl.selectById(id);
-                    String filePath = (String) m.get("userImg");
+                        String fileName = staticDir + FileName;
 
-                    // 转换路径为Path对象
-                    Path path = Paths.get(filePath);
+                        System.out.println("文件相对路径 " + FileName);
+                        System.out.println("文件绝对路径 " + fileName);
 
-                    try {
-                        // 删除被用户换掉的文件
-                        Files.delete(path);
-                        System.out.println("文件已成功删除!");
-                    } catch (IOException e) {
-                        System.err.println("删除文件时发生错误: " + e.getMessage());
+
+                        item.write(new File(fileName));
+
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("cu_id", id);
+                        map.put("cu_img", FileName);
+                        //成功后，将图片路径和账号对应起来
+
+                        CuServiceImpl cuServiceImpl = new CuServiceImpl();
+
+                        //先查询，查之前的图片路径
+                        Map<String, Object> m = cuServiceImpl.selectById(id);
+
+                        String msg = cuServiceImpl.update(map);
+
+                        if (!msg.equals("yes")) {
+                            throw new Exception(msg);
+                        }
+
+                        String filePath = (String) m.get("userImg");
+
+                        if (!filePath.contains("defaultImg")) {
+                            // 转换路径为Path对象
+                            Path path = Paths.get(staticDir+filePath);
+                            try {
+                                // 删除被用户换掉的文件
+                                Files.delete(path);
+                                System.out.println("文件已成功删除!");
+                            } catch (IOException e) {
+                                System.err.println("删除文件时发生错误: " + e.getMessage());
+                            }
+                        }
+
+                    } else if (item.getFieldName().equals("evidenceImg")) {
+                        String uniquePrefix = UUID.randomUUID().toString() + "_";
+                        // 获取项目的static目录路径
+                        String staticDir = request.getServletContext().getRealPath("") + "static" ;
+
+                        String FileName = File.separator + "evidenceImg"+ File.separator + uniquePrefix + item.getName();
+                        String fileName = staticDir + FileName;
+
+                        System.out.println("文件相对路径 " + FileName);
+                        System.out.println("文件绝对路径 " + fileName);
+
+                        item.write(new File(fileName));
+
+                        //成功后，将图片相对路径和任务对应起来
+
+                        TaskServiceImpl taskServiceImpl = new TaskServiceImpl();
+
+                        String msg = taskServiceImpl.takerFinish(id, taskId, FileName);
+
+                        if (!msg.equals("yes")) {
+                            throw new Exception(msg);
+                        }
+
                     }
 
                 }

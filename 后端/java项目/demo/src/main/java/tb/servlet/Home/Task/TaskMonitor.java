@@ -54,7 +54,37 @@ public class TaskMonitor extends HttpServlet {
                 res.setStatus(200);
 
             }else if(pathInfo.equals("/info")){
-                //TODO 待开发
+
+                ArrayList<Map<String, Object>> taskArray1 = (new TaskServiceImpl()).selectTaskByStatus("0000","00");
+
+                ArrayList<Map<String, Object>> taskArray2 = (new TaskServiceImpl()).selectTaskByStatus("2000","00");
+
+                ArrayList<Map<String, Object>> taskArray3 = (new TaskServiceImpl()).selectTaskByStatus("2100",null);
+
+
+                JSONObject jsonObject = new JSONObject();
+
+                if(taskArray1==null){
+                    jsonObject.put("task_num1",0);
+                }else{
+                    jsonObject.put("task_num1",taskArray1.size());
+                }
+
+                if(taskArray2==null){
+                    jsonObject.put("task_num2",0);
+                }else{
+                    jsonObject.put("task_num2",taskArray2.size());
+                }
+
+                if(taskArray3==null){
+                    jsonObject.put("task_num3",0);
+                }else{
+                    jsonObject.put("task_num3",taskArray3.size());
+                }
+
+                res.getWriter().write(JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue));//这里要注意即使是null值也要返回
+
+                res.setStatus(200);
             }
         }
     }

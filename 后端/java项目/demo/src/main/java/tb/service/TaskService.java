@@ -22,7 +22,7 @@ public interface TaskService {
 
     String takeCancel(Integer id, Integer task_id);
 
-    String takerFinish(Integer id, Integer task_id);
+    String takerFinish(Integer id, Integer task_id,String evidenceImg);
 
     String publisherFinish(Integer id, Integer task_id);
 

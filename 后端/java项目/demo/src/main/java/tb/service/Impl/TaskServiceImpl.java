@@ -1,5 +1,9 @@
 package tb.service.Impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.apache.ibatis.session.SqlSession;
 
 import tb.dao.CuDao;
@@ -12,11 +16,14 @@ import tb.servlet.Listener.DelayQueueInitializer;
 import tb.util.myDelayQueueManager;
 import tb.util.myDelayedTask;
 import tb.util.mySqlSession;
+import tb.websocket.MyWebSocketServer;
 
+import javax.websocket.Session;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class TaskServiceImpl implements TaskService {
@@ -41,7 +48,7 @@ public class TaskServiceImpl implements TaskService {
                 taskMap.put("task_coin", task.getTask_coin());
                 taskMap.put("task_title", task.getTask_title());
                 taskMap.put("task_text", task.getTask_text());
-                taskMap.put("task_status", task.getTask_status()+ "_" + task.getTask_timeout());
+                taskMap.put("task_status", task.getTask_status()+ "-" + task.getTask_timeout());
                 taskMap.put("task_advice", task.getTask_advice());
                 taskMap.put("task_auid",task.getTask_auid());
                 taskMap.put("task_takerId", task.getTask_takerid());
@@ -85,7 +92,7 @@ public class TaskServiceImpl implements TaskService {
                 taskMap.put("task_coin", task.getTask_coin());
                 taskMap.put("task_title", task.getTask_title());
                 taskMap.put("task_text", task.getTask_text());
-                taskMap.put("task_status", status + "_" + timeout);
+                taskMap.put("task_status", task.getTask_status() + "-" + task.getTask_timeout());
                 taskMap.put("task_advice", task.getTask_advice());
                 taskMap.put("task_takerId", task.getTask_takerid());
                 taskMap.put("task_publisherId", task.getTask_publisherid());
@@ -96,6 +103,7 @@ public class TaskServiceImpl implements TaskService {
                 taskMap.put("task_score", task.getTask_score());
                 taskMap.put("task_location", task.getTask_location());
                 taskMap.put("task_auid",task.getTask_auid());
+                taskMap.put("task_evidence",task.getTask_evidence());
 
                 taskArray2.add(taskMap);
 
@@ -131,7 +139,12 @@ public class TaskServiceImpl implements TaskService {
 
                 taskMap.put("task_id", task.getTask_id());
                 taskMap.put("task_publisherId", task.getTask_publisherid());
-                taskMap.put("task_publisherName", cu.getCu_name());
+
+                if(cu!=null)
+                    taskMap.put("task_publisherName", cu.getCu_name());
+                else
+                    taskMap.put("task_publisherName",null);
+
                 taskMap.put("task_coin", task.getTask_coin());
                 taskMap.put("task_title", task.getTask_title());
                 taskMap.put("task_text", task.getTask_text());
@@ -146,6 +159,7 @@ public class TaskServiceImpl implements TaskService {
             return taskArray2;
 
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -178,7 +192,11 @@ public class TaskServiceImpl implements TaskService {
                 map.put("task_advice", task.getTask_advice());
 
                 map.put("task_takerId", task.getTask_takerid());
-                map.put("task_takerName", cu.getCu_name());
+
+                if(cu!=null)
+                    map.put("task_takerName", cu.getCu_name());
+                else
+                    map.put("task_takerName", null);
 
                 map.put("task_location", task.getTask_location());
 
@@ -186,6 +204,8 @@ public class TaskServiceImpl implements TaskService {
                 map.put("task_begintime", task.getTask_begintime());
                 map.put("task_endtime", task.getTask_endtime());
                 map.put("task_finishtime", task.getTask_finishtime());
+
+                map.put("task_evidence",task.getTask_evidence());
 
                 taskArray2.add(map);
             }
@@ -223,7 +243,12 @@ public class TaskServiceImpl implements TaskService {
                 map.put("task_status", task.getTask_status()+"-"+task.getTask_timeout());
 
                 map.put("task_publisherId", task.getTask_publisherid());
-                map.put("task_publisherName", cu.getCu_name());
+
+                if(cu!=null){
+                    map.put("task_publisherName", cu.getCu_name());
+                }else{
+                    map.put("task_publisherName", null);
+                }
 
                 map.put("task_location", task.getTask_location());
 
@@ -232,6 +257,7 @@ public class TaskServiceImpl implements TaskService {
                 map.put("task_endtime", task.getTask_endtime());
                 map.put("task_finishtime", task.getTask_finishtime());
 
+                map.put("task_evidence",task.getTask_evidence());
                 taskArray2.add(map);
 
             }
@@ -258,6 +284,9 @@ public class TaskServiceImpl implements TaskService {
                     throw new Exception("时间币余额不足！");
                 } else {
 
+                    if(cu==null){
+                        throw new Exception("发布者不存在");
+                    }
                     cu.setCu_coin(cu.getCu_coin() - (Integer) datamap.get("task_coin"));//扣除时间币
                     cu.setCu_release(cu.getCu_release() + 1);
 
@@ -319,6 +348,10 @@ public class TaskServiceImpl implements TaskService {
                     throw new Exception("该任务无法领取,请刷新界面！");
                 } else {
 
+                    cu.setCu_accept(cu.getCu_accept()+1);
+
+                    cuDao.UpdateCu(cu);
+
                     task.setTask_takerid(takerId);
 
                     task.setTask_status("2100");
@@ -328,6 +361,24 @@ public class TaskServiceImpl implements TaskService {
                     taskDao.UpdateTask(task);
 
                     session.commit();
+
+                    //这里要发送websocket更新任务状态
+                    ConcurrentHashMap<String, Session> sessions = MyWebSocketServer.sessions;
+
+                    String takerSessionId = "CU_"+takerId;
+
+                    String publisherSessionId = "CU_"+task.getTask_publisherid();
+
+                    for(String sessionId : sessions.keySet()){
+                        if(sessionId.contains("CU")&&!sessionId.equals(takerSessionId)&&!sessionId.equals(publisherSessionId)){
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("type", "update");
+                            jsonObject.put("taskId", task_id);
+                            jsonObject.put("status",task.getTask_status()+"-"+task.getTask_timeout());
+                            String message  = JSON.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue);
+                            MyWebSocketServer.sendMessageToSession(sessionId,message);
+                        }
+                    }
 
                     return "yes";
                 }
@@ -354,12 +405,28 @@ public class TaskServiceImpl implements TaskService {
                 } else {
                     task.setTask_status("9999");//被发布者取消就设置为9999
                     task.setTask_timeout("00");
+
+                    Integer back_coin = task.getTask_coin();
+
                     taskDao.UpdateTask(task);
 
                     CuDao cuDao = session.getMapper(CuDao.class);
 
                     Cu cu  = cuDao.SelectCuById(publisherId);
 
+                    if(cu==null){
+                        throw new Exception("发布者不存在");
+                    }
+                    if(back_coin>0){
+                        cu.setCu_coin(cu.getCu_coin()+back_coin);
+                    }
+
+                    if(cu.getCu_release()>0){
+                        cu.setCu_release(cu.getCu_release()-1);
+                    }
+
+
+                    cuDao.UpdateCu(cu);
 
                     session.commit();
                     return "yes";
@@ -380,12 +447,22 @@ public class TaskServiceImpl implements TaskService {
 
                 Task task = taskDao.SelectTaskById(task_id);
 
+                CuDao cuDao = session.getMapper(CuDao.class);
+
+                Cu cu = cuDao.SelectCuById(takerId);
+
                 if (task.getTask_takerid() != (int) takerId) {
                     throw new Exception("此任务并不是你领取的，无法取消领取！");
                 } else if (!(task.getTask_status().equals("2100") && task.getTask_timeout().equals("00")
                         && (new Timestamp(System.currentTimeMillis()).getTime() - task.getTask_taketime().getTime()) / 1000 < 5 * 60)) {//这个5可以由管理员设置
                     throw new Exception("此任务无法取消领取！");
                 } else {
+                    if(cu.getCu_accept()>0){
+                        cu.setCu_accept(cu.getCu_accept()-1);
+                    }
+
+                    cuDao.UpdateCu(cu);
+
                     task.setTask_status("2000");
                     task.setTask_takerid(-1);
                     //根据状态码来展现数据，所以过时的数据不需要清零，下次会覆盖
@@ -402,25 +479,34 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
-    public String takerFinish(Integer taskerId, Integer task_id) {
+    public String takerFinish(Integer takerId, Integer task_id,String evidenceImg) {
         try (SqlSession session = mySqlSession.getSqSession()) {
             try {
-                //TODO 这个要加一个证据图片存储
 
                 //要判断这个任务是不是他领取的
                 TaskDao taskDao = session.getMapper(TaskDao.class);
 
                 Task task = taskDao.SelectTaskById(task_id);
 
-                if (task.getTask_takerid() != (int) taskerId) {
+                CuDao cuDao = session.getMapper(CuDao.class);
+
+                Cu cu = cuDao.SelectCuById(takerId);
+
+                if (task.getTask_takerid() != (int) takerId) {
                     throw new Exception("此任务并不是你领取的，无法完成！");
                 } else if (!(task.getTask_status().equals("2100") && (task.getTask_timeout().equals("00")||task.getTask_timeout().equals("10")))) {
                     throw new Exception("此任务未在规定的时间完成！");
                 } else {
 
+                    cu.setCu_finish(cu.getCu_finish()+1);
+
+                    cuDao.UpdateCu(cu);
+
                     task.setTask_status("2110");//状态更新
 
                     task.setTask_finishtime(new Timestamp(System.currentTimeMillis()));//任务完成时间更新
+
+                    task.setTask_evidence(evidenceImg);
 
                     taskDao.UpdateTask(task);
 
@@ -453,15 +539,40 @@ public class TaskServiceImpl implements TaskService {
                     throw new Exception("此任务并没有被完成，无法确认完成！");
                 } else {
 
+                    String task_status = task.getTask_status();//先存起来
+
                     task.setTask_status("2120");
 
                     taskDao.UpdateTask(task);
 
                     //发放时间币，任务领取者加时间币
 
+                    //判断task_status来确定时间币的发放
                     Integer task_coin = task.getTask_coin();
+                    Integer back_coin = 0;
+                    if(task.getTask_timeout().equals("00")){
+                        //正常发布全部时间币
+                        taker.setCu_coin(taker.getCu_coin() + task_coin);//领取者获得时间币
 
-                    taker.setCu_coin(taker.getCu_coin() + task_coin);//获得时间币
+                    }else if(task.getTask_timeout().equals("10")){
+                        //发放一定比例时间币，返还时间币给任务发布者
+
+                        task_coin = (int)(0.5 * task_coin);//舍去小数
+
+                        back_coin = task.getTask_coin() - task_coin;
+
+
+                        taker.setCu_coin(taker.getCu_coin() +task_coin);
+
+                        Cu publisher = cuDao.SelectCuById(task.getTask_publisherid());
+
+                        publisher.setCu_coin(publisher.getCu_coin()+back_coin);
+
+                        cuDao.UpdateCu(publisher);
+
+
+                    }
+
                     taker.setCu_finish(taker.getCu_finish() + 1);//完成任务数+1
 
                     cuDao.UpdateCu(taker);
@@ -472,7 +583,7 @@ public class TaskServiceImpl implements TaskService {
                     myDelayQueueManager delayQueueManager = DelayQueueInitializer.getDelayQueueManager();
                     Integer taskId = task.getTask_id();
 
-                    long delay = 60 * 60 * 24 * 3 * 1000;
+                    long delay = 60 * 60 * 24 * 3 * 1000;//三天
                     myDelayedTask delayedTask = new myDelayedTask(delay, taskId, 3);//截止日期
                     delayQueueManager.addTask(delayedTask);
 

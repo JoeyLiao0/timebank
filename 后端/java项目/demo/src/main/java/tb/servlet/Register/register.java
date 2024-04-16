@@ -11,10 +11,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 @WebServlet("/register")
 public class register extends HttpServlet {
@@ -28,10 +30,18 @@ public class register extends HttpServlet {
         datamap.put("cu_name", dataMap.get("username"));
         datamap.put("cu_pwd", dataMap.get("password"));//这里应该是123456的加密形式
         datamap.put("cu_tel", dataMap.get("telephone"));
-        datamap.put("cu_img", null);
         datamap.put("cu_register", new Timestamp(System.currentTimeMillis()));
         datamap.put("cu_coin", 10);
         datamap.put("cu_login", null);
+
+        if (dataMap.get("img") == null) {
+            Integer imgId = new Random().nextInt(6) + 1;
+            String staticDir = File.separator + "userImg" + File.separator + "defaultImg";
+            String imgUrl = staticDir + File.separator + imgId + ".png";
+            datamap.put("cu_img", imgUrl);
+        } else {
+            datamap.put("cu_img", dataMap.get("img"));
+        }
 
         JSONObject jsonObject = new JSONObject();
 

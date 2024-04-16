@@ -11,10 +11,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * 管理员
@@ -107,18 +109,29 @@ public class AUM extends HttpServlet {
                 case "/insert" -> {
 
                     //增加单个审核员
-
+                    Map<String, Object> datamap = new HashMap<>();
                     //TODO 这里的pwd待验证是不是对应的是123456
                     String pwd = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92";
+                    if(dataMap.get("pwd")!=null && dataMap.get("pwd")!=""){
+                        pwd = (String) dataMap.get("pwd");
+                    }
 
-                    Map<String, Object> datamap = new HashMap<>();
+                    if (dataMap.get("img") == null) {
+                        int imgId = new Random().nextInt(6) + 1;
+                        String staticDir =  File.separator + "userImg" + File.separator + "defaultImg";
+
+                        String imgUrl = staticDir + File.separator + imgId + ".png";
+                        datamap.put("au_img", imgUrl);
+
+                    } else {
+                        datamap.put("au_img", dataMap.get("img"));
+                    }
 
                     //对前端传来的数据进行转化
                     datamap.put("au_name", dataMap.get("name"));
 
                     datamap.put("au_pwd", pwd);
                     datamap.put("au_tel", dataMap.get("phone"));
-                    datamap.put("au_img", dataMap.get("img"));//TODO 管理员来注册审核员账号的话，要不要预设头像呢？
 
                     datamap.put("au_register", new Timestamp(System.currentTimeMillis()));//当前时间就认为是账号的注册时间
 

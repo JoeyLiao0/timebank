@@ -6,9 +6,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.apache.ibatis.session.SqlSession;
 
+import tb.dao.AdDao;
+import tb.dao.AuDao;
 import tb.dao.ChatDao;
 
+import tb.dao.CsDao;
+import tb.entity.Ad;
+import tb.entity.Au;
 import tb.entity.Chat;
+import tb.entity.Cs;
 import tb.service.ChatService;
 import tb.util.mySqlSession;
 
@@ -39,8 +45,43 @@ public class ChatServiceImpl implements ChatService {
                     map.put("timestamp", chat.getChat_timestamp().getTime());
                     map.put("isRead", false);
 
-                    unreadChats.add(map);
+                    String senderName = "";
+                    String senderImg = "";
 
+                    switch (chat.getChat_senderrole()){
+                        case "AD":
+                            AdDao adDao = session.getMapper(AdDao.class);
+                            Ad ad = adDao.SelectAdById(chat.getChat_senderid());
+                            if(ad!=null){
+                                senderName = ad.getAd_name();
+                                senderImg = ad.getAd_img();
+                            }
+
+                            break;
+                        case "AU":
+                            AuDao auDao = session.getMapper(AuDao.class);
+                            Au au = auDao.SelectAuById(chat.getChat_senderid());
+                            if(au!=null){
+                                senderName = au.getAu_name();
+                                senderImg = au.getAu_img();
+                            }
+
+                            break;
+                        case "CS":
+                            CsDao csDao = session.getMapper(CsDao.class);
+                            Cs cs = csDao.SelectCsById(chat.getChat_senderid());
+                            if(cs!=null){
+                                senderName = cs.getCs_name();
+                                senderImg = cs.getCs_img();
+                            }
+
+                            break;
+
+                    }
+                    map.put("senderName",senderName);
+                    map.put("senderImg",senderImg);
+
+                    unreadChats.add(map);
                 }
             }
 
@@ -73,7 +114,9 @@ public class ChatServiceImpl implements ChatService {
 
                 for (Integer chat_id : ids) {
                     Chat chat = chatDao.selectChatById(chat_id);
-                    chatDao.updateChatIsRead(chat_id, chat.getChat_isread() + " " + role.toUpperCase() + "_" + id);
+                    if(chat != null){
+                        chatDao.updateChatIsRead(chat_id, chat.getChat_isread() + " " + role.toUpperCase() + "_" + id);
+                    }
                 }
                 session.commit();
                 return null;
@@ -106,11 +149,48 @@ public class ChatServiceImpl implements ChatService {
                     map.put("timestamp", chat.getChat_timestamp().getTime());
                     map.put("isRead", true);
 
+                    String senderName = "";
+                    String senderImg = "";
+
+                    switch (chat.getChat_senderrole()){
+                        case "AD":
+                            AdDao adDao = session.getMapper(AdDao.class);
+                            Ad ad = adDao.SelectAdById(chat.getChat_senderid());
+                            if(ad!=null){
+                                senderName = ad.getAd_name();
+                                senderImg = ad.getAd_img();
+                            }
+
+                            break;
+                        case "AU":
+                            AuDao auDao = session.getMapper(AuDao.class);
+                            Au au = auDao.SelectAuById(chat.getChat_senderid());
+
+                            if(au!=null){
+                                senderName = au.getAu_name();
+                                senderImg = au.getAu_img();
+                            }
+
+                            break;
+                        case "CS":
+                            CsDao csDao = session.getMapper(CsDao.class);
+                            Cs cs = csDao.SelectCsById(chat.getChat_senderid());
+
+                            if(cs!=null){
+                                senderName = cs.getCs_name();
+                                senderImg = cs.getCs_img();
+                            }
+
+                            break;
+
+                    }
+                    map.put("senderName",senderName);
+                    map.put("senderImg",senderImg);
+
                     unreadChats.add(map);
 
                 }
             }
-
             return unreadChats;
 
         } catch (Exception e) {
@@ -122,7 +202,6 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public Integer sendMessage(Map<String, Object> datamap) {
         //就是把这个消息存储在数据库就行了，其他操作在上层已经添加转发了
-
 
         try (SqlSession session = mySqlSession.getSqSession()) {
             try {
